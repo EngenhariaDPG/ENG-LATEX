@@ -1,0 +1,44 @@
+name: Relato de problema
+description: Descrever um comportamento inesperado para reprodução e triagem
+title: "[Problema] "
+labels: []
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Em que situação o problema ocorre?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      description: Liste uma sequência que permita reproduzir o comportamento.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamento observado
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Ambiente e evidências
+      description: Informe versão/plataforma e anexe somente evidências sem dados privados ou credenciais.
+    validations:
+      required: false
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impacto e alternativa temporária
+    validations:
+      required: false

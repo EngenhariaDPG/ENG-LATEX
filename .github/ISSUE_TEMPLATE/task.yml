@@ -1,0 +1,61 @@
+name: Tarefa de projeto
+description: Registrar uma entrega pequena e verificável
+title: "[Tarefa] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Descreva uma entrega delimitada. Para trabalho paralelo, indique os arquivos reservados e as dependências.
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: Qual resultado concreto deve existir ao concluir esta issue?
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Fora do escopo
+      description: O que não deve ser feito nesta tarefa?
+    validations:
+      required: true
+  - type: textarea
+    id: ownership
+    attributes:
+      label: Área ou arquivos reservados
+      description: Liste os diretórios/arquivos sob responsabilidade deste executor.
+      placeholder: "Ex.: docs/ROADMAP.md; não editar outras áreas sem combinar com o integrador"
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependências
+      description: Liste issues bloqueadoras ou contratos que precisam estar definidos. Escreva “Nenhuma” se não houver.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      description: Como será verificado que a entrega está concluída?
+    validations:
+      required: true
+  - type: dropdown
+    id: parallel
+    attributes:
+      label: Pode ser executada em paralelo?
+      options:
+        - Sim, arquivos e interfaces são independentes
+        - Não, depende de outra tarefa ou toca arquivos compartilhados
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verificações esperadas
+      description: Indique testes, revisão documental ou validações necessárias.
+    validations:
+      required: true

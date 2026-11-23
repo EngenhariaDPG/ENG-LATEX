@@ -1,0 +1,50 @@
+name: Proposta de funcionalidade
+description: Propor uma necessidade de produto antes de implementar
+title: "[Proposta] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Necessidade
+      description: Qual problema ou necessidade precisa ser atendida?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Resultado esperado
+      description: O que deverá ser possível fazer após a mudança?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo e limites
+      description: Inclua o que deve ser considerado e o que deve ficar de fora.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      description: Liste condições verificáveis para considerar a proposta atendida.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependências e áreas afetadas
+      description: Registre issues relacionadas e arquivos/áreas possivelmente envolvidos.
+    validations:
+      required: false
+  - type: dropdown
+    id: parallel
+    attributes:
+      label: Avaliação inicial de paralelismo
+      options:
+        - Pode ser dividida em tarefas independentes
+        - Deve ser feita em sequência
+        - Ainda não sabemos; precisa de decomposição
+    validations:
+      required: true
