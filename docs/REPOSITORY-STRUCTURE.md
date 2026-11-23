@@ -4,33 +4,34 @@
 
 ```text
 .
+├── apps/
+│   └── web/                         # protótipo web FORGE independente
+│       ├── index.html
+│       ├── styles.css
+│       └── app.js
+├── docs/
+│   ├── contracts/
+│   │   ├── API-V1.md                # operações e compatibilidade do contrato
+│   │   └── product-api-v1.json      # schema de projeto versionado
+│   ├── decisions/
+│   ├── AI-PARALLEL-WORKFLOW.md
+│   ├── ROADMAP.md
+│   ├── REPOSITORY-STRUCTURE.md
+│   ├── WEB-APP-BRIEF.md
+│   └── WEB-ARCHITECTURE.md
+├── .github/
+├── CONTRIBUTING.md
 ├── README.md
 └── EngLaTeX-1.1-codigo-fonte.zip   # material legado, preservado no local original
 ```
 
-O ZIP permanece na raiz para evitar quebrar o endereço já compartilhado. Esta mudança não altera seu conteúdo nem tenta reorganizar os arquivos internos do pacote.
+## Convenções
 
-## Organização documental adotada
-
-```text
-.
-├── .github/
-│   ├── ISSUE_TEMPLATE/              # formulários para tarefas e propostas
-│   └── PULL_REQUEST_TEMPLATE.md     # checklist de revisão
-├── docs/
-│   ├── AI-PARALLEL-WORKFLOW.md      # divisão de trabalho entre agentes
-│   ├── decisions/                   # decisões arquiteturais registradas
-│   ├── ROADMAP.md
-│   └── REPOSITORY-STRUCTURE.md
-├── CONTRIBUTING.md
-├── README.md
-└── EngLaTeX-1.1-codigo-fonte.zip   # preservado
-```
-
-## Convenções para mudanças futuras
-
-- Não mover, substituir ou modificar material legado sem uma issue específica e aprovação do responsável pelo projeto.
-- Manter documentação geral em `docs/` e decisões duradouras em `docs/decisions/`.
-- Adicionar código-fonte extraído ou novo somente após decisão explícita sobre estrutura, licença, histórico e estratégia de migração.
-- Não criar diretórios vazios para módulos futuros: cada diretório novo deve corresponder a conteúdo aprovado e mantido.
-- Evitar duplicar documentos; o README deve orientar e apontar para a documentação detalhada.
+- O ZIP permanece na raiz para preservar o endereço já compartilhado. Mudanças devem manter seu conteúdo byte a byte, salvo autorização expressa em issue dedicada.
+- `apps/web/` contém a aplicação web independente; não pressupõe compartilhamento de componentes visuais com Android.
+- Contratos de domínio multiplataforma ficam em `docs/contracts/`; mudanças incompatíveis exigem nova versão major e revisão das duas frentes.
+- Documentação geral fica em `docs/` e decisões duradouras em `docs/decisions/`.
+- O protótipo web atual usa armazenamento local do navegador e não habilita Drive, compilação ou backend.
+- Não expor rotas locais do legado como API pública sem redesenho, revisão de segurança e aprovação.
+- Não criar diretórios vazios para módulos futuros. Cada diretório deve conter conteúdo aprovado e mantido.
+- Não copiar dependências, componentes ou assets do ZIP sem inventário de licença e decisão explícita.
