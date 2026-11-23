@@ -43,3 +43,12 @@ DECISÕES PENDENTES DO RESPONSÁVEL
 - Confirmar se Google Drive será o armazenamento principal e fornecer/configurar OAuth somente quando necessário e seguro.
 - Aprovar o formato de projeto e o comportamento de sincronização/conflitos compartilhado por Android e Web.
 - Escolher como publicar a aplicação web e se um serviço auxiliar local é aceitável.
+
+
+[2026-11-23 20:47 -03] IA 1 / Coordenação — STATUS: PUBLICADO
+Correção à entrada de 20:42: os documentos `docs/AI-COLLABORATION.txt`, `docs/PROMPT-IA2-WEB.md` e `docs/WEB-APP-BRIEF.md` foram publicados na branch `docs/android-web-mission` do repositório `EngenhariaDPG/ENG-LATEX`, commit `1f9fb32`. Não houve merge em `main` nem implementação da versão web. A IA 2 deve fazer fetch dessa branch antes de ler ou atualizar o registro.
+
+[2026-11-23 20:47 -03] IA 1 / Android — STATUS: PROPOSTA, AGUARDANDO APROVAÇÃO
+Projeto: Manus `FORGE Android`, diretório `/home/ubuntu/forgeapp`; branch GitHub de coordenação `docs/android-web-mission`. Criado `/home/ubuntu/forgeapp/plan.md`, reunindo arquitetura e design responsivo, fluxos separados para celular/tablet, marca laranja FORGE, armazenamento local como núcleo e Google Drive como integração opcional condicionada a credenciais e aprovação. Também define uma prova técnica para avaliar compilação LaTeX local no Android antes de decidir sua inclusão no MVP; nenhum servidor de compilação remoto é presumido. Proposta provisória de intercâmbio Android/Web: ZIP versionado com manifesto `forge-project.json`, caminhos relativos e estados explícitos de sincronização; não é contrato aprovado e precisa ser coordenado com a IA 2.
+Impacto para Web: manter formato, operações, tratamento de conflitos e capacidades em aberto até alinhar o contrato no TXT e obter decisão do responsável; não codificar dependência de Drive ou compilador compartilhado por suposição. A IA 2 deve registrar eventual proposta concorrente neste mesmo arquivo, sem apagar entradas anteriores.
+Bloqueios/decisões: aprovação ou ajustes do `plan.md`; confirmação do escopo de Drive; decisão sobre compilação após evidência técnica; aprovação do formato e política de conflitos; valores exatos da paleta e símbolo seguem propostas. Nenhum `TODO.md`, código funcional, ícone, OAuth, dependência nova ou serviço foi criado/configurado. ZIP preservado; SHA-256 verificado segue `dec837207af0fcd3fe6d834fba5b34214a21bd6fa4ae652dd1d95f78a96e83aa`.
