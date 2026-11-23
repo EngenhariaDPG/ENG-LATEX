@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge.invalid/contracts/product-api/v1/project.schema.json",
+  "title": "FORGE Project Contract",
+  "description": "Contrato de domínio independente de UI para clientes web e Android. Proposta v1; não é API HTTP implantada.",
+  "type": "object",
+  "required": ["schemaVersion", "project"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "files", "createdAt", "updatedAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "documentKind": { "type": "string", "default": "latex" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "revision": { "type": "integer", "minimum": 0 },
+        "entryFile": { "type": "string" },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "mediaType", "contentEncoding", "content"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "mediaType": { "type": "string" },
+              "contentEncoding": { "enum": ["utf-8", "base64"] },
+              "content": { "type": "string" },
+              "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "modifiedAt": { "type": "string", "format": "date-time" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "storage": {
+          "type": "object",
+          "properties": {
+            "provider": { "enum": ["local", "google-drive"] },
+            "providerFileId": { "type": "string" },
+            "syncState": { "enum": ["local-only", "clean", "pending", "conflict", "error"] },
+            "remoteVersion": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
