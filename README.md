@@ -20,7 +20,12 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 ## Documentação
 
 - [Roadmap](docs/ROADMAP.md): etapas propostas, sem datas ou promessa de implementação.
-- [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.\n- [Briefing web](docs/WEB-APP-BRIEF.md): escopo, matriz de reuso e critérios do protótipo.\n- [Arquitetura web](docs/WEB-ARCHITECTURE.md): avaliação local-first, hospedagem e compilação.\n- [Contrato de produto v1](docs/contracts/API-V1.md): modelo compartilhável entre clientes web e Android.\n\nA aplicação web em `apps/web/` é um protótipo local; Drive e compilação ainda não estão conectados.
+- [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.
+- [Briefing web](docs/WEB-APP-BRIEF.md): escopo, matriz de reuso e critérios do protótipo.
+- [Arquitetura web](docs/WEB-ARCHITECTURE.md): avaliação local-first, hospedagem e compilação.
+- [Contrato de produto v1](docs/contracts/API-V1.md): modelo compartilhável entre clientes web e Android.
+
+A aplicação web em `apps/web/` é um protótipo local; Drive e compilação ainda não estão conectados.
 - [Fluxo de trabalho paralelo com IAs](docs/AI-PARALLEL-WORKFLOW.md): como dividir tarefas, evitar conflitos e integrar resultados.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
