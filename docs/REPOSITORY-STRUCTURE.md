@@ -31,7 +31,8 @@
 ## Convenções
 
 - O ZIP permanece na raiz para preservar o endereço já compartilhado. Mudanças devem manter seu conteúdo byte a byte, salvo autorização expressa em issue dedicada.
-- `apps/web/` contém a aplicação web independente; não pressupõe compartilhamento de componentes visuais com Android.
+- `apps/web/` contém a aplicação web independente preservada como legado congelado; não recebe novas funcionalidades neste ciclo e não pressupõe compartilhamento de componentes visuais com Android.
+- O Android/Expo, quando presente no histórico da PR, também permanece congelado como legado; a frente ativa desta etapa é `apps/desktop/`.
 - `apps/desktop/` contém a cópia de trabalho do desktop Rust extraída do legado e o empacotamento Windows; o ZIP original não é alterado.
 - Contratos de domínio multiplataforma ficam em `docs/contracts/`; mudanças incompatíveis exigem nova versão major e revisão das duas frentes.
 - Documentação geral fica em `docs/` e decisões duradouras em `docs/decisions/`.

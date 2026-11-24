@@ -35,7 +35,8 @@ O FORGE não deve, sem revisão autorizada, interpretar um manual como aprovaç�
 
 ## Estado de implementação
 
-- Editor Web local: protótipo funcional com persistência local e interface inspirada no Overleaf.
-- Desktop Rust: código de trabalho e pipeline Windows documentados na PR #2.
-- Módulo de documentação técnica: direção aprovada; ainda não implementado como fluxo de produto.
+- Desktop Rust: frente ativa de desenvolvimento, com o primeiro fluxo técnico nativo para livro de inspeção de balancim/andaime suspenso.
+- Editor Web local: protótipo funcional preservado como legado congelado, sem novas funcionalidades neste ciclo.
+- Android/Expo: frente preservada como legado congelado, sem novas funcionalidades neste ciclo.
+- Módulo de documentação técnica: primeiro modelo desktop implementado; novos equipamentos e operações estruturadas continuam no roadmap.
 - Compilação Web, Drive, colaboração e backend: não anunciar como funcionais enquanto não houver implementação e testes.

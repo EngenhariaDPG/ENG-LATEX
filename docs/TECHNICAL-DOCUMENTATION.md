@@ -1,10 +1,12 @@
 # Módulo de documentação técnica
 
-**Estado:** especificação inicial; não representa funcionalidade já entregue.
+**Estado:** primeiro incremento entregue no desktop; Web e Android permanecem congelados como legado.
 
 ## Primeiro incremento implementado
 
 O FORGE Web já possui um primeiro fluxo funcional em `apps/web/`: o botão `Livro técnico` abre um formulário, cria um projeto local de Livro de Inspeção de Balancim/Andaime Suspenso, salva os dados técnicos no projeto e gera `main.tex`, `dados/equipamento.json` e capítulos LaTeX editáveis. O manifesto técnico fica associado ao registro local e acompanha o backup. Esta entrega ainda é um modelo inicial, não um laudo final nem uma declaração de conformidade.
+
+O FORGE Desktop também possui o modelo nativo `livro_balancim`: o botão `Livro técnico` coleta equipamento, fabricante, modelo, empresa, cliente, obra, ART, responsável, registro e data; cria o projeto pelo catálogo Rust; gera `main.tex` editável com abertura, identificação, entrega técnica, checklist, manutenção e liberação; e grava os dados na tabela de variáveis do projeto. O modelo desktop é deliberadamente inicial: ainda não cria registros estruturados de inspeções/manutenções, manifesto técnico independente ou PDF automaticamente.
 
 ## Objetivo
 

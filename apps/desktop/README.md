@@ -24,3 +24,7 @@ O instalador não remove os projetos do usuário em `Documentos/EngLaTeX` durant
 ## Estado atual
 
 A interface web interna foi compilada com sucesso no ambiente de auditoria. A compilação Rust e o teste da janela WebView2 precisam ocorrer em Windows, pois o ambiente de desenvolvimento atual não possui a toolchain Rust nem o runtime WebView2. Por isso, um instalador só deve ser considerado release depois de uma execução verde do workflow Windows e de um teste manual da instalação.
+
+O desktop agora inclui o modelo nativo `livro_balancim`, acessível pelo botão **Livro técnico** na tela inicial. O fluxo coleta os dados básicos do equipamento, cria um projeto LaTeX editável com capítulos de abertura, identificação, entrega técnica, checklist, manutenção e liberação, e preenche a tabela de variáveis. O modelo não declara conformidade, não libera equipamento, não fabrica ART e não substitui a análise ou assinatura de profissional habilitado.
+
+Neste ciclo, o desenvolvimento ativo está concentrado no desktop. As aplicações Web e Android permanecem no repositório como legado congelado: não são removidas da PR nem recebem novas funcionalidades nesta etapa.

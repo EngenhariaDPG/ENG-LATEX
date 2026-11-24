@@ -23,6 +23,7 @@ pub const LISTA: &[InfoModelo] = &[
     InfoModelo { id: "artigo", nome: "Artigo", descricao: "Artigo com resumo, seções, equações e bibliografia." },
     InfoModelo { id: "memorial", nome: "Memorial de cálculo", descricao: "Memorial de engenharia com capa, premissas, cálculos e tabelas." },
     InfoModelo { id: "laudo", nome: "Laudo técnico", descricao: "Laudo de inspeção com checklist, conclusão e campo de assinatura." },
+    InfoModelo { id: "livro_balancim", nome: "Livro de inspeção — Balancim", descricao: "Livro técnico com abertura, identificação, checklist, manutenção e liberação." },
     InfoModelo { id: "apresentacao", nome: "Apresentação (Beamer)", descricao: "Slides em LaTeX com o pacote Beamer." },
 ];
 
@@ -65,6 +66,19 @@ pub fn arquivos(modelo: &str, titulo: &str) -> (Vec<(String, String)>, Vec<Varia
             var("responsavel", "Eng. Nome do Responsável", "Responsável técnico"),
             var("registro", "CREA-XX nº 000000000", "Registro profissional"),
             var("data", "", "Data da inspeção (vazio = hoje)"),
+        ],
+        "livro_balancim" => vec![
+            var("titulo", titulo, "Título do livro"),
+            var("equipamento", "Balancim / Andaime suspenso", "Tipo de equipamento"),
+            var("fabricante", "Fabricante não informado", "Fabricante"),
+            var("modelo", "Modelo não informado", "Modelo"),
+            var("empresa", "Empresa emitente", "Empresa emitente"),
+            var("cliente", "Nome do cliente", "Contratante"),
+            var("obra", "Nome e endereço da obra", "Obra"),
+            var("art", "ART não informada", "Número da ART"),
+            var("responsavel", "Eng. Nome do Responsável", "Responsável técnico"),
+            var("registro", "CREA/registro profissional", "Registro profissional"),
+            var("data", "", "Data do documento (vazio = hoje)"),
         ],
         _ => Vec::new(),
     };
@@ -383,6 +397,37 @@ conformidades listadas acima.
 "##)),
         ],
 
+        // ------------------------------------------------------------------
+        "livro_balancim" => vec![
+            ("main.tex".into(), format!(r##"\documentclass[11pt,a4paper]{{article}}
+{PREAMBULO_FONTES}\usepackage[top=2.4cm,bottom=2.2cm,left=2.6cm,right=2.1cm]{{geometry}}
+\usepackage{{booktabs,longtable,array,graphicx,fancyhdr,lastpage}}
+\usepackage[hidelinks]{{hyperref}}
+\input{{variaveis}}
+\pagestyle{{fancy}}\fancyhf{{}}\lhead{{\small\var{{titulo}}}}\rhead{{\small\var{{data}}}}\lfoot{{\small\var{{responsavel}}}}\rfoot{{\small Página \thepage{{}} de \pageref{{LastPage}}}}
+\begin{{document}}
+\begin{{titlepage}}\centering\vspace*{{3cm}}{{\LARGE\bfseries LIVRO DE INSPEÇÃO\par}}\vspace{{1cm}}{{\Large\var{{equipamento}}\par}}\vfill
+\begin{{tabular}}{{ll}}Empresa: & \var{{empresa}} \\
+Cliente: & \var{{cliente}} \\
+Obra: & \var{{obra}} \\
+Fabricante/modelo: & \var{{fabricante}} / \var{{modelo}} \\
+ART: & \var{{art}} \end{{tabular}}\end{{titlepage}}
+\tableofcontents\newpage
+\section{{Termo de abertura}}Este livro registra inspeções, manutenções e ocorrências do equipamento identificado neste documento. A emissão, análise e assinatura devem ser realizadas pelos responsáveis habilitados.\par
+\section{{Identificação do equipamento}}Tipo: \var{{equipamento}}\par Fabricante: \var{{fabricante}}\par Modelo: \var{{modelo}}\par
+\section{{Entrega técnica}}Registrar a apresentação do equipamento, riscos, procedimentos de montagem e desmontagem, EPIs/EPCs, documentos entregues e treinamento realizado.\par
+\section{{Checklist inicial}}\begin{{longtable}}{{p{{0.58\textwidth}}p{{0.16\textwidth}}p{{0.18\textwidth}}}}\toprule Item & Status & Observação \\
+\midrule Estrutura e plataforma & A verificar & \\
+Cabos, guincho e trava-quedas & A verificar & \\
+Guarda-corpo, piso e rodapés & A verificar & \\
+Dispositivos de segurança & A verificar & \\
+\bottomrule\end{{longtable}}
+\section{{Manutenção e ocorrências}}Data, tipo de manutenção, descrição, responsável, peças utilizadas e próxima ação.\par\vspace{{4cm}}
+\section{{Liberação e responsabilidade técnica}}Responsável técnico: \var{{responsavel}}\par Registro: \var{{registro}}\par Data: \var{{data}}\par
+\vspace{{2cm}}\begin{{center}}\rule{{8cm}}{{0.4pt}}\\\var{{responsavel}}\end{{center}}
+\end{{document}}
+"##)),
+        ],
         // ------------------------------------------------------------------
         "apresentacao" => vec![
             ("main.tex".into(), format!(r##"\documentclass{{beamer}}

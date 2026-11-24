@@ -199,6 +199,10 @@ body.arrastando iframe, body.arrastando embed { pointer-events: none; }
 .campo span { font-size: 12px; font-weight: 600; color: var(--texto-fraco); }
 .campo input, .campo select { padding: 8px 10px; border: 1px solid var(--borda); border-radius: var(--raio); background: #fff; }
 .campo input:focus, .campo select:focus, .tabela-var input:focus, .tabela-var textarea:focus, .tabela-var select:focus { outline: 2px solid var(--verde); outline-offset: -1px; border-color: transparent; }
+.grade-formulario { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+.grade-formulario .campo { min-width: 0; }
+.grade-formulario .largo { grid-column: 1 / -1; }
+@media (max-width: 680px) { .grade-formulario { grid-template-columns: 1fr; } .grade-formulario .largo { grid-column: auto; } }
 .marcar { display: flex; align-items: center; gap: 8px; margin: 10px 0; cursor: pointer; }
 .dica { font-size: 12.5px; color: var(--texto-fraco); }
 

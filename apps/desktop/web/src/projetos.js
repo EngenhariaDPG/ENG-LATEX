@@ -1,7 +1,7 @@
 // Tela inicial: lista de projetos e de modelos (como o painel do Overleaf).
 
 import { api } from "./api.js";
-import { icone, esc, el, dataRelativa, aviso, perguntar, confirmar, menuAbaixo, menuContexto, escolherArquivos } from "./ui.js";
+import { icone, esc, el, dataRelativa, aviso, perguntar, confirmar, menuAbaixo, menuContexto, escolherArquivos, dialogo } from "./ui.js";
 import { abrirConfiguracoes } from "./configuracoes.js";
 
 /** Aba atual da tela inicial: "projetos" ou "modelos". */
@@ -20,6 +20,7 @@ export async function telaProjetos(raiz) {
       <div class="inicial-corpo">
         <nav class="inicial-lateral">
           <button class="botao primario grande" id="bt-novo">${icone("mais")} Novo projeto</button>
+          <button class="botao grande" id="bt-livro">${icone("copiar")} Livro técnico</button>
           <button class="item-lateral" data-aba="projetos">${icone("pasta")} Todos os projetos</button>
           <button class="item-lateral" data-aba="modelos">${icone("copiar")} Meus modelos</button>
           <div class="lateral-rodape">
@@ -38,6 +39,7 @@ export async function telaProjetos(raiz) {
 
   raiz.querySelector("#bt-config").onclick = () => abrirConfiguracoes();
   raiz.querySelector("#bt-novo").onclick = (e) => menuNovoProjeto(e.currentTarget);
+  raiz.querySelector("#bt-livro").onclick = criarLivroTecnico;
   raiz.querySelector("#bt-importar").onclick = importar;
   raiz.querySelectorAll("[data-aba]").forEach((b) => {
     b.onclick = () => {
@@ -223,6 +225,44 @@ async function menuNovoProjeto(botao) {
   }
   itens.push("-", { texto: "Importar .zip (ex.: baixado do Overleaf)", icone: "enviar", acao: importar });
   menuAbaixo(botao, itens);
+}
+
+/** Cria o primeiro modelo técnico do desktop com dados preenchidos pelo usuário. */
+async function criarLivroTecnico() {
+  const dados = await dialogo({
+    titulo: "Novo livro técnico — balancim / andaime suspenso",
+    largura: 620,
+    conteudo: `<div class="grade-formulario tecnico-formulario">
+      <label class="campo"><span>Tipo de equipamento</span><input name="equipamento" value="Balancim / Andaime suspenso" required></label>
+      <label class="campo"><span>Fabricante</span><input name="fabricante" placeholder="Ex.: Menegotti" required></label>
+      <label class="campo"><span>Modelo</span><input name="modelo" placeholder="Modelo do equipamento" required></label>
+      <label class="campo"><span>Data do documento</span><input name="data" type="date" required></label>
+      <label class="campo"><span>Empresa emitente</span><input name="empresa" placeholder="Razão social" required></label>
+      <label class="campo"><span>ART <small>(opcional)</small></span><input name="art" placeholder="Número da ART"></label>
+      <label class="campo"><span>Cliente</span><input name="cliente" placeholder="Contratante" required></label>
+      <label class="campo"><span>Obra</span><input name="obra" placeholder="Nome da obra" required></label>
+      <label class="campo largo"><span>Responsável técnico</span><input name="responsavel" placeholder="Nome do responsável" required></label>
+      <label class="campo largo"><span>Registro profissional</span><input name="registro" placeholder="CREA / registro profissional" required></label>
+      <p class="dica largo">O modelo gera arquivos LaTeX editáveis. Ele não declara conformidade nem substitui análise ou assinatura de profissional habilitado.</p>
+    </div>`,
+    botoes: [{ texto: "Cancelar", valor: null }, { texto: "Criar livro técnico", valor: "ok", classe: "primario" }],
+    aoAbrir: (janela) => { janela.querySelector('[name="data"]').value = new Date().toISOString().slice(0, 10); },
+    coletar: (janela) => {
+      const form = Object.fromEntries([...janela.querySelectorAll("input")].map((input) => [input.name, input.value.trim()]));
+      const obrigatorios = ["equipamento", "fabricante", "modelo", "data", "empresa", "cliente", "obra", "responsavel", "registro"];
+      if (obrigatorios.some((campo) => !form[campo])) { aviso("Preencha todos os campos obrigatórios.", "erro"); return undefined; }
+      return form;
+    },
+  });
+  if (!dados) return;
+  const nome = `Livro de inspeção — ${dados.equipamento} — ${dados.obra}`;
+  const valores = { titulo: nome, equipamento: dados.equipamento, fabricante: dados.fabricante, modelo: dados.modelo, empresa: dados.empresa, cliente: dados.cliente, obra: dados.obra, art: dados.art || "ART não informada", responsavel: dados.responsavel, registro: dados.registro, data: dados.data };
+  const variaveis = Object.entries(valores).map(([nomeVariavel, valor]) => ({ nome: nomeVariavel, valor, descricao: "Dado do livro técnico", tipo: "texto" }));
+  try {
+    const { id } = await api.criarProjeto(nome, "livro_balancim");
+    await api.gravarVariaveis(id, variaveis);
+    location.hash = `#/p/${encodeURIComponent(id)}?variaveis=1`;
+  } catch (e) { aviso(e.message, "erro", 6000); }
 }
 
 /** Pede o nome e cria o projeto. Se o modelo tem variáveis, já abre a tabela para preencher. */
