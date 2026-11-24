@@ -1,0 +1,68 @@
+FORGE — REGISTRO DE COORDENAÇÃO ENTRE IAs
+=========================================
+
+Fonte compartilhada: EngenhariaDPG/ENG-LATEX/docs/AI-COLLABORATION.txt
+Idioma: português do Brasil
+Formato: texto UTF-8, entradas datadas e cumulativas.
+
+OBJETIVO
+--------
+Este arquivo é o canal comum de passagem de contexto entre a IA 1 (Android) e a IA 2 (Web). Ele registra o estado das frentes, decisões confirmadas, propostas ainda pendentes, arquivos/branches alterados, riscos e próximos passos. Não substitui o código, o briefing web, o plano Android nem a aprovação do responsável.
+
+REGRAS DE USO PARA AS DUAS IAs
+------------------------------
+1. Antes de iniciar uma sessão de trabalho, buscar a versão mais recente desta branch/arquivo, ler o documento inteiro e conferir o estado da própria branch. Não presumir que o outro agente viu mudanças locais sem commit/push.
+2. Acrescentar uma entrada nova ao final do arquivo ao iniciar trabalho relevante, ao propor ou alterar contrato/arquitetura, após uma mudança importante e antes de entregar ou abrir um PR. Cada entrada informa: data e hora com fuso, agente/frente, status (PROPOSTA, APROVADA, EM ANDAMENTO, BLOQUEADA ou CONCLUÍDA), branch/projeto, arquivos alterados, resumo, impacto para a outra frente, bloqueios e ação/decisão necessária.
+3. Não apagar nem reescrever entradas anteriores. Correções devem ser registradas como nova entrada que referencia a anterior. Identificar claramente proposta versus decisão aprovada pelo responsável; nenhum agente aprova decisões pelo outro.
+4. Antes de editar, sincronizar a branch e verificar mudanças recentes. Ao concluir uma atualização, commitar e publicar a branch/PR correspondente quando autorizado; se houver conflito, preservar todas as entradas de ambos os agentes e comunicar a resolução neste registro.
+5. Compartilhar neste arquivo os contratos comuns, especialmente formato de projeto, semântica de arquivos, operação de armazenamento Google Drive, estados/erros de sincronização e eventual contrato de compilação. Alterações incompatíveis exigem registro e coordenação antes da implementação.
+6. Não inserir credenciais, tokens OAuth, senhas, conteúdo privado dos projetos LaTeX nem URLs assinadas. Registrar apenas nomes de configuração não secretos e decisões de acesso.
+7. Preservar byte a byte `EngLaTeX-1.1-codigo-fonte.zip`. Não declarar paridade com o legado sem validação. Não publicar aplicações, configurar serviços externos, solicitar permissões Google ou executar ações destrutivas sem autorização apropriada.
+8. Ao entregar, apontar a última entrada relevante e o estado Git (branch/commit/PR), para que a outra IA retome sem depender do histórico de conversa.
+
+CONTEXTO ATUAL
+--------------
+- O repositório GitHub mantém o legado e a documentação do FORGE. O ZIP legado deve continuar intacto.
+- A IA 1 está conduzindo a versão Android como um projeto Expo/React Native gerenciado separado, localizado no projeto Manus `FORGE Android` (slug `forgeapp`). O repositório canônico do projeto mobile é Manus-gerenciado; não é o mesmo repositório GitHub.
+- A IA 2 conduz a especificação/implementação web em branch própria do repositório GitHub. A web deve ter identidade FORGE com base laranja e fluxo de editor LaTeX familiar ao Overleaf, sem cópia de marca ou recursos visuais distintivos.
+- O responsável sugeriu uma arquitetura local-first: processamento com recursos do dispositivo e armazenamento/sincronização de arquivos por uma conta Google Drive. É preferência a avaliar, não autorização para conectar conta ou criar credenciais.
+- Ainda precisam de validação: compilação LaTeX local no navegador e no Android; OAuth/escopos Drive; formato de projeto e sincronização/conflict resolution; publicação do frontend. GitHub Pages é hospedagem estática e não deve ser tratado como backend persistente.
+
+HISTÓRICO DE HANDOFFS
+---------------------
+[2026-11-23 20:42 -03] IA 1 / Android — STATUS: EM ANDAMENTO (plano não aprovado)
+Projeto: Manus Mobile `forgeapp`, iniciado com starter Expo gerenciado; app/código funcional ainda não implementado. Escopo recebido: app Android separado, para celular e tablet, baseado no EngLaTeX, marca FORGE laranja, experiência de edição familiar ao Overleaf sem cópia literal; explorar processamento local e Google Drive para arquivos. A compilação LaTeX no Android ainda exige prova técnica; não implementar compilador remoto por suposição. O próximo passo é apresentar `plan.md` ao responsável para aprovação antes de `TODO.md` e código. ZIP original preservado.
+
+[2026-11-23 20:42 -03] IA 2 / Web — STATUS: BRIEFING E PROMPT RASCUNHADOS
+Branch local de coordenação: `docs/android-web-mission` (a publicar). Documentos preparados: `docs/WEB-APP-BRIEF.md` e `docs/PROMPT-IA2-WEB.md`. Nenhuma interface, backend, integração Drive ou hospedagem foi implementada. O prompt atualizado orienta a IA 2 a consultar este TXT e a registrar os próximos handoffs.
+
+DECISÕES PENDENTES DO RESPONSÁVEL
+---------------------------------
+- Aprovar o plano de produto/implementação Android.
+- Definir, após prova técnica, se a primeira versão Android precisa compilar LaTeX localmente; caso não seja viável, escolher entre deixar compilação fora do MVP ou discutir serviço remoto.
+- Confirmar se Google Drive será o armazenamento principal e fornecer/configurar OAuth somente quando necessário e seguro.
+- Aprovar o formato de projeto e o comportamento de sincronização/conflitos compartilhado por Android e Web.
+- Escolher como publicar a aplicação web e se um serviço auxiliar local é aceitável.
+
+
+[2026-11-23 20:47 -03] IA 1 / Coordenação — STATUS: PUBLICADO
+Correção à entrada de 20:42: os documentos `docs/AI-COLLABORATION.txt`, `docs/PROMPT-IA2-WEB.md` e `docs/WEB-APP-BRIEF.md` foram publicados na branch `docs/android-web-mission` do repositório `EngenhariaDPG/ENG-LATEX`, commit `1f9fb32`. Não houve merge em `main` nem implementação da versão web. A IA 2 deve fazer fetch dessa branch antes de ler ou atualizar o registro.
+
+[2026-11-23 20:47 -03] IA 1 / Android — STATUS: PROPOSTA, AGUARDANDO APROVAÇÃO
+Projeto: Manus `FORGE Android`, diretório `/home/ubuntu/forgeapp`; branch GitHub de coordenação `docs/android-web-mission`. Criado `/home/ubuntu/forgeapp/plan.md`, reunindo arquitetura e design responsivo, fluxos separados para celular/tablet, marca laranja FORGE, armazenamento local como núcleo e Google Drive como integração opcional condicionada a credenciais e aprovação. Também define uma prova técnica para avaliar compilação LaTeX local no Android antes de decidir sua inclusão no MVP; nenhum servidor de compilação remoto é presumido. Proposta provisória de intercâmbio Android/Web: ZIP versionado com manifesto `forge-project.json`, caminhos relativos e estados explícitos de sincronização; não é contrato aprovado e precisa ser coordenado com a IA 2.
+Impacto para Web: manter formato, operações, tratamento de conflitos e capacidades em aberto até alinhar o contrato no TXT e obter decisão do responsável; não codificar dependência de Drive ou compilador compartilhado por suposição. A IA 2 deve registrar eventual proposta concorrente neste mesmo arquivo, sem apagar entradas anteriores.
+Bloqueios/decisões: aprovação ou ajustes do `plan.md`; confirmação do escopo de Drive; decisão sobre compilação após evidência técnica; aprovação do formato e política de conflitos; valores exatos da paleta e símbolo seguem propostas. Nenhum `TODO.md`, código funcional, ícone, OAuth, dependência nova ou serviço foi criado/configurado. ZIP preservado; SHA-256 verificado segue `dec837207af0fcd3fe6d834fba5b34214a21bd6fa4ae652dd1d95f78a96e83aa`.
+
+
+[2026-11-23 20:50 -03] IA 1 / Android — STATUS: PLANO APROVADO, TODO CRIADO
+O responsável aprovou o `plan.md` em 23/11/2026. Foi criado `/home/ubuntu/forgeapp/TODO.md` com os resultados e critérios explícitos derivados do pedido e do plano. Ainda não foram escritos código funcional, ícones, dependências, OAuth ou configuração de Drive/compilação remota; o ZIP continua preservado. A próxima etapa é iniciar a implementação Android dentro do plano, começando pela prova de viabilidade de compilação local e pela preparação da identidade nativa. O Drive permanece opcional/condicionado; o contrato de formato e sincronização ainda exige coordenação com a IA 2 e decisão do responsável.
+Impacto para Web: ler este handoff e atualizar o mesmo TXT antes de retomar; compartilhar propostas para formato, estados, erros e conflitos sem assumir que o outro agente as aprovou.
+
+
+[2026-11-23 21:05 -03] IA 2 / Web — STATUS: EM ANDAMENTO (sincronização e alinhamento)
+Branch: `feature/forge-web`; PR #2 aberto contra `main`. A branch de coordenação `docs/android-web-mission` foi consultada integralmente antes da retomada. Ela contém três commits à frente da main; a branch Web tinha 19 commits próprios e estava três commits atrás da branch de coordenação. Para preservar ambas as frentes, esta atualização integra os documentos de coordenação e briefing à branch Web por merge commit, sem alterar `main` nem a branch Android.
+Arquivos integrados/atualizados: `docs/AI-COLLABORATION.txt`, `docs/PROMPT-IA2-WEB.md`, `docs/WEB-APP-BRIEF.md`. O briefing detalhado da coordenação foi mantido e complementado com o estado real do protótipo Web já existente.
+Resumo: o plano Android foi aprovado pelo responsável; a implementação Android está começando e fará prova técnica de compilação local. O formato de intercâmbio ZIP com manifesto `forge-project.json` é uma proposta da IA 1, ainda não aprovada. O contrato `product-api-v1.json` da Web também permanece proposta, não contrato compartilhado aprovado. Há uma divergência a resolver: a proposta Web atual descreve objetos de projeto/arquivos e estados de storage, enquanto a proposta Android aponta para um pacote ZIP versionado com manifesto e caminhos relativos. Nenhuma das duas será tratada como definitiva até alinhamento e aprovação do responsável.
+Impacto para Android: a Web mantém UI independente; formato de arquivo, manifesto, semântica de caminhos, codificação de binários, capacidades, erros, sincronização e conflitos ficam explicitamente pendentes de coordenação. Drive/OAuth e compilação permanecem desativados/não implementados na Web.
+Bloqueios/decisões necessárias: comparar os contratos e produzir uma proposta interoperável; aprovar formato canônico e política de conflitos; aguardar evidências da prova de compilação Android antes de decidir compilação no MVP Web. Nenhuma integração externa, credencial, publicação ou merge em `main` foi executado. ZIP legado permanece intocado.
+Próxima ação: revisar o contrato Web contra a proposta ZIP Android, preparar uma proposta de contrato/arquivo de projeto compatível e registrar a decisão pendente antes de implementar persistência/sincronização.
