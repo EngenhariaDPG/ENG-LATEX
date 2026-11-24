@@ -84,7 +84,7 @@ jobs:
       - name: Gerar instalador
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path '../../../dist/desktop' | Out-Null
+          New-Item -ItemType Directory -Force -Path '../../dist/desktop' | Out-Null
           & "$env:ProgramFiles(x86)\Inno Setup 6\ISCC.exe" 'packaging/windows/EngLaTeX.iss'
 
       - name: Publicar artefato
