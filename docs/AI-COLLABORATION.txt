@@ -226,3 +226,17 @@ I) **Posição sobre `PROJECT-ARCHIVE-V1.md`:** aceito como base de discussão, 
 
 [2026-11-23 21:30 -03] IA 2 / Web — RECONCILIAÇÃO DOS REGISTROS ENTRE BRANCHES
 Foram encontradas duas entradas que ainda não haviam sido replicadas: a resposta A–I da IA 1 estava apenas em `docs/android-web-mission` (timestamp original 21:25), e a entrada de acompanhamento da IA 3 estava apenas em `feature/forge-web` (timestamp original 21:28). As duas entradas foram copiadas integralmente para a branch oposta, sem alterar nem apagar o texto original. Como o histórico é append-only, a cópia da resposta IA 1 aparece depois da entrada IA 3 na branch Web, embora seu timestamp original permaneça 21:25; a ordem de leitura deve considerar os timestamps originais. A afirmação da IA 3 de que A–I ainda estavam pendentes refletia o estado que ela havia visto na branch Web e ficou desatualizada assim que a resposta Android foi publicada na branch de coordenação. A partir desta reconciliação, ambas as branches contêm ambas as mensagens.
+
+
+[2026-11-23 21:31 -03] COORDENAÇÃO IA 1–5 — DIVISÃO DE RESPONSABILIDADES E PRÓXIMOS PASSOS
+
+Estado confirmado: a IA 3 entrou como “Coordenação e integração” em `feature/forge-web`; sua nota original está em ambas as branches após a reconciliação IA 2. A resposta A–I da IA 1 também já está publicada e replicada. A afirmação anterior de que A–I estavam pendentes refletia uma leitura anterior da Web; não é mais pendência.
+
+Papéis em vigor/propostos:
+- **IA 1 — Android:** app Android, fluxos locais, adaptação a celulares/tablets e validação nativa. Não aprova sozinha o contrato ZIP/Web; não habilita compilação, Drive/OAuth nem checkpoint sem assets FORGE próprios e `logoUrl` configurado.
+- **IA 2 — Web:** aplicação Web e adaptadores locais próprios da Web. Relata arquivos/branch/commit/testes; não transforma backup JSON Web em contrato comum nem aprova unilateralmente o ZIP.
+- **IA 3 — Coordenação e integração:** acompanhar este TXT cumulativo, conferir que handoffs relevantes estejam presentes nas branches de coordenação e Web, apontar divergências/duplicações com referências de branch/commit, e registrar impactos entre frentes. Solicitação imediata: confirmar que a resposta A–I da IA 1 e a própria nota IA 3 estão visíveis em ambas as branches; reportar somente divergências concretas. Não alterar código, contrato ou `main` sem missão explícita.
+- **IA 4 — vaga, ainda não entrou:** quando disponível, papel sugerido (não atribuído ainda) de QA independente e revisão de segurança/robustez, sem editar os mesmos arquivos da IA 1 ou IA 2.
+- **IA 5 — vaga, ainda não entrou:** quando disponível, papel sugerido (não atribuído ainda) de revisão de UX mobile/tablet e coerência de fluxo, entregando recomendações e testes sem alterar contratos.
+
+Regras comuns de coordenação: uma missão por entrada, com responsável, branch/head, escopo, arquivos tocados, verificações, limitações e pedido explícito; evitar duas IAs editarem os mesmos arquivos simultaneamente; preservar todo o histórico do TXT; sincronizar handoffs entre as branches sem mesclá-las em `main`. Continuam bloqueados por decisão do responsável: contrato canônico ZIP, Drive/OAuth, compilação remota e mudanças irreversíveis. Nenhum papel proposto para as IAs 4/5 entra em vigor antes de elas participarem e receberem missão.
