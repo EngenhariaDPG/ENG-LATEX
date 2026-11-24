@@ -23,8 +23,8 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 - [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.
 - [Briefing web](docs/WEB-APP-BRIEF.md): escopo, matriz de reuso e critérios do protótipo.
 - [Arquitetura web](docs/WEB-ARCHITECTURE.md): avaliação local-first, hospedagem e compilação.
-- [Rascunho de modelo de produto v1](docs/contracts/API-V1.md): proposta ainda não aprovada como contrato compartilhado.
-- [Proposta de arquivo de projeto ZIP](docs/contracts/PROJECT-ARCHIVE-V1.md): formato de intercâmbio pendente de revisão Android e aprovação do responsável.
+- [Rascunho de modelo de produto v1](docs/contracts/API-V1.md): proposta revisada após feedback Android A–I, ainda não aprovada como contrato compartilhado.
+- [Proposta de arquivo de projeto ZIP](docs/contracts/PROJECT-ARCHIVE-V1.md): formato de intercâmbio revisado com a IA 1; UUID v4, arquivos binários e validações foram especificados, mas limites e aprovação do responsável seguem pendentes.
 - [Registro de colaboração entre IAs](docs/AI-COLLABORATION.txt): canal exclusivo de coordenação Android/Web.
 
 A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback localStorage e backup JSON local. Testes Node e smoke tests Playwright/Chromium estão configurados no GitHub Actions. O backup JSON não é o formato de intercâmbio Android/Web. Drive, sincronização e importação/exportação ZIP continuam pendentes; compilação ainda não está conectada.
