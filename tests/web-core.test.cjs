@@ -40,6 +40,14 @@ test("aplica limites de comprimento e profundidade", () => {
   assert.equal(validPath(Array.from({ length: 21 }, (_, i) => "d" + i).join("/") + "/x.tex"), false);
 });
 
+test("detecta colisões de caminho após NFC e comparação sem distinção de caixa", () => {
+  const collision = vm.runInContext("ForgeCore.hasPathCollision({ 'Main.tex': '' }, 'main.tex')", context);
+  const unicodeCollision = vm.runInContext("ForgeCore.hasPathCollision({ 'capítulos/introdução.tex': '' }, 'capítulos/introdução.tex')", context);
+  assert.equal(collision, true);
+  assert.equal(unicodeCollision, true);
+  assert.equal(validRecord({ id: "p1", name: "Projeto", files: { "Main.tex": "a", "main.tex": "b" } }), false);
+});
+
 test("valida projeto com pelo menos um arquivo textual", () => {
   assert.equal(validRecord({ id: "p1", name: "Projeto", files: { "main.tex": "\\documentclass{article}" } }), true);
   assert.equal(validRecord({ id: "p1", name: "Projeto", files: {} }), false);
