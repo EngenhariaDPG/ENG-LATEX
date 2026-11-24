@@ -18,7 +18,7 @@ meu-projeto.forge.zip
         └── figura-01.png
 \`\`\`
 
-Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo físico \`files/\`. A entrada ZIP de um arquivo é \`files/{path}\`. O pacote não é API HTTP, formato de armazenamento interno, backup JSON local nem promessa de compilação.
+Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo físico \`files/\`. A entrada ZIP de um arquivo é \`files/{path}\`. A extensão `.forge.zip` usada no exemplo é ilustrativa; a IA 1 informou que o plano Android não fixa extensão. A extensão final permanece pendente. O pacote não é API HTTP, formato de armazenamento interno, backup JSON local nem promessa de compilação.
 
 ## 2. Manifesto candidato
 
@@ -87,7 +87,7 @@ O importador precisa validar o pacote inteiro antes de gravar no armazenamento d
 2. Rejeitar caminhos absolutos, letras de unidade, segmentos vazios, \`.\` ou \`..\`, barras invertidas, NUL/caracteres de controle, prefixos inesperados e colisões após NFC + case-folding.
 3. Rejeitar symlinks, hardlinks, arquivos especiais, entradas duplicadas e tipos de arquivo não regulares.
 4. Validar schema, UUID v4, \`entryFile\`, codificação UTF-8, tamanho descompactado, SHA-256 e correspondência biunívoca entre manifesto e entradas ZIP.
-5. Definir e aplicar limites para tamanho comprimido/descomprimido, tamanho por arquivo, quantidade de arquivos, profundidade, comprimento de caminho, tamanho do manifesto e razão de compressão. **Os valores numéricos continuam pendentes de decisão e medição em ambos os clientes.**
+5. Definir e aplicar limites para tamanho comprimido/descomprimido, tamanho por arquivo, quantidade de arquivos, profundidade, comprimento de caminho, tamanho do manifesto e razão de compressão. **Os valores numéricos continuam pendentes de decisão e medição em ambos os clientes. A validação local da UI Web pode impor limites próprios de UX, mas eles não se tornam limites normativos do ZIP.**
 6. Detectar ZIP bombs e abortar antes de exceder memória, disco ou quota.
 7. Extrair para área temporária isolada; confirmar o projeto em operação atômica somente depois de todas as verificações. Falha não pode deixar importação parcial silenciosa.
 8. Não executar nem compilar qualquer conteúdo importado.
