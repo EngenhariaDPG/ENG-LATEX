@@ -1,16 +1,19 @@
 name: Web checks
 
 on:
-  push:
-    branches: [feature/forge-web]
   pull_request:
     branches: [main]
     paths:
       - "apps/web/**"
       - "tests/**"
-      - "package.json"
       - "docs/contracts/forge-project-v1.schema.json"
+      - "docs/contracts/PROJECT-ARCHIVE-V1.md"
+      - "package.json"
       - ".github/workflows/web-checks.yml"
+
+concurrency:
+  group: forge-web-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -20,10 +23,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install dependencies
+        run: npm install --no-package-lock
       - name: Run web core tests
         run: npm run test:web
-      - name: Install Playwright
-        run: npm install --no-package-lock
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser smoke tests
