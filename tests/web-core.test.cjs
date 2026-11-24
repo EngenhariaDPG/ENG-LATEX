@@ -62,6 +62,12 @@ test("app web tem sintaxe válida e carrega o core antes do app", () => {
   assert.ok(html.indexOf('src="./project-core.js"') < html.indexOf('src="./app.js"'));
 });
 
+test("identifica somente UUID v4 como ID estável", () => {
+  assert.equal(vm.runInContext("ForgeCore.isUuidV4('7d7d67e0-7c0a-4a9a-a1d4-21e3c46d63ab')", context), true);
+  assert.equal(vm.runInContext("ForgeCore.isUuidV4('legacy-1')", context), false);
+  assert.equal(vm.runInContext("ForgeCore.isUuidV4('7d7d67e0-7c0a-1a9a-a1d4-21e3c46d63ab')", context), false);
+});
+
 test("schema do arquivo de projeto define UUID v4, arquivo de entrada e ao menos um arquivo", () => {
   const schemaText = fs.readFileSync(path.join(root, "docs/contracts/forge-project-v1.schema.json"), "utf8");
   const schema = JSON.parse(schemaText);
