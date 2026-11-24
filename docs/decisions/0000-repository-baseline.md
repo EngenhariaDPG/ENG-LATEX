@@ -20,4 +20,4 @@ Manter o ZIP EngLaTeX 1.1 na raiz e sem alterações nesta etapa. Organizar a do
 
 ## Consequências
 
-A página inicial e o planejamento ficam mais fáceis de navegar, e tarefas paralelas podem declarar arquivos reservados e dependências. O código não é modificado. A direção de longo prazo, licença e migração permanecem pendentes de decisão do responsável pelo projeto.
+A página inicial e o planejamento ficam mais fáceis de navegar. O ZIP permanece preservado e o código não é modificado. A direção de longo prazo, licença e migração permanecem pendentes de decisão do responsável pelo projeto.

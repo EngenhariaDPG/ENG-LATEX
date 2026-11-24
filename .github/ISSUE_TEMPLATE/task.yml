@@ -43,15 +43,6 @@ body:
       description: Como será verificado que a entrega está concluída?
     validations:
       required: true
-  - type: dropdown
-    id: parallel
-    attributes:
-      label: Pode ser executada em paralelo?
-      options:
-        - Sim, arquivos e interfaces são independentes
-        - Não, depende de outra tarefa ou toca arquivos compartilhados
-    validations:
-      required: true
   - type: textarea
     id: verification
     attributes:
