@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#17212e">
   <meta name="description" content="FORGE — editor local-first para projetos LaTeX.">
   <title>FORGE — Editor LaTeX</title>
   <link rel="stylesheet" href="./styles.css">
@@ -14,23 +14,15 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Voltar aos projetos"><b>F</b><span>FORGE</span></a>
       <nav class="menubar" aria-label="Menu principal">
-        <button type="button" title="Ações de arquivo">Arquivo</button>
-        <button type="button" title="Ações de edição">Editar</button>
-        <button type="button" title="Opções de visualização">Exibir</button>
-        <button type="button" title="Ajuda do editor">Ajuda</button>
+        <button type="button">Arquivo</button><button type="button">Editar</button><button type="button">Inserir</button><button type="button">Exibir</button><button type="button">Formatar</button><button type="button">Ajuda</button>
       </nav>
       <div class="project-head">
-        <span class="project-label">PROJETO</span>
         <button class="project-select" id="project-select" type="button" title="Trocar projeto"><strong id="project-name">Relatório técnico</strong><span>⌄</span></button>
         <span id="save-state" aria-live="polite">● Salvo neste navegador</span>
       </div>
       <div class="actions">
-        <button id="export" type="button" title="Baixar o arquivo atual">Baixar</button>
-        <button id="backup" type="button" title="Baixar uma cópia dos projetos">Backup</button>
-        <button id="restore" type="button" title="Restaurar uma cópia">Restaurar</button>
-        <input id="backup-file" type="file" accept=".json,application/json" hidden>
-        <button id="theme" type="button" aria-label="Alternar tema" title="Alternar tema">☾</button>
-        <button class="share" type="button" title="Compartilhamento ainda não conectado">Compartilhar</button>
+        <button id="export" type="button" title="Baixar o arquivo atual">⇩</button><button id="backup" type="button" title="Baixar uma cópia dos projetos">Backup</button><button id="restore" type="button" title="Restaurar uma cópia">Restaurar</button><input id="backup-file" type="file" accept=".json,application/json" hidden>
+        <button id="theme" type="button" aria-label="Alternar tema" title="Alternar tema">☾</button><button class="history" type="button">◷ Histórico</button><button class="layout" type="button">▣ Layout</button><button class="share" type="button">♣ Compartilhar</button>
         <button class="primary" id="new" type="button">+ Novo projeto</button>
       </div>
     </header>
@@ -38,57 +30,34 @@
     <main class="workspace">
       <aside class="sidebar" id="sidebar">
         <nav class="tool-rail" aria-label="Ferramentas do projeto">
-          <button class="rail-active" type="button" title="Arquivos">▤</button>
-          <button type="button" title="Buscar no projeto">⌕</button>
-          <button type="button" title="Integrações não configuradas">⌘</button>
-          <button type="button" title="Revisão não configurada">✓</button>
-          <button type="button" title="Comentários não configurados">◌</button>
-          <span></span>
-          <button type="button" title="Configurações">⚙</button>
-          <button type="button" title="Ajuda">?</button>
+          <button class="rail-active" type="button" title="Árvore de arquivos">▤</button><button type="button" title="Buscar no projeto">⌕</button><button type="button" title="Integrações">⌂</button><button type="button" title="Revisão">▧</button><button type="button" title="Comentários">▱</button><button type="button" title="Assistente">✦</button><span></span><button type="button" title="Configurações">⚙</button><button type="button" title="Ajuda">?</button>
         </nav>
         <section class="file-panel">
-          <div class="side-title">
-            <div><small>ÁRVORE DO PROJETO</small><h1>Arquivos</h1></div>
-            <button id="import" type="button" title="Adicionar arquivo TeX" aria-label="Adicionar arquivo TeX">＋</button>
-            <input type="file" id="file" accept=".tex,.txt" hidden>
-          </div>
-          <div class="tree-project-name"><span>▾</span><strong id="tree-project-name">Relatório técnico</strong></div>
+          <div class="tree-head"><strong>⌄ Árvore de arquivos</strong><div><button id="import" type="button" title="Adicionar arquivo TeX" aria-label="Adicionar arquivo TeX">＋</button><button type="button" title="Ordenar arquivos">≡</button><button type="button" title="Fechar painel">×</button></div><input type="file" id="file" accept=".tex,.txt" hidden></div>
+          <div class="tree-project-name"><span>⌄</span><strong id="tree-project-name">Relatório técnico</strong></div>
           <div id="files" class="file-tree" aria-label="Arquivos do projeto"></div>
-          <div class="section project-section">PROJETOS RECENTES</div>
-          <input id="search" class="search" aria-label="Buscar projetos" placeholder="⌕  Buscar projetos">
-          <div id="projects"></div>
-          <div class="side-bottom">
-            <div class="local"><b>▣</b><span><strong>Armazenamento local</strong><small>Este navegador · sem nuvem</small></span></div>
-            <div class="backup-mobile"><button id="backup-side" type="button">↓ Baixar backup</button><button id="restore-side" type="button">↥ Restaurar</button></div>
-            <button class="drive" id="drive"><b>G</b><span><strong>Google Drive</strong><small>Integração não configurada</small></span> ›</button>
-          </div>
+          <div class="section project-section">PROJETOS RECENTES</div><input id="search" class="search" aria-label="Buscar projetos" placeholder="⌕  Buscar projetos"><div id="projects"></div>
+          <section class="outline"><div class="outline-head"><strong>⌄ File outline</strong></div><div class="outline-empty">Não há seções ou subseções neste arquivo.<br><u>Saiba mais sobre o file outline</u></div></section>
+          <div class="side-bottom"><div class="local"><b>▣</b><span><strong>Armazenamento local</strong><small>Este navegador · sem nuvem</small></span></div><div class="backup-mobile"><button id="backup-side" type="button">↓ Baixar backup</button><button id="restore-side" type="button">↥ Restaurar</button></div><button class="drive" id="drive"><b>G</b><span><strong>Google Drive</strong><small>Integração não configurada</small></span> ›</button></div>
         </section>
       </aside>
 
       <section class="editor" id="editor">
-        <div class="editor-toolbar">
-          <div class="bar"><span class="file-title">▤ <strong id="filename">main.tex</strong> <small>TEX</small></span><button id="download" title="Baixar arquivo">↓</button></div>
-          <div class="compile-area"><button class="recompile" type="button" title="A compilação LaTeX ainda não está conectada">▶ Recompilar</button><span class="compile-note">Compilador não conectado</span></div>
-        </div>
-        <div class="tabs"><button class="active-tab" type="button">Código-fonte</button><button type="button" title="Estrutura do documento">Estrutura</button><button id="toggle-codemirror" type="button">Editor avançado</button><button id="toggle-inspector" type="button">Mostrar PDF</button><i>CTRL + S</i></div>
-        <div class="file-tabs" id="file-tabs" aria-label="Arquivos abertos"></div>
-        <div class="editarea"><pre id="lines">1</pre><textarea id="code" spellcheck="false" aria-label="Editor LaTeX"></textarea></div>
-        <footer>UTF-8 <span>LaTeX</span><span id="cursor">Ln 1, Col 1</span><i>FORGE WEB · LOCAL-FIRST</i></footer>
+        <div class="editor-toolbar"><div class="bar"><span class="file-title">▤ <strong id="filename">main.tex</strong><span class="tab-close">×</span></span><button id="download" title="Baixar arquivo">⇩</button></div></div>
+        <div class="code-toolbar"><button type="button" title="Salvar">▣</button><button type="button" title="Desfazer">↶</button><button type="button" title="Refazer">↷</button><span class="tool-divider"></span><button type="button">Tᵀ⌄</button><button type="button"><b>B</b></button><button type="button"><i>I</i></button><button type="button">▦</button><button type="button">Ω</button><button type="button">⌁</button><button type="button">⊞</button><button type="button">▣</button><button type="button">▤</button><span class="tool-divider"></span><button class="code-mode active" type="button">Código</button><button type="button">Visual</button><button type="button">✎ Editando⌄</button><button type="button">⌕</button></div>
+        <div class="tabs"><button class="active-tab" type="button">Código-fonte</button><button type="button">Estrutura</button><button id="toggle-codemirror" type="button">Editor avançado</button><button id="toggle-inspector" type="button">Mostrar PDF</button><i>CTRL + S</i></div>
+        <div class="file-tabs" id="file-tabs" aria-label="Arquivos abertos"></div><div class="editarea"><pre id="lines">1</pre><textarea id="code" spellcheck="false" aria-label="Editor LaTeX"></textarea></div><footer>UTF-8 <span>LaTeX</span><span id="cursor">Ln 1, Col 1</span><i>FORGE WEB · LOCAL-FIRST</i></footer>
       </section>
 
       <aside class="inspector" id="inspector">
-        <div class="inspect-head"><button class="selected" data-view="preview">PDF</button><button data-view="diagnostics">Logs <em>2</em></button><button id="collapse" title="Ocultar PDF">⇥</button></div>
-        <section id="preview"><div class="hint"><span>VISUALIZAÇÃO PDF</span><span>AGUARDANDO COMPILADOR</span></div><div class="stage"><div class="paper"><small>RELATÓRIO TÉCNICO</small><h2>Estudo de<br>engenharia</h2><hr><p>Documento de demonstração do ambiente FORGE</p><div class="meta">PROJETO <b>Relatório técnico</b><br>ARQUIVO <b>main.tex</b></div><div class="skeleton"></div><label>SEM PDF GERADO</label></div></div><p class="notice">ⓘ A visualização seguirá o PDF compilado quando um motor LaTeX for conectado.</p></section>
+        <div class="pdf-toolbar"><div class="compile-area"><button class="recompile" type="button" title="A compilação LaTeX ainda não está conectada">↻ Recompilar</button><span class="compile-note">Compilador não conectado</span></div><button type="button" title="Arquivo PDF">▤</button><button type="button" title="Baixar PDF">⇩</button><button id="collapse" title="Ocultar PDF">⇥</button></div>
+        <div class="inspect-head"><button class="selected" data-view="preview">PDF</button><button data-view="diagnostics">Logs <em>2</em></button></div>
+        <section id="preview"><div class="hint"><span>VISUALIZAÇÃO PDF</span><span>AGUARDANDO COMPILADOR</span></div><div class="stage"><div class="pdf-mark">◖</div><div class="paper"><small>RELATÓRIO TÉCNICO</small><h2>Estudo de<br>engenharia</h2><hr><p>Documento de demonstração do ambiente FORGE</p><div class="meta">PROJETO <b>Relatório técnico</b><br>ARQUIVO <b>main.tex</b></div><div class="skeleton"></div><label>SEM PDF GERADO</label></div></div><p class="notice">ⓘ A visualização seguirá o PDF compilado quando um motor LaTeX for conectado.</p></section>
         <section id="diagnostics" hidden><div class="notice">Logs demonstrativos — não são resultados de compilação.</div><p><b>AVISO · Compilador não configurado</b><br>O ambiente ainda não executa um motor LaTeX no navegador.</p><p><b>INFO · Projeto salvo no dispositivo</b><br>Arquivos deste protótipo ficam no armazenamento local do navegador.</p></section>
       </aside>
     </main>
-    <nav class="mobile-nav"><button data-mobile="sidebar">Arquivos</button><button class="active" data-mobile="editor">Editor</button><button data-mobile="inspector">PDF</button></nav>
-    <div id="toast" role="status"></div>
+    <nav class="mobile-nav"><button data-mobile="sidebar">Arquivos</button><button class="active" data-mobile="editor">Editor</button><button data-mobile="inspector">PDF</button></nav><div id="toast" role="status"></div>
   </div>
-  <script src="./vendor/codemirror/codemirror.js"></script>
-  <script src="./vendor/codemirror/mode/stex/stex.js"></script>
-  <script src="./project-core.js"></script>
-  <script src="./app.js"></script>
+  <script src="./vendor/codemirror/codemirror.js"></script><script src="./vendor/codemirror/mode/stex/stex.js"></script><script src="./project-core.js"></script><script src="./app.js"></script>
 </body>
 </html>
