@@ -90,3 +90,7 @@ O protótipo evoluiu de `localStorage` exclusivo para uma camada local simples b
 ### Backup local JSON (recurso exclusivo da Web, não é o contrato multiplataforma)
 
 O protótipo também permite baixar todos os projetos locais num arquivo JSON `forge-local-backup` versão 1 e restaurá-los como **cópias** com novos IDs, preservando os projetos já existentes. A restauração rejeita formato/versão desconhecidos, projetos inválidos, mais de 100 projetos no conjunto, arquivo acima de 5 MB, conteúdo total acima de 20 MB ou backup acima de 25 MB; limita cada projeto a 500 arquivos. O arquivo contém o texto dos documentos do usuário: deve ser tratado como dado sensível e guardado pelo próprio usuário. O backup JSON não é o formato ZIP Android/Web, não substitui `PROJECT-ARCHIVE-V1` e não inclui credenciais, Drive IDs ou estado de sync.
+
+### Identidade local dos projetos
+
+Novos projetos Web usam UUID v4. Na inicialização, IDs legados não UUID v4 (incluindo os IDs demonstrativos antigos) são migrados uma única vez para UUID v4 e persistidos no armazenamento local; colisões de IDs também são corrigidas. Restaurar backup cria cópias com IDs novos. A migração é local à Web e não aprova por si só o contrato ZIP compartilhado; o Android ainda precisa adotar UUID v4 antes de implementar intercâmbio.
