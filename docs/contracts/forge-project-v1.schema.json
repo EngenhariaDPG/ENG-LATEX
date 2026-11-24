@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forge.invalid/contracts/project-archive/v1/forge-project.schema.json",
   "title": "FORGE Project Archive Manifest",
-  "description": "Proposta revisada após feedback IA 1 A-I; permanece não aprovada e requer validações semânticas no importador.",
+  "description": "Proposta de intercâmbio Android/Web; permanece não aprovada e requer validações semânticas no importador.",
   "type": "object",
   "required": [
     "format",

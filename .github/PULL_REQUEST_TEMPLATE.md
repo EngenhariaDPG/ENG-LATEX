@@ -20,12 +20,12 @@
 
 Verificações realizadas:
 
-## Revisão e paralelismo
+## Revisão e dependências
 
-- Executor/agente:
+- Responsável pela mudança:
 - Revisor independente:
 - Interfaces ou arquivos compartilhados afetados:
-- Dependências ou ordem de integração:
+- Dependências relevantes:
 
 ## Riscos e compatibilidade
 

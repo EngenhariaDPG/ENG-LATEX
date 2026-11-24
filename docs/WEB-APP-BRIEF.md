@@ -77,7 +77,7 @@ O ZIP não define a arquitetura de uma aplicação web autônoma. O responsável
 4. **Contrato de interface/API:** escolher transporte (biblioteca local, HTTP ou outro) e versionamento depois de definir os itens de domínio. A interface não deve codificar rotas do EngLaTeX legado diretamente como contrato de produto. Separar UI de adaptadores substituíveis para persistência, importação/exportação e compilação.
 5. **Proteção de dados e operação:** decidir autenticação/autorização se houver servidor multiusuário, limites de upload/download, proteção contra ZIP malicioso (travessia de diretório, bombas de descompressão), isolamento de projetos, logs sem conteúdo sensível, política de retenção e resposta a falhas.
 
-**Bloqueio de escopo:** sem decisão sobre persistência, o agente não pode implementar operações como se houvesse armazenamento durável. Sem decisão de compilação, deve omitir essa função do MVP ou construir apenas uma interface explicitamente não funcional para protótipo — nunca conectar a um serviço inventado. Se o requisito de compilar for obrigatório para a primeira entrega, a escolha do runtime é pré-condição de aprovação.
+**Bloqueio de escopo:** sem decisão sobre persistência, a implementação não deve tratar operações como se houvesse armazenamento durável. Sem decisão de compilação, deve omitir essa função do MVP ou construir apenas uma interface explicitamente não funcional para protótipo — nunca conectar a um serviço inventado. Se o requisito de compilar for obrigatório para a primeira entrega, a escolha do runtime é pré-condição de aprovação.
 
 ## 5. Contrato de produto comum com o cliente Android
 
@@ -148,7 +148,7 @@ Meta proposta: WCAG 2.2 nível AA para as telas web, sujeita à validação. Req
 - Não iniciar projeto, instalar dependências, criar backend, banco de dados, autenticação, armazenamento, runtime LaTeX, conta de hospedagem ou chamada de serviço externo.
 - Não afirmar equivalência funcional entre o ZIP e o produto web ou Android.
 
-## 11. Instruções para o agente executor após aprovação
+## 11. Etapas de implementação após aprovação
 
 1. Confirme que este briefing foi aprovado e que as decisões bloqueadoras da seção 4 foram respondidas. Registre ADRs para distribuição, persistência/formato e compilação; se compilação não tiver decisão aprovada, remova-a do MVP.
 2. Leia novamente README, roadmap, convenções do repositório e este documento. Inspecione o ZIP estritamente em modo leitura e, se autorização futura permitir extração, trabalhe numa cópia temporária fora do repositório. Registre hash antes/depois e confirme que o ZIP original permanece idêntico. Não altere branches nem arquivos fora da issue aprovada.
@@ -170,4 +170,4 @@ A validação de caminhos/registros está em módulo puro `apps/web/project-core
 
 Limites atuais: IndexedDB é local ao navegador/perfil, não é backup remoto nem sincronização; não há gestão de quota, concorrência entre abas, histórico/recuperação de versões, exportação de projeto completo nem import/export ZIP. Não há compilação LaTeX, PDF real, diagnósticos reais, backend, endpoint HTTP, autenticação ou sincronização. Preview e diagnósticos são demonstrativos; Drive permanece desativado. Não houve teste visual/E2E em browser neste ambiente.
 
-O arquivo `docs/contracts/PROJECT-ARCHIVE-V1.md` e seu schema são proposta não aprovada. Não constituem contrato Android/Web final e aguardam revisão da IA 1 pelo canal exclusivo `docs/AI-COLLABORATION.txt` e decisão do responsável.
+O arquivo `docs/contracts/PROJECT-ARCHIVE-V1.md` e seu schema são propostas não aprovadas. Não constituem contrato Android/Web final e aguardam revisão e decisão do responsável pelo projeto.

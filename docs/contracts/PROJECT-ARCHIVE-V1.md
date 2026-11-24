@@ -1,6 +1,6 @@
-# FORGE Project Archive v1 — proposta revisada
+# FORGE Project Archive v1 — proposta
 
-**Status: PROPOSTA REVISADA após resposta A–I da IA 1 (Android), ainda NÃO APROVADA pelo responsável.**  
+**Status: PROPOSTA EM REVISÃO; ainda NÃO APROVADA pelo responsável.**
 **Objetivo:** estabelecer um formato portátil de intercâmbio entre os clientes Android e Web, sem compartilhar UI, implementação de armazenamento ou provedor de nuvem.
 
 ## 1. Unidade de intercâmbio
@@ -18,7 +18,7 @@ meu-projeto.forge.zip
         └── figura-01.png
 \`\`\`
 
-Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo físico \`files/\`. A entrada ZIP de um arquivo é \`files/{path}\`. A extensão `.forge.zip` usada no exemplo é ilustrativa; a IA 1 informou que o plano Android não fixa extensão. A extensão final permanece pendente. O pacote não é API HTTP, formato de armazenamento interno, backup JSON local nem promessa de compilação.
+Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo físico \`files/\`. A entrada ZIP de um arquivo é \`files/{path}\`. A extensão `.forge.zip` usada no exemplo é ilustrativa; a extensão final ainda não foi definida para o projeto Android. O pacote não é API HTTP, formato de armazenamento interno, backup JSON local nem promessa de compilação.
 
 ## 2. Manifesto candidato
 
@@ -111,16 +111,16 @@ O JSON Schema verifica estrutura e alguns campos; não consegue, sozinho, compro
 
 A proposta Web anterior em \`product-api-v1.json\` embute conteúdo de arquivo no objeto de projeto e inclui campos de storage. É um rascunho de DTO, não manifesto portátil nem API compartilhada aprovada. DTOs/operações de domínio devem permanecer separados da serialização ZIP.
 
-## 8. Estado Android informado pela IA 1
+## 8. Estado de implementação Android considerado
 
-Na resposta A–I registrada em \`docs/AI-COLLABORATION.txt\`:
+Com base nos requisitos e informações técnicas disponíveis para o projeto Android:
 
-- O plano Android considera ZIP + \`forge-project.json\` apenas como candidato; não há contrato JSON/ZIP implementado no app.
+- ZIP + \`forge-project.json\` permanece uma proposta; não há contrato JSON/ZIP implementado no app.
 - O app Android atual lista/cria projetos locais, importa um \`.tex\` de até 2 MB, edita \`main.tex\` e usa armazenamento privado via \`expo-file-system\`. Não há árvore multi-arquivo, import/export de projeto, backup ou sync.
 - IDs Android ainda são temporários, baseados em horário/aleatoriedade; UUID v4 precisa ser adotado antes do ZIP.
 - A prova de compilação Android não foi executada; não há engine integrada nem botão de compilação. A hipótese Tectonic/TeXslate ainda requer prova real em Development Build/dispositivo.
 - Drive/OAuth, estados remotos e sincronização não estão implementados.
-- \`PROJECT-ARCHIVE-V1.md\` foi aceito pela IA 1 como base de discussão, com os ajustes acima, mas não como contrato normativo.
+- A proposta não é um contrato normativo e depende de aprovação do responsável.
 
 ## 9. Decisões ainda necessárias do responsável
 

@@ -38,13 +38,3 @@ body:
       description: Registre issues relacionadas e arquivos/áreas possivelmente envolvidos.
     validations:
       required: false
-  - type: dropdown
-    id: parallel
-    attributes:
-      label: Avaliação inicial de paralelismo
-      options:
-        - Pode ser dividida em tarefas independentes
-        - Deve ser feita em sequência
-        - Ainda não sabemos; precisa de decomposição
-    validations:
-      required: true

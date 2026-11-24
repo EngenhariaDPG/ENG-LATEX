@@ -14,7 +14,6 @@
 │   │   ├── API-V1.md                # operações e compatibilidade do contrato
 │   │   └── product-api-v1.json      # schema de projeto versionado
 │   ├── decisions/
-│   ├── AI-PARALLEL-WORKFLOW.md
 │   ├── ROADMAP.md
 │   ├── REPOSITORY-STRUCTURE.md
 │   ├── WEB-APP-BRIEF.md
