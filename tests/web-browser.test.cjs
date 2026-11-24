@@ -80,6 +80,8 @@ Texto salvo no projeto correto.
     await migrationPage.goto(origin);
     await migrationPage.waitForFunction(() => document.querySelector("#save-state").textContent.includes("IndexedDB"));
     assert.equal(await migrationPage.locator("#project-name").innerText(), "Projeto migrado");
+    const migratedId = await migrationPage.evaluate(() => new Promise((resolve, reject) => { const request = indexedDB.open("forge-web", 1); request.onsuccess = () => { const get = request.result.transaction("projects", "readonly").objectStore("projects").getAll(); get.onsuccess = () => resolve(get.result.find(project => project.name === "Projeto migrado").id); get.onerror = () => reject(get.error); }; request.onerror = () => reject(request.error); }));
+    assert.match(migratedId, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
     assert.equal(await migrationPage.locator("#code").inputValue(), "CONTEÚDO LEGADO");
     const migrated = await migrationPage.evaluate(() => new Promise((resolve, reject) => {
       const request = indexedDB.open("forge-web", 1);
