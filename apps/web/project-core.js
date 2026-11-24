@@ -6,12 +6,14 @@
     if(!path||path.length>240||path.startsWith("/")||path.includes("\\")||path.includes(":")||/[<>:"|?*\u0000-\u001f\u007f]/.test(path)||parts.length>20)return false;
     return parts.every(part=>part&&part===part.trim()&&part!=="."&&part!==".."&&part!=="__proto__"&&part!=="constructor"&&part!=="prototype"&&!/[. ]$/.test(part)&&! /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(part)&&part.length<=120);
   }
+  function projectPathKey(value){return value.normalize("NFC").toLowerCase()}
+  function hasPathCollision(files,candidate,exceptPath){const key=projectPathKey(candidate);return Object.keys(files).some(path=>path!==exceptPath&&projectPathKey(path)===key)}
   function validProjectRecord(project){
     if(!project||typeof project!=="object"||typeof project.id!=="string"||!project.id.trim()||typeof project.name!=="string"||!project.name.trim())return false;
     const files=project.files;
     if(!files||typeof files!=="object"||Array.isArray(files)||(Object.getPrototypeOf(files)!==Object.prototype&&Object.getPrototypeOf(files)!==null))return false;
     const paths=Object.keys(files);
-    return paths.length>0&&paths.every(path=>validProjectPath(path)&&typeof files[path]==="string");
+    if(!paths.length)return false;const seen=new Set();for(const path of paths){if(!validProjectPath(path)||typeof files[path]!=="string")return false;const key=projectPathKey(path);if(seen.has(key))return false;seen.add(key)}return true;
   }
   function utf8Size(value){
     let bytes=0;
@@ -47,5 +49,5 @@
       return{id,name,updated:"Restaurado agora",activeFile:project.activeFile&&project.files[project.activeFile]!==undefined?project.activeFile:entries[0][0],files:{...project.files}};
     });
   }
-  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,validateBackupPayload,createRestoredProjectCopies});
+  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,projectPathKey,hasPathCollision,validateBackupPayload,createRestoredProjectCopies});
 })(typeof globalThis!=="undefined"?globalThis:this);
