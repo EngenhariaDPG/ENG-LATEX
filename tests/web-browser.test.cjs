@@ -32,7 +32,12 @@ async function main() {
     assert.equal(await page.locator("#projects .project").count(), 3);
 
     const editor = page.locator("#code");
-    const edited = "\\\\documentclass{article}\\n% сохранение antes de trocar projeto\\n\\\\begin{document}\\nTexto salvo no projeto correto.\\n\\\\end{document}";
+    const edited = String.raw`\documentclass{article}
+%% autosave antes de trocar projeto
+\begin{document}
+Texto salvo no projeto correto.
+\end{document}
+`;
     await editor.fill(edited);
     await page.locator("#projects .project").nth(1).click();
     await page.locator("#projects .project").nth(0).click();
