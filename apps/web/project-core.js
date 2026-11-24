@@ -1,5 +1,6 @@
 (function(root){
   "use strict";
+  function isUuidV4(value){return typeof value==="string"&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)}
   function validProjectPath(value){
     if(typeof value!=="string")return false;
     const path=value,parts=path.split("/");
@@ -49,5 +50,5 @@
       return{id,name,updated:"Restaurado agora",activeFile:project.activeFile&&project.files[project.activeFile]!==undefined?project.activeFile:entries[0][0],files:{...project.files}};
     });
   }
-  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,projectPathKey,hasPathCollision,validateBackupPayload,createRestoredProjectCopies});
+  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,isUuidV4,projectPathKey,hasPathCollision,validateBackupPayload,createRestoredProjectCopies});
 })(typeof globalThis!=="undefined"?globalThis:this);
