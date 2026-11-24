@@ -21,7 +21,7 @@
       </nav>
       <div class="project-head">
         <span class="project-label">PROJETO</span>
-        <button class="project-select" type="button" title="Projeto atual"><strong id="project-name">Relatório técnico</strong><span>⌄</span></button>
+        <button class="project-select" id="project-select" type="button" title="Trocar projeto"><strong id="project-name">Relatório técnico</strong><span>⌄</span></button>
         <span id="save-state" aria-live="polite">● Salvo neste navegador</span>
       </div>
       <div class="actions">
@@ -49,12 +49,14 @@
         </nav>
         <section class="file-panel">
           <div class="side-title">
-            <div><small>ARQUIVOS DO PROJETO</small><h1>Projeto</h1></div>
+            <div><small>ÁRVORE DO PROJETO</small><h1>Arquivos</h1></div>
             <button id="import" type="button" title="Adicionar arquivo TeX" aria-label="Adicionar arquivo TeX">＋</button>
             <input type="file" id="file" accept=".tex,.txt" hidden>
           </div>
+          <div class="tree-project-name"><span>▾</span><strong id="tree-project-name">Relatório técnico</strong></div>
+          <div id="files" class="file-tree" aria-label="Arquivos do projeto"></div>
+          <div class="section project-section">PROJETOS RECENTES</div>
           <input id="search" class="search" aria-label="Buscar projetos" placeholder="⌕  Buscar projetos">
-          <div class="section">PROJETOS RECENTES</div>
           <div id="projects"></div>
           <div class="side-bottom">
             <div class="local"><b>▣</b><span><strong>Armazenamento local</strong><small>Este navegador · sem nuvem</small></span></div>
