@@ -2,7 +2,7 @@
   "use strict";
   function validProjectPath(value){
     if(typeof value!=="string")return false;
-    const path=value.trim(),parts=path.split("/");
+    const path=value,parts=path.split("/");
     if(!path||path.length>240||path.startsWith("/")||path.includes("\\")||path.includes(":")||/[<>:"|?*\u0000-\u001f\u007f]/.test(path)||parts.length>20)return false;
     return parts.every(part=>part&&part===part.trim()&&part!=="."&&part!==".."&&part!=="__proto__"&&part!=="constructor"&&part!=="prototype"&&!/[. ]$/.test(part)&&! /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(part)&&part.length<=120);
   }
