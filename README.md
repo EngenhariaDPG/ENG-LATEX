@@ -31,6 +31,8 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback localStorage e backup JSON local. Testes Node e smoke tests Playwright/Chromium estão configurados no GitHub Actions. O backup JSON não é o formato de intercâmbio Android/Web. Drive, sincronização e importação/exportação ZIP continuam pendentes; compilação ainda não está conectada.
 
 O desktop legado em `apps/desktop/` é uma aplicação Rust para Windows 10/11 x64, com interface WebView2 e servidor local. O workflow [`Desktop Windows`](.github/workflows/desktop-windows.yml) compila o executável, executa um smoke test e gera um instalador Inno Setup. Uma release só deve ser anunciada após uma execução verde em Windows e teste manual do instalador.
+
+O Web possui o primeiro incremento do módulo técnico: `Livro técnico` cria localmente um projeto LaTeX inicial de balancim/andaime suspenso com dados estruturados, manifesto e capítulos editáveis. Esse fluxo ainda não compila PDF no navegador, não valida conformidade e não substitui assinatura profissional.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
 

@@ -31,6 +31,26 @@ async function main() {
     await page.waitForFunction(() => document.querySelector("#save-state").textContent.includes("IndexedDB"));
     assert.equal(await page.locator("#projects .project").count(), 3);
 
+    const technicalContext = await browser.newContext();
+    const technicalPage = await technicalContext.newPage();
+    await technicalPage.goto(origin);
+    await technicalPage.waitForFunction(() => document.querySelector("#save-state").textContent.includes("IndexedDB"));
+    await technicalPage.locator("#new-technical").click();
+    await technicalPage.locator("#technical-dialog").waitFor({ state: "visible" });
+    await technicalPage.locator('[name="manufacturer"]').fill("Menegotti");
+    await technicalPage.locator('[name="model"]').fill("Balancim individual elétrico");
+    await technicalPage.locator('[name="company"]').fill("JF Locações");
+    await technicalPage.locator('[name="client"]').fill("Cliente de teste");
+    await technicalPage.locator('[name="work"]').fill("Obra de teste");
+    await technicalPage.locator('[name="responsible"]').fill("Engenheiro responsável");
+    await technicalPage.locator('[name="date"]').fill("2026-11-24");
+    await technicalPage.locator("#technical-form button[value=default]").click();
+    await technicalPage.waitForFunction(() => document.querySelectorAll("#projects .project").length === 4);
+    assert.match(await technicalPage.locator("#project-name").innerText(), /Livro de Inspeção/);
+    assert.ok((await technicalPage.locator("#files").innerText()).includes("capitulos/checklist.tex"));
+    assert.ok((await technicalPage.locator("#code").inputValue()).includes("capitulos/abertura.tex"));
+    await technicalContext.close();
+
     const importContext = await browser.newContext();
     const importPage = await importContext.newPage();
     await importPage.goto(origin);

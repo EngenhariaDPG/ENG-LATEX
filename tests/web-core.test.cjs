@@ -6,8 +6,10 @@ const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
 const coreSource = fs.readFileSync(path.join(root, "apps/web/project-core.js"), "utf8");
+const technicalSource = fs.readFileSync(path.join(root, "apps/web/technical-core.js"), "utf8");
 const context = vm.createContext({});
 vm.runInContext(coreSource, context, { filename: "project-core.js" });
+vm.runInContext(technicalSource, context, { filename: "technical-core.js" });
 
 function validPath(value) {
   return vm.runInContext("ForgeCore.validProjectPath(" + JSON.stringify(value) + ")", context);
@@ -118,4 +120,15 @@ test("restaura backups como cópias com IDs e nomes únicos", () => {
   assert.notEqual(copies[0].name, copies[1].name);
   assert.equal(copies[0].files["main.tex"], "A");
   assert.equal(copies[1].files["main.tex"], "B");
+});
+
+test("valida dados técnicos e gera projeto LaTeX de livro de inspeção", () => {
+  const input = { equipmentType: "Balancim elétrico", manufacturer: "Menegotti", model: "Individual", company: "Locadora", client: "Cliente", work: "Obra", responsible: "Engenheiro responsável", date: "2026-11-24", art: "ART-123" };
+  assert.equal(vm.runInContext("ForgeTechnical.validateTechnicalInput(" + JSON.stringify(input) + ")", context), null);
+  assert.match(vm.runInContext("ForgeTechnical.validateTechnicalInput({})", context), /tipo de equipamento/);
+  const generated = vm.runInContext("ForgeTechnical.generateFiles(" + JSON.stringify(input) + ")", context);
+  assert.equal(generated.manifest.technicalDocument.equipmentFamily, "suspended-platform");
+  assert.equal(generated.manifest.entryFile, "main.tex");
+  assert.ok(generated.files["capitulos/checklist.tex"].includes("Checklist inicial"));
+  assert.ok(generated.files["main.tex"].includes("capitulos/liberacao.tex"));
 });

@@ -2,6 +2,10 @@
 
 **Estado:** especificação inicial; não representa funcionalidade já entregue.
 
+## Primeiro incremento implementado
+
+O FORGE Web já possui um primeiro fluxo funcional em `apps/web/`: o botão `Livro técnico` abre um formulário, cria um projeto local de Livro de Inspeção de Balancim/Andaime Suspenso, salva os dados técnicos no projeto e gera `main.tex`, `dados/equipamento.json` e capítulos LaTeX editáveis. O manifesto técnico fica associado ao registro local e acompanha o backup. Esta entrega ainda é um modelo inicial, não um laudo final nem uma declaração de conformidade.
+
 ## Objetivo
 
 Permitir que o usuário crie livros e documentos técnicos a partir de dados estruturados e modelos LaTeX, mantendo acesso completo ao código-fonte e aos anexos.
