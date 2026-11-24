@@ -407,27 +407,65 @@ conformidades listadas acima.
 \pagestyle{{fancy}}\fancyhf{{}}\lhead{{\small\var{{titulo}}}}\rhead{{\small\var{{data}}}}\lfoot{{\small\var{{responsavel}}}}\rfoot{{\small Página \thepage{{}} de \pageref{{LastPage}}}}
 \begin{{document}}
 \begin{{titlepage}}\centering\vspace*{{3cm}}{{\LARGE\bfseries LIVRO DE INSPEÇÃO\par}}\vspace{{1cm}}{{\Large\var{{equipamento}}\par}}\vfill
-\begin{{tabular}}{{ll}}Empresa: & \var{{empresa}} \\
-Cliente: & \var{{cliente}} \\
-Obra: & \var{{obra}} \\
-Fabricante/modelo: & \var{{fabricante}} / \var{{modelo}} \\
+\begin{{tabular}}{{ll}}Empresa: & \var{{empresa}} \
+Cliente: & \var{{cliente}} \
+Obra: & \var{{obra}} \
+Fabricante/modelo: & \var{{fabricante}} / \var{{modelo}} \
 ART: & \var{{art}} \end{{tabular}}\end{{titlepage}}
-\tableofcontents\newpage
-\section{{Termo de abertura}}Este livro registra inspeções, manutenções e ocorrências do equipamento identificado neste documento. A emissão, análise e assinatura devem ser realizadas pelos responsáveis habilitados.\par
-\section{{Identificação do equipamento}}Tipo: \var{{equipamento}}\par Fabricante: \var{{fabricante}}\par Modelo: \var{{modelo}}\par
-\section{{Entrega técnica}}Registrar a apresentação do equipamento, riscos, procedimentos de montagem e desmontagem, EPIs/EPCs, documentos entregues e treinamento realizado.\par
-\section{{Checklist inicial}}\begin{{longtable}}{{p{{0.58\textwidth}}p{{0.16\textwidth}}p{{0.18\textwidth}}}}\toprule Item & Status & Observação \\
-\midrule Estrutura e plataforma & A verificar & \\
-Cabos, guincho e trava-quedas & A verificar & \\
-Guarda-corpo, piso e rodapés & A verificar & \\
-Dispositivos de segurança & A verificar & \\
-\bottomrule\end{{longtable}}
-\section{{Manutenção e ocorrências}}Data, tipo de manutenção, descrição, responsável, peças utilizadas e próxima ação.\par\vspace{{4cm}}
-\section{{Liberação e responsabilidade técnica}}Responsável técnico: \var{{responsavel}}\par Registro: \var{{registro}}\par Data: \var{{data}}\par
-\vspace{{2cm}}\begin{{center}}\rule{{8cm}}{{0.4pt}}\\\var{{responsavel}}\end{{center}}
+\tableofcontents
+\newpage
+\input{{capitulos/abertura.tex}}
+\input{{capitulos/identificacao.tex}}
+\input{{capitulos/entrega-tecnica.tex}}
+\input{{capitulos/checklist.tex}}
+\input{{capitulos/manutencao.tex}}
+\input{{capitulos/liberacao.tex}}
 \end{{document}}
 "##)),
+            ("dados/equipamento.tex".into(), r##"% Dados técnicos do equipamento — editável pelo autor
+Tipo: \var{equipamento}\par
+Fabricante: \var{fabricante}\par
+Modelo: \var{modelo}\par
+Empresa emitente: \var{empresa}\par
+Cliente: \var{cliente}\par
+Obra: \var{obra}\par
+ART: \var{art}
+"##.into()),
+            ("capitulos/abertura.tex".into(), r##"\section{Termo de abertura}
+Este livro registra inspeções, manutenções e ocorrências do equipamento identificado neste documento. A emissão, análise e assinatura devem ser realizadas pelos responsáveis habilitados.
+"##.into()),
+            ("capitulos/identificacao.tex".into(), r##"\section{Identificação do equipamento}
+\input{dados/equipamento.tex}
+"##.into()),
+            ("capitulos/entrega-tecnica.tex".into(), r##"\section{Entrega técnica}
+Registrar a apresentação do equipamento, riscos, procedimentos de montagem e desmontagem, EPIs/EPCs, documentos entregues e treinamento realizado.
+"##.into()),
+            ("capitulos/checklist.tex".into(), r##"\section{Checklist inicial}
+\begin{longtable}{p{0.58\textwidth}p{0.16\textwidth}p{0.18\textwidth}}\toprule
+Item & Status & Observação \\
+\midrule
+Estrutura e plataforma & A verificar & \\
+
+Cabos, guincho e trava-quedas & A verificar & \\
+
+Guarda-corpo, piso e rodapés & A verificar & \\
+
+Dispositivos de segurança & A verificar & \\
+\bottomrule\end{longtable}
+"##.into()),
+            ("capitulos/manutencao.tex".into(), r##"\section{Manutenção e ocorrências}
+Data, tipo de manutenção, descrição, responsável, peças utilizadas e próxima ação.\par\vspace{4cm}
+"##.into()),
+            ("capitulos/liberacao.tex".into(), r##"\section{Liberação e responsabilidade técnica}
+Responsável técnico: \var{responsavel}\par
+Registro: \var{registro}\par
+Data: \var{data}\par
+\vspace{2cm}\begin{center}\rule{8cm}{0.4pt}\\
+\var{responsavel}
+\end{center}
+"##.into()),
         ],
+       ],
         // ------------------------------------------------------------------
         "apresentacao" => vec![
             ("main.tex".into(), format!(r##"\documentclass{{beamer}}
