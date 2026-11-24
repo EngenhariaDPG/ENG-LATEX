@@ -13,5 +13,28 @@
     const paths=Object.keys(files);
     return paths.length>0&&paths.every(path=>validProjectPath(path)&&typeof files[path]==="string");
   }
-  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord});
+  function utf8Size(value){
+    let bytes=0;
+    for(const character of value){const code=character.codePointAt(0);bytes+=code<=0x7f?1:code<=0x7ff?2:code<=0xffff?3:4}
+    return bytes;
+  }
+  function validateBackupPayload(payload,existingCount,fileSize){
+    if(typeof fileSize==="number"&&fileSize>25*1024*1024)return "O backup excede o limite de 25 MB";
+    if(!payload||payload.format!=="forge-local-backup"||payload.formatVersion!==1||!Array.isArray(payload.projects)||!payload.projects.length||payload.projects.length>100)return "Formato de backup inválido ou não suportado";
+    if(existingCount+payload.projects.length>100)return "O limite local de 100 projetos seria excedido";
+    let totalBytes=0;
+    for(const project of payload.projects){
+      if(!validProjectRecord(project))return "O backup contém um projeto inválido";
+      const entries=Object.entries(project.files);
+      if(entries.length>500)return "Um projeto excede o limite de 500 arquivos";
+      for(const [,content] of entries){
+        const size=utf8Size(content);
+        if(size>5*1024*1024)return "Um arquivo excede o limite de 5 MB";
+        totalBytes+=size;
+        if(totalBytes>20*1024*1024)return "O conteúdo total excede o limite de 20 MB";
+      }
+    }
+    return null;
+  }
+  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,validateBackupPayload});
 })(typeof globalThis!=="undefined"?globalThis:this);
