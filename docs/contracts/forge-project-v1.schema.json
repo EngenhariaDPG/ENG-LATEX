@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forge.invalid/contracts/project-archive/v1/forge-project.schema.json",
   "title": "FORGE Project Archive Manifest",
-  "description": "Proposta v1 de manifesto para arquivo ZIP de intercâmbio FORGE; não aprovada.",
+  "description": "Proposta revisada após feedback IA 1 A-I; permanece não aprovada e requer validações semânticas no importador.",
   "type": "object",
   "required": [
     "format",
@@ -29,8 +29,9 @@
       "properties": {
         "id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 128
+          "format": "uuid",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+          "description": "UUID v4 estável; preservar ao exportar/importar. Duplicação explícita cria novo ID."
         },
         "name": {
           "type": "string",
@@ -43,7 +44,9 @@
         },
         "entryFile": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "Caminho lógico relativo; o importador deve exigir correspondência exata com um único arquivo em files[] e encoding=utf-8."
         },
         "createdAt": {
           "type": "string",
@@ -70,29 +73,39 @@
         "properties": {
           "path": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^(?!/)(?!.*//)(?!.*\\\\\\\\)(?!.*:)(?!.*\\\\/$)(?!.*(?:^|/)\\\\.\\\\.?(/|$))(?!.*[\\\\u0000-\\\\u001F\\\\u007F]).+$",
+            "description": "Caminho lógico relativo com separador /; validação semântica e colisões Unicode/case-insensitive são obrigatórias no importador."
           },
           "mediaType": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 127
           },
           "encoding": {
             "enum": [
               "utf-8",
               "binary"
-            ]
+            ],
+            "description": "utf-8 exige texto UTF-8 válido; binary preserva bytes opacos sem transformação."
           },
           "sizeBytes": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Quantidade de bytes descompactados do arquivo."
           },
           "sha256": {
             "type": "string",
-            "pattern": "^[a-f0-9]{64}$"
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 hexadecimal minúsculo dos bytes descompactados."
           }
         },
         "additionalProperties": false
-      }
+      },
+      "description": "Deve conter pelo menos um arquivo. O importador valida unicidade de path após NFC + Unicode Default Case Folding, entryFile, bytes, SHA-256 e correspondência com entradas ZIP.",
+      "minItems": 1,
+      "uniqueItems": true
     }
   },
   "additionalProperties": false
