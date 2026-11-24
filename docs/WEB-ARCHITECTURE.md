@@ -86,3 +86,7 @@ O protótipo evoluiu de `localStorage` exclusivo para uma camada local simples b
 - Testes automatizados Node.js foram adicionados em `tests/web-core.test.cjs`, com workflow `.github/workflows/web-checks.yml`. O workflow testa validação, sintaxe da aplicação, ordem dos scripts e parse do schema JSON.
 
 **Limites:** isso ainda é armazenamento local de um navegador/perfil, não backup remoto, sincronização, armazenamento multi-dispositivo nem garantia de durabilidade. Não há gestão de quota, interface de exportação completa, concorrência entre abas, recuperação de versões ou testes reais de browser/IndexedDB. O fallback `localStorage` tem limite de capacidade menor. Não declarar a suíte aprovada até o primeiro workflow CI concluir.
+
+### Backup local JSON (recurso exclusivo da Web, não é o contrato multiplataforma)
+
+O protótipo também permite baixar todos os projetos locais num arquivo JSON `forge-local-backup` versão 1 e restaurá-los como **cópias** com novos IDs, preservando os projetos já existentes. A restauração rejeita formato/versão desconhecidos, projetos inválidos, mais de 100 projetos no conjunto, arquivo acima de 5 MB, conteúdo total acima de 20 MB ou backup acima de 25 MB; limita cada projeto a 500 arquivos. O arquivo contém o texto dos documentos do usuário: deve ser tratado como dado sensível e guardado pelo próprio usuário. O backup JSON não é o formato ZIP Android/Web, não substitui `PROJECT-ARCHIVE-V1` e não inclui credenciais, Drive IDs ou estado de sync.
