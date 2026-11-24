@@ -465,7 +465,6 @@ Data: \var{data}\par
 \end{center}
 "##.into()),
         ],
-       ],
         // ------------------------------------------------------------------
         "apresentacao" => vec![
             ("main.tex".into(), format!(r##"\documentclass{{beamer}}
