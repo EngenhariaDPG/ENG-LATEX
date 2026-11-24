@@ -18,6 +18,7 @@ function validRecord(record) {
 
 test("aceita arquivos LaTeX e caminhos Unicode relativos", () => {
   assert.equal(validPath("main.tex"), true);
+  assert.equal(validPath(" main.tex "), false);
   assert.equal(validPath("capítulos/introdução.tex"), true);
   assert.equal(validPath("figuras/ensaio-01.png"), true);
 });
@@ -59,7 +60,7 @@ test("schema do arquivo de projeto permanece JSON válido", () => {
 });
 
 
-test("valida backup local, limites e preservação de cópias", () => {
+test("valida formato e limites de backup local", () => {
   const project = { id: "p1", name: "Projeto", files: { "main.tex": "conteúdo" } };
   const valid = { format: "forge-local-backup", formatVersion: 1, projects: [project] };
   assert.equal(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(valid) + ", 0, 100)", context), null);
