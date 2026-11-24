@@ -261,6 +261,19 @@ async function criarLivroTecnico() {
   try {
     const { id } = await api.criarProjeto(nome, "livro_balancim");
     await api.gravarVariaveis(id, variaveis);
+    await api.gravarArquivo(id, "dados/equipamento.json", `${JSON.stringify({
+      equipmentType: dados.equipamento,
+      manufacturer: dados.fabricante,
+      model: dados.modelo,
+      company: dados.empresa,
+      client: dados.cliente,
+      work: dados.obra,
+      art: dados.art || "ART não informada",
+      technicalResponsible: dados.responsavel,
+      professionalRegistration: dados.registro,
+      documentDate: dados.data,
+      status: "draft",
+    }, null, 2)}\n`);
     location.hash = `#/p/${encodeURIComponent(id)}?variaveis=1`;
   } catch (e) { aviso(e.message, "erro", 6000); }
 }

@@ -431,6 +431,34 @@ Cliente: \var{cliente}\par
 Obra: \var{obra}\par
 ART: \var{art}
 "##.into()),
+            ("manifest.json".into(), r##"{
+  "schemaVersion": "technical-project-1.0.0",
+  "projectKind": "technical-book",
+  "documentType": "inspection-book",
+  "equipmentFamily": "suspended-platform",
+  "templateId": "forge.suspended-platform.inspection-book",
+  "templateVersion": "0.1.0",
+  "status": "draft",
+  "revision": 1,
+  "entryFile": "main.tex",
+  "dataFiles": ["dados/equipamento.json"],
+  "sourceDocuments": []
+}
+"##.into()),
+            ("dados/equipamento.json".into(), r##"{
+  "equipmentType": "Balancim / Andaime suspenso",
+  "manufacturer": "",
+  "model": "",
+  "company": "",
+  "client": "",
+  "work": "",
+  "art": "",
+  "technicalResponsible": "",
+  "professionalRegistration": "",
+  "documentDate": "",
+  "status": "draft"
+}
+"##.into()),
             ("capitulos/abertura.tex".into(), r##"\section{Termo de abertura}
 Este livro registra inspeções, manutenções e ocorrências do equipamento identificado neste documento. A emissão, análise e assinatura devem ser realizadas pelos responsáveis habilitados.
 "##.into()),
@@ -542,6 +570,8 @@ mod testes {
         let nomes: Vec<&str> = arquivos.iter().map(|(nome, _)| nome.as_str()).collect();
         for esperado in [
             "main.tex",
+            "manifest.json",
+            "dados/equipamento.json",
             "dados/equipamento.tex",
             "capitulos/abertura.tex",
             "capitulos/identificacao.tex",
@@ -558,5 +588,8 @@ mod testes {
         let principal = arquivos.iter().find(|(nome, _)| nome == "main.tex").unwrap();
         assert!(principal.1.contains(r"\input{capitulos/checklist.tex}"));
         assert!(!principal.1.contains("declara conformidade"));
+        let manifesto = arquivos.iter().find(|(nome, _)| nome == "manifest.json").unwrap();
+        assert!(manifesto.1.contains("technical-project-1.0.0"));
+        assert!(manifesto.1.contains("forge.suspended-platform.inspection-book"));
     }
 }
