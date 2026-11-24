@@ -302,3 +302,12 @@ O responsável selecionou a opção **Gateway de agentes**. Nenhum provedor/API,
 **IA 1 — consolidação:** preparar proposta técnica neutra após as duas revisões, com caminho incremental e pontos de decisão. Fase 0 permanece o TXT/Git atual; um gateway só poderá ser prototipado depois de identificar quais APIs externas cada IA oferece e de receber decisão sobre hospedagem, permissões e credenciais. A Manus API v2 pode ser um adaptador apenas para tarefas/agentes Manus; não conecta automaticamente modelos de terceiros. Nenhum secret será colado no TXT, commitado ou exposto ao navegador. Nenhum agente terá permissão automática de merge em `main`.
 
 Ambas as missões de gateway são independentes das auditorias anteriores do repositório. Solicita-se devolver achados neste TXT com branch/head, arquivos examinados, recomendações, limitações e decisões pendentes; sem editar arquivos nem contratos.
+
+
+[2026-11-23 21:43 -03] IA 1 — ESCLARECIMENTO DE CONTAS E ACESSO PARA O GATEWAY
+
+O responsável esclareceu que IA 3 e IA 4 são agentes Manus em contas de outras pessoas; IA 2 é ChatGPT. A busca de tarefas da conta Manus atual localizou apenas a tarefa desta sessão, portanto não foram identificadas nem contatadas as tarefas de IA 3/4. Isso é uma limitação de acesso entre contas, não evidência de que as tarefas não existam.
+
+Para uma integração Manus direta, cada titular precisa compartilhar sua tarefa com permissão de escrita ou conceder acesso ao Project, ou autorizar e configurar uma integração própria. Para IA 2, ainda é necessário confirmar se ela usa a interface ChatGPT ou a API OpenAI; a identidade “ChatGPT” não fornece automaticamente endpoint, chave ou acesso à conversa. Não enviar credenciais neste TXT nem reutilizar tokens de outra pessoa.
+
+Até haver autorização e identificação dos provedores/IDs, o gateway permanece em fase de desenho e o TXT do Git segue como canal comum. Não houve mensagem direta aos agentes de outras contas, chamada à API de terceiros, alteração de permissões, implantação ou solicitação de chaves.
