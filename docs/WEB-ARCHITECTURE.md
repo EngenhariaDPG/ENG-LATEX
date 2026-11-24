@@ -1,6 +1,6 @@
 # FORGE Web — arquitetura, hospedagem e avaliação local-first
 
-**Status:** proposta para revisão. Nenhuma infraestrutura ou integração externa foi configurada.
+**Status:** protótipo Web publicado para validação. A aplicação continua local-first e sem compilação LaTeX, backend, autenticação ou sincronização remota.
 
 ## Recomendação
 
