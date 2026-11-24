@@ -1,0 +1,13 @@
+{
+  "name": "forge-web-validation",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Automated validation for the FORGE web prototype",
+  "scripts": {
+    "test:web": "node --test tests/web-core.test.cjs",
+    "test:web:browser": "node tests/web-browser.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
+  }
+}
