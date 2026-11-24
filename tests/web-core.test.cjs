@@ -60,6 +60,8 @@ test("app web tem sintaxe válida e carrega o core antes do app", () => {
   const html = fs.readFileSync(path.join(root, "apps/web/index.html"), "utf8");
   assert.doesNotThrow(() => new Function(app));
   assert.ok(html.indexOf('src="./project-core.js"') < html.indexOf('src="./app.js"'));
+  assert.ok(app.includes("normalizeProjectIds"), "IDs legados devem migrar para UUID v4");
+  assert.ok(app.includes("createProjectId"), "novos projetos devem receber UUID v4");
 });
 
 test("identifica somente UUID v4 como ID estável", () => {
