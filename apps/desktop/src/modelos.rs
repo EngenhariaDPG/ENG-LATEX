@@ -532,3 +532,32 @@ Comece a escrever aqui.
         ],
     }
 }
+
+#[cfg(test)]
+mod testes {
+    use super::*;
+
+    #[test]
+    fn livro_balancim_tem_dados_e_capitulos_editaveis() {
+        let (arquivos, variaveis) = arquivos("livro_balancim", "Livro de teste");
+        let nomes: Vec<&str> = arquivos.iter().map(|(nome, _)| nome.as_str()).collect();
+        for esperado in [
+            "main.tex",
+            "dados/equipamento.tex",
+            "capitulos/abertura.tex",
+            "capitulos/identificacao.tex",
+            "capitulos/entrega-tecnica.tex",
+            "capitulos/checklist.tex",
+            "capitulos/manutencao.tex",
+            "capitulos/liberacao.tex",
+        ] {
+            assert!(nomes.contains(&esperado), "arquivo ausente: {esperado}");
+        }
+        for esperado in ["titulo", "equipamento", "fabricante", "modelo", "empresa", "cliente", "obra", "art", "responsavel", "registro", "data"] {
+            assert!(variaveis.iter().any(|variavel| variavel.nome == esperado), "variável ausente: {esperado}");
+        }
+        let principal = arquivos.iter().find(|(nome, _)| nome == "main.tex").unwrap();
+        assert!(principal.1.contains(r"\input{capitulos/checklist.tex}"));
+        assert!(!principal.1.contains("declara conformidade"));
+    }
+}

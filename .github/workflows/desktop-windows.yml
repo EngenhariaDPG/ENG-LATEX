@@ -44,6 +44,9 @@ jobs:
       - name: Build executável Rust
         run: cargo build --release --locked
 
+      - name: Testes unitários Rust
+        run: cargo test --locked
+
       - name: Preparar payload do instalador
         shell: pwsh
         run: |
