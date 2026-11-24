@@ -57,3 +57,15 @@ test("schema do arquivo de projeto permanece JSON válido", () => {
   const schema = fs.readFileSync(path.join(root, "docs/contracts/forge-project-v1.schema.json"), "utf8");
   assert.doesNotThrow(() => JSON.parse(schema));
 });
+
+
+test("valida backup local, limites e preservação de cópias", () => {
+  const project = { id: "p1", name: "Projeto", files: { "main.tex": "conteúdo" } };
+  const valid = { format: "forge-local-backup", formatVersion: 1, projects: [project] };
+  assert.equal(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(valid) + ", 0, 100)", context), null);
+  assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(valid) + ", 100, 100)", context), /100 projetos/);
+  assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(valid) + ", 0, 26*1024*1024)", context), /25 MB/);
+  assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify({ ...valid, formatVersion: 2 }) + ", 0, 100)", context), /inválido/);
+  const oversized = { format: "forge-local-backup", formatVersion: 1, projects: [{ id: "p2", name: "Grande", files: { "main.tex": "x".repeat(5*1024*1024+1) } }] };
+  assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(oversized) + ", 0, 100)", context), /5 MB/);
+});
