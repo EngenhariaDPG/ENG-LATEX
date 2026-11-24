@@ -15,19 +15,18 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 - Preservar o histórico e os materiais existentes do EngLaTeX.
 - Organizar decisões, documentação e planejamento antes de mudanças no software.
 - Preparar uma evolução incremental para o FORGE, com módulos independentes e limites claros.
-- Permitir trabalho paralelo de pessoas e agentes de IA em tarefas separadas e revisáveis.
+- Desenvolver, por etapas, os projetos Web, Android e desktop local, com módulos independentes e limites claros.
 
 ## Documentação
 
 - [Roadmap](docs/ROADMAP.md): etapas propostas, sem datas ou promessa de implementação.
 - [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.
-- [Fluxo de trabalho paralelo com IAs](docs/AI-PARALLEL-WORKFLOW.md): como dividir tarefas, evitar conflitos e integrar resultados.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
 
 ## Como participar
 
-Antes de iniciar uma mudança, abra ou escolha uma issue. Cada pull request deve ter escopo limitado, indicar arquivos ou áreas afetadas e explicar como foi verificado. Para trabalho simultâneo, consulte o [fluxo de trabalho paralelo](docs/AI-PARALLEL-WORKFLOW.md).
+Antes de iniciar uma mudança, abra ou escolha uma issue. Cada pull request deve ter escopo limitado, indicar arquivos ou áreas afetadas e explicar como foi verificado. Para trabalho simultâneo, declare dependências e áreas afetadas na issue e no PR.
 
 ## Proteção do material existente
 

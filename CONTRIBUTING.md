@@ -6,7 +6,6 @@ Obrigado pelo interesse no FORGE. O repositório está em planejamento e mantém
 
 - Verifique se já existe uma issue para o assunto. Se não existir, abra uma usando os formulários do repositório.
 - Escreva o objetivo, o que fica fora do escopo, os critérios de aceite, as áreas afetadas e as dependências.
-- Para colaboração com várias IAs, siga o [fluxo de trabalho paralelo](docs/AI-PARALLEL-WORKFLOW.md).
 - O pacote `EngLaTeX-1.1-codigo-fonte.zip` deve permanecer inalterado, salvo autorização expressa em issue dedicada.
 
 ## Branches e commits
@@ -22,7 +21,7 @@ Obrigado pelo interesse no FORGE. O repositório está em planejamento e mantém
 - Explique o que mudou e por quê; liste os arquivos ou áreas afetadas.
 - Registre verificações executadas e também o que não foi executado.
 - Avise sobre mudanças de contrato, compatibilidade, dados, dependências ou escopo.
-- Solicite uma revisão independente antes do merge quando houver contribuição de múltiplos agentes.
+- Solicite uma revisão independente antes do merge quando houver contribuição de múltiplos contribuidores.
 - Não faça merge se os critérios de aceite da issue não estiverem satisfeitos.
 
 ## Documentação e decisões

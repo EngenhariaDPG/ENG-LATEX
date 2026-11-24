@@ -18,7 +18,6 @@ O ZIP permanece na raiz para evitar quebrar o endereço já compartilhado. Esta 
 │   ├── ISSUE_TEMPLATE/              # formulários para tarefas e propostas
 │   └── PULL_REQUEST_TEMPLATE.md     # checklist de revisão
 ├── docs/
-│   ├── AI-PARALLEL-WORKFLOW.md      # divisão de trabalho entre agentes
 │   ├── decisions/                   # decisões arquiteturais registradas
 │   ├── ROADMAP.md
 │   └── REPOSITORY-STRUCTURE.md
