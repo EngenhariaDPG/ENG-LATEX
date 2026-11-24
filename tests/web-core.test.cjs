@@ -54,9 +54,21 @@ test("app web tem sintaxe válida e carrega o core antes do app", () => {
   assert.ok(html.indexOf('src="./project-core.js"') < html.indexOf('src="./app.js"'));
 });
 
-test("schema do arquivo de projeto permanece JSON válido", () => {
-  const schema = fs.readFileSync(path.join(root, "docs/contracts/forge-project-v1.schema.json"), "utf8");
-  assert.doesNotThrow(() => JSON.parse(schema));
+test("schema do arquivo de projeto define UUID v4, arquivo de entrada e ao menos um arquivo", () => {
+  const schemaText = fs.readFileSync(path.join(root, "docs/contracts/forge-project-v1.schema.json"), "utf8");
+  const schema = JSON.parse(schemaText);
+  assert.equal(schema.properties.files.minItems, 1);
+  assert.equal(schema.properties.project.properties.entryFile.maxLength, 240);
+  const uuidV4 = new RegExp(schema.properties.project.properties.id.pattern);
+  assert.equal(uuidV4.test("7d7d67e0-7c0a-4a9a-a1d4-21e3c46d63ab"), true);
+  assert.equal(uuidV4.test("7d7d67e0-7c0a-1a9a-a1d4-21e3c46d63ab"), false);
+});
+
+test("schema rejeita sintaticamente caminhos absolutos, traversal e colisões estruturais óbvias", () => {
+  const schema = JSON.parse(fs.readFileSync(path.join(root, "docs/contracts/forge-project-v1.schema.json"), "utf8"));
+  const pathPattern = new RegExp(schema.properties.files.items.properties.path.pattern);
+  for (const valid of ["main.tex", "capitulos/introducao.tex", ".latexmkrc", "imagens/figura 01.png"]) assert.equal(pathPattern.test(valid), true, valid);
+  for (const invalid of ["/etc/passwd", "../escape.tex", "a/../b.tex", "a//b.tex", "a\\\\b.tex", "C:/arquivo.tex", "pasta/"]) assert.equal(pathPattern.test(invalid), false, invalid);
 });
 
 
