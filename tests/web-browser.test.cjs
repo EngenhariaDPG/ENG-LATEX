@@ -135,6 +135,12 @@ Texto salvo no projeto correto.
     await page.locator('[data-mobile="editor"]').click();
     assert.equal(await page.locator(".workspace .editor").isVisible(), true, "o editor deve voltar a ser a vista ativa no celular");
 
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.locator("#toggle-codemirror").click();
+    assert.equal(await page.locator(".CodeMirror").isVisible(), true, "o editor CodeMirror deve ser ativável");
+    await page.locator("#toggle-codemirror").click();
+    assert.equal(await page.locator("#code").isVisible(), true, "o editor simples deve continuar disponível como fallback");
+
     assert.deepEqual(failures, [], "a aplicação não deve lançar erros no browser");
     await context.close();
     process.stdout.write("Browser smoke tests: OK\\n");
