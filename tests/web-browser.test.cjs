@@ -111,6 +111,8 @@ Texto salvo no projeto correto.
     await page.locator('[data-mobile="sidebar"]').click();
     assert.equal(await page.locator(".workspace.mobile-sidebar .sidebar").isVisible(), true, "a navegação de projetos deve funcionar em celular");
     assert.equal(await page.locator("#backup-side").isVisible(), true, "backup local deve estar acessível na vista mobile de projetos");
+    await page.locator('[data-mobile="inspector"]').click();
+    assert.equal(await page.locator(".workspace.mobile-inspector .inspector").isVisible(), true, "o painel de inspeção deve abrir no celular");
     await page.locator('[data-mobile="editor"]').click();
     assert.equal(await page.locator(".workspace .editor").isVisible(), true, "o editor deve voltar a ser a vista ativa no celular");
 
