@@ -75,7 +75,7 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 240,
-            "pattern": "^(?!/)(?!.*//)(?!.*\\\\\\\\)(?!.*:)(?!.*\\\\/$)(?!.*(?:^|/)\\\\.\\\\.?(/|$))(?!.*[\\\\u0000-\\\\u001F\\\\u007F]).+$",
+            "pattern": "^(?!/)(?!.*//)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.\\.?(/|$))(?!.*[\\u0000-\\u001F\\u007F])(?!.*\\/$).+$",
             "description": "Caminho lógico relativo com separador /; validação semântica e colisões Unicode/case-insensitive são obrigatórias no importador."
           },
           "mediaType": {
