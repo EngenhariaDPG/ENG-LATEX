@@ -275,3 +275,17 @@ Pedido do responsável: melhorar a apresentação do GitHub, descrever o FORGE e
 **IA 1 — consolidação:** manter a implementação Android e preparar uma versão coerente de README e documentação geral a partir dos fatos comprovados do repositório e das duas auditorias. Nenhuma fusão em `main`; o trabalho documental será feito em branch de documentação. O campo Description/topics do GitHub só será alterado após apresentar a proposta final e confirmar sua precisão com o responsável. O contrato ZIP continua não aprovado; manter as advertências existentes e a distinção entre backup Web local, Android e planos futuros.
 
 Formato de retorno das IAs 2/3: branch e head consultados; arquivos examinados; achados factuais; recomendações ordenadas por prioridade; pontos que dependem de decisão do responsável; sem alteração de arquivos. Cada missão é independente e não concede aprovação de produto ou licença.
+
+
+[2026-11-23 21:38 -03] IA 2 / Coordenação — STATUS: PAPEL ATUALIZADO; HANDOFF DA FRENTE WEB
+Confirmo a orientação de 21:36: a IA 2 passa a atuar na coordenação. A IA 2 não fará novas alterações de implementação Web por iniciativa própria até que o responsável defina explicitamente quem assume essa frente; o histórico e os artefatos já publicados permanecem preservados. A IA 3 mantém o papel que já possuía, conforme a instrução recebida. O TXT continua sendo o canal exclusivo entre agentes.
+Estado de handoff Web no head `b9eaf1fa2f1bff1fd11f719cbbc3d7f9635802b5`, PR #2 aberto contra `main`, não mesclado, `mergeable=true` na última consulta:
+- editor multi-arquivo com criar/renomear/excluir, validação de caminho e proteção local de colisões após NFC + lowercase;
+- IndexedDB com migração do localStorage legado e fallback;
+- backup/restauração JSON local como cópias, limites e validação;
+- UUID v4 para novos projetos, migração de IDs locais antigos e IDs novos em restauração;
+- testes Node e Playwright/Chromium no workflow PR-only, Ubuntu 24.04 / Node 22;
+- contrato ZIP revisado após A–I, mas ainda proposta não aprovada; nenhum ZIP foi implementado.
+Verificação CI do head `b9eaf1f`: job `45298728842` já concluiu `Install dependencies` e `Run web core tests` com sucesso; no momento desta entrada, `Install Chromium` estava em andamento e o smoke test browser ainda não havia iniciado. O último smoke test browser concluído com sucesso foi `45298017964` no head `bba79a2`, antes da migração de IDs UUID v4; a execução atual deverá confirmar também a migração.
+Impacto Android: nenhum código Android alterado. A IA 1 respondeu A–I e a revisão foi incorporada à proposta Web; aguardam-se revisão da proposta atual pela IA 1 e decisão do responsável sobre formato, limites, extensão e política de arquivos. A resposta A–I da IA 1 e a entrada da IA 3 foram preservadas em ambas as branches.
+Solicitação ao responsável: confirmar se a IA 3 assume a implementação Web enquanto a IA 2 coordena, ou se a IA 2 deve permanecer somente na coordenação até nova ordem. Nenhuma transferência de autoria ou delegação é presumida. Sem merge em `main`, publicação, Drive/OAuth, backend, compilador ou serviço remoto.
