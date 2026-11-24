@@ -94,3 +94,7 @@ O protótipo também permite baixar todos os projetos locais num arquivo JSON `f
 ### Identidade local dos projetos
 
 Novos projetos Web usam UUID v4. Na inicialização, IDs legados não UUID v4 (incluindo os IDs demonstrativos antigos) são migrados uma única vez para UUID v4 e persistidos no armazenamento local; colisões de IDs também são corrigidas. Restaurar backup cria cópias com IDs novos. A migração é local à Web e não aprova por si só o contrato ZIP compartilhado; o Android ainda precisa adotar UUID v4 antes de implementar intercâmbio.
+
+### Importação de arquivo individual
+
+A importação de `.tex` e `.txt` valida o nome recebido pelo navegador com as mesmas regras locais de caminho usadas no editor. Nomes vazios, caminhos absolutos, traversal, separadores Windows, segmentos inválidos e outros caminhos não portáveis são rejeitados antes de criar o projeto. O conteúdo é lido como texto UTF-8, o arquivo importado permanece como arquivo ativo e o novo projeto recebe UUID v4. Esse fluxo é importação de um arquivo textual, não importação do pacote ZIP Android/Web e não preserva binários.
