@@ -31,6 +31,23 @@ async function main() {
     await page.waitForFunction(() => document.querySelector("#save-state").textContent.includes("IndexedDB"));
     assert.equal(await page.locator("#projects .project").count(), 3);
 
+    const importContext = await browser.newContext();
+    const importPage = await importContext.newPage();
+    await importPage.goto(origin);
+    await importPage.waitForFunction(() => document.querySelector("#save-state").textContent.includes("IndexedDB"));
+    const importedText = "\\documentclass{article}\n\\begin{document}\nConteúdo importado.\n\\end{document}\n";
+    await importPage.locator("#file").setInputFiles({
+      name: "importado.tex",
+      mimeType: "text/plain",
+      buffer: Buffer.from(importedText, "utf8")
+    });
+    await importPage.waitForFunction(() => document.querySelectorAll("#projects .project").length === 4);
+    assert.equal(await importPage.locator("#project-name").innerText(), "importado");
+    assert.equal(await importPage.locator("#filename").innerText(), "importado.tex");
+    assert.match(await importPage.evaluate(() => projects[0].id), /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    assert.equal(await importPage.locator("#code").inputValue(), importedText);
+    await importContext.close();
+
     const editor = page.locator("#code");
     const edited = String.raw`\documentclass{article}
 %% autosave antes de trocar projeto
