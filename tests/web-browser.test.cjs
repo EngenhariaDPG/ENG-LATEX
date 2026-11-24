@@ -104,6 +104,16 @@ Texto salvo no projeto correto.
     assert.ok(await fallbackPage.evaluate(() => localStorage.getItem("forge.web.mock.v1").includes("Fallback localStorage")));
     await fallbackContext.close();
 
+    await page.setViewportSize({ width: 820, height: 1024 });
+    await page.locator("#toggle-inspector").click();
+    assert.equal(await page.locator(".workspace.show-inspector .inspector").isVisible(), true, "o painel lateral deve abrir em tablet");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('[data-mobile="sidebar"]').click();
+    assert.equal(await page.locator(".workspace.mobile-sidebar .sidebar").isVisible(), true, "a navegação de projetos deve funcionar em celular");
+    assert.equal(await page.locator("#backup-side").isVisible(), true, "backup local deve estar acessível na vista mobile de projetos");
+    await page.locator('[data-mobile="editor"]').click();
+    assert.equal(await page.locator(".workspace .editor").isVisible(), true, "o editor deve voltar a ser a vista ativa no celular");
+
     assert.deepEqual(failures, [], "a aplicação não deve lançar erros no browser");
     await context.close();
     process.stdout.write("Browser smoke tests: OK\\n");
