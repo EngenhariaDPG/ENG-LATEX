@@ -71,3 +71,18 @@ GitHub mantém código/histórico/CI. GitHub Pages, se aprovado, entrega assets 
 4. Comparar saída com distribuição de referência.
 5. Testar offline, perda de energia, conflitos e restauração.
 6. Submeter ADR para A, B ou D após evidência.
+
+
+## Persistência local implementada no protótipo Web (23/11/2026)
+
+O protótipo evoluiu de `localStorage` exclusivo para uma camada local simples baseada em IndexedDB:
+
+- Banco `forge-web`, versão 1, object store `projects` com chave `id`.
+- Inicialização assíncrona: tenta abrir IndexedDB, carrega projetos existentes e, se o banco estiver vazio, migra os registros válidos da chave legada `forge.web.mock.v1`. A chave antiga não é apagada, funcionando como cópia de recuperação durante esta fase.
+- A ordem da lista é persistida por metadado interno `_order`; snapshots são gravados em transação readwrite após limpeza e regravação do conjunto de projetos.
+- Se IndexedDB não estiver disponível ou falhar durante gravação, o protótipo tenta o fallback `localStorage`. Se ambos falharem, apresenta estado de erro e orienta exportar uma cópia.
+- A gravação é serializada por fila de Promises para evitar que autosaves assíncronos concorrentes concluam fora de ordem.
+- A validação de caminhos e registros foi extraída para `apps/web/project-core.js`, sem dependência de DOM, e cobre traversal, caminhos absolutos, separadores Windows, nomes reservados, caracteres de controle, limites de tamanho/profundidade e arquivos de texto.
+- Testes automatizados Node.js foram adicionados em `tests/web-core.test.cjs`, com workflow `.github/workflows/web-checks.yml`. O workflow testa validação, sintaxe da aplicação, ordem dos scripts e parse do schema JSON.
+
+**Limites:** isso ainda é armazenamento local de um navegador/perfil, não backup remoto, sincronização, armazenamento multi-dispositivo nem garantia de durabilidade. Não há gestão de quota, interface de exportação completa, concorrência entre abas, recuperação de versões ou testes reais de browser/IndexedDB. O fallback `localStorage` tem limite de capacidade menor. Não declarar a suíte aprovada até o primeiro workflow CI concluir.
