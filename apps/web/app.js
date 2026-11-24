@@ -35,7 +35,7 @@ $("#theme").onclick=()=>document.body.classList.toggle("dark");
 document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("selected",x===b));$("#preview").hidden=b.dataset.view!=="preview";$("#diagnostics").hidden=b.dataset.view!=="diagnostics"});
 $("#collapse").onclick=()=>{$(".workspace").classList.toggle("hide-inspector")};
 $("#toggle-inspector").onclick=()=>{$(".workspace").classList.toggle("show-inspector")};
-document.querySelectorAll("[data-mobile]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-mobile]").forEach(x=>x.classList.toggle("active",x===b));const w=$(".workspace");w.classList.remove("mobile-sidebar","mobile-inspector");if(b.dataset.mobile!=="editor")w.classList.add("mobile-"+b.dataset.mobile)});
+document.querySelectorAll("[data-mobile]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-mobile]").forEach(x=>x.classList.toggle("active",x===b));const w=$(".workspace");w.classList.remove("mobile-sidebar","mobile-inspector","show-inspector");if(b.dataset.mobile!=="editor")w.classList.add("mobile-"+b.dataset.mobile)});
 window.addEventListener("beforeunload",()=>{if(current)save()});
 async function boot(){await initializeStorage();drawEditor()}
 boot();
