@@ -20,10 +20,10 @@ jobs:
         with:
           node-version: 22
       - name: Run web core tests
-        run: node --test tests/web-core.test.cjs
+        run: npm run test:web
       - name: Install Playwright
-        run: npm install --no-save --no-package-lock playwright@1.55.0
+        run: npm install --no-package-lock
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser smoke tests
-        run: node tests/web-browser.test.cjs
+        run: npm run test:web:browser
