@@ -27,7 +27,7 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 - [Proposta de arquivo de projeto ZIP](docs/contracts/PROJECT-ARCHIVE-V1.md): formato de intercâmbio pendente de revisão Android e aprovação do responsável.
 - [Registro de colaboração entre IAs](docs/AI-COLLABORATION.txt): canal exclusivo de coordenação Android/Web.
 
-A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback localStorage e backup JSON local. O backup JSON não é o formato de intercâmbio Android/Web. Drive, sincronização, importação/exportação ZIP e compilação ainda não estão conectados.
+A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback localStorage e backup JSON local. Testes Node e smoke tests Playwright/Chromium estão configurados no GitHub Actions. O backup JSON não é o formato de intercâmbio Android/Web. Drive, sincronização e importação/exportação ZIP continuam pendentes; compilação ainda não está conectada.
 - [Fluxo de trabalho paralelo com IAs](docs/AI-PARALLEL-WORKFLOW.md): como dividir tarefas, evitar conflitos e integrar resultados.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
