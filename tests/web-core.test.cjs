@@ -59,6 +59,7 @@ test("schema do arquivo de projeto define UUID v4, arquivo de entrada e ao menos
   const schema = JSON.parse(schemaText);
   assert.equal(schema.properties.files.minItems, 1);
   assert.equal(schema.properties.project.properties.entryFile.maxLength, 240);
+  assert.equal(schema.properties.project.properties.entryFile.pattern, schema.properties.files.items.properties.path.pattern);
   const uuidV4 = new RegExp(schema.properties.project.properties.id.pattern);
   assert.equal(uuidV4.test("7d7d67e0-7c0a-4a9a-a1d4-21e3c46d63ab"), true);
   assert.equal(uuidV4.test("7d7d67e0-7c0a-1a9a-a1d4-21e3c46d63ab"), false);
