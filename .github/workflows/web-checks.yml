@@ -8,6 +8,7 @@ on:
     paths:
       - "apps/web/**"
       - "tests/**"
+      - "package.json"
       - "docs/contracts/forge-project-v1.schema.json"
       - ".github/workflows/web-checks.yml"
 
