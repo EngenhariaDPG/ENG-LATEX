@@ -72,3 +72,20 @@ test("valida formato e limites de backup local", () => {
   const multibyte = { format: "forge-local-backup", formatVersion: 1, projects: [{ id: "p3", name: "Unicode", files: { "main.tex": "é".repeat(3*1024*1024) } }] };
   assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(multibyte) + ", 0, 100)", context), /5 MB/);
 });
+
+
+test("restaura backups como cópias com IDs e nomes únicos", () => {
+  const payload = { format: "forge-local-backup", formatVersion: 1, projects: [
+    { id: "old-1", name: "Projeto", files: { "main.tex": "A" } },
+    { id: "old-2", name: "Projeto", files: { "main.tex": "B" } }
+  ] };
+  const existing = [{ id: "current", name: "Projeto (restaurado)" }, { id: "current-2", name: "Projeto (restaurado) 2" }];
+  const copies = vm.runInContext("ForgeCore.createRestoredProjectCopies(" + JSON.stringify(payload) + ", " + JSON.stringify(existing) + ", i => 'new-' + i)", context);
+  assert.equal(copies.length, 2);
+  assert.equal(copies[0].id, "new-0");
+  assert.equal(copies[1].id, "new-1");
+  assert.notEqual(copies[0].id, payload.projects[0].id);
+  assert.notEqual(copies[0].name, copies[1].name);
+  assert.equal(copies[0].files["main.tex"], "A");
+  assert.equal(copies[1].files["main.tex"], "B");
+});
