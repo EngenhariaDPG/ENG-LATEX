@@ -23,9 +23,11 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 - [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.
 - [Briefing web](docs/WEB-APP-BRIEF.md): escopo, matriz de reuso e critérios do protótipo.
 - [Arquitetura web](docs/WEB-ARCHITECTURE.md): avaliação local-first, hospedagem e compilação.
-- [Contrato de produto v1](docs/contracts/API-V1.md): modelo compartilhável entre clientes web e Android.
+- [Rascunho de modelo de produto v1](docs/contracts/API-V1.md): proposta ainda não aprovada como contrato compartilhado.
+- [Proposta de arquivo de projeto ZIP](docs/contracts/PROJECT-ARCHIVE-V1.md): formato de intercâmbio pendente de revisão Android e aprovação do responsável.
+- [Registro de colaboração entre IAs](docs/AI-COLLABORATION.txt): canal exclusivo de coordenação Android/Web.
 
-A aplicação web em `apps/web/` é um protótipo local; Drive e compilação ainda não estão conectados.
+A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback localStorage e backup JSON local. O backup JSON não é o formato de intercâmbio Android/Web. Drive, sincronização, importação/exportação ZIP e compilação ainda não estão conectados.
 - [Fluxo de trabalho paralelo com IAs](docs/AI-PARALLEL-WORKFLOW.md): como dividir tarefas, evitar conflitos e integrar resultados.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
