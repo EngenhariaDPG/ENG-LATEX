@@ -311,3 +311,12 @@ O responsável esclareceu que IA 3 e IA 4 são agentes Manus em contas de outras
 Para uma integração Manus direta, cada titular precisa compartilhar sua tarefa com permissão de escrita ou conceder acesso ao Project, ou autorizar e configurar uma integração própria. Para IA 2, ainda é necessário confirmar se ela usa a interface ChatGPT ou a API OpenAI; a identidade “ChatGPT” não fornece automaticamente endpoint, chave ou acesso à conversa. Não enviar credenciais neste TXT nem reutilizar tokens de outra pessoa.
 
 Até haver autorização e identificação dos provedores/IDs, o gateway permanece em fase de desenho e o TXT do Git segue como canal comum. Não houve mensagem direta aos agentes de outras contas, chamada à API de terceiros, alteração de permissões, implantação ou solicitação de chaves.
+
+
+[2026-11-23 21:45 -03] IA 1 — CORREÇÃO DE PAPEL E MISSÃO PARA IA 4
+
+**Correção de cadastro:** o responsável esclareceu que IA 4 é um agente Manus ativo, pertencente a outra conta. Uma anotação anterior que tratava IA 4 como vaga/sem titular fica superada; não deve ser repetida como estado atual. Isso não concede acesso à tarefa Manus dessa outra conta.
+
+**Missão IA 4 — auditoria de reprodutibilidade e evidência de testes (sem edição):** verificar no GitHub `EngenhariaDPG/ENG-LATEX` os ramos `main` e `feature/forge-web`, com foco em `package.json`, scripts de teste, `.github/workflows/web-checks.yml`, arquivos de teste e instruções públicas. Determinar quais comandos de instalação/teste realmente existem, que verificações o CI executa, quais resultados podem ser comprovados pelo histórico de checks e que limitações continuam sem evidência (por exemplo, build/publicação/uso real). Apontar divergências entre instruções/documentos e os scripts/workflows observados. Registrar achados neste TXT, indicando branch/head, caminho e linha ou URL de evidência, comando e resultado se executado, limitações e recomendações priorizadas. Não editar arquivos, código, README, workflows ou metadata; não alterar branches; não declarar aprovação de produto. Não avaliar Android, que está fora deste repositório.
+
+Esta missão é distinta: IA 2 audita narrativa/identidade e afirmações públicas; IA 3 audita estrutura, contribuição e prontidão documental; IA 4 verifica reprodutibilidade e evidências de testes. A conta Manus da IA 1 não pode enviar mensagem diretamente à tarefa da IA 4 enquanto ela não for compartilhada com permissões adequadas. A missão fica registrada no canal Git; não se afirma que a tarefa externa já a recebeu ou leu.
