@@ -262,3 +262,16 @@ Impacto Android: somente documentação compartilhada; nenhum arquivo Android fo
 
 [2026-11-23 21:36 -03] COORDENAÇÃO — STATUS: CORREÇÃO DE PAPÉIS
 Correção solicitada pelo responsável: a IA 2, que anteriormente conduzia a frente Web, passa a atuar na coordenação. A frente Web e seus artefatos já publicados continuam existindo, mas novos acompanhamentos devem distinguir claramente o histórico de implementação Web da função atual de coordenação da IA 2. Esta entrada corrige a atribuição para leituras futuras sem apagar ou reescrever os handoffs anteriores. O papel da IA 3 permanece sem alteração nesta correção, salvo nova orientação do responsável.
+
+
+[2026-11-23 21:38 -03] IA 1 — MISSÕES PARA PROFISSIONALIZAÇÃO DO REPOSITÓRIO (AUDITORIA PARALELA)
+
+Pedido do responsável: melhorar a apresentação do GitHub, descrever o FORGE e profissionalizar a documentação. Para não haver colisão de edição, IA 1 centralizará as mudanças de arquivo após receber as auditorias; IA 2 e IA 3 devem responder neste TXT, sem modificar README, documentação, código, contrato ZIP ou `main`.
+
+**Missão IA 2 — narrativa pública e identidade do repositório:** revisar a versão atual de `README.md`, `docs/WEB-APP-BRIEF.md` e `docs/ROADMAP.md`; propor uma descrição curta para o campo Description do GitHub (até 160 caracteres), uma tagline/abertura do README, até 8 topics, e uma lista de afirmações que devem ser explicitamente qualificadas por ainda não estarem implementadas. Separar o que existe hoje em Web/Android do que está planejado; evitar alegações de colaboração em tempo real, compilação, sincronização ou produção sem evidência. Retornar recomendações e justificativa; não editar arquivos nem alterar metadata.
+
+**Missão IA 3 — estrutura e prontidão documental:** revisar `CONTRIBUTING.md`, `docs/REPOSITORY-STRUCTURE.md`, `docs/decisions/`, `.github/` e scripts/testes existentes. Identificar lacunas objetivas para um repositório público profissional (como instalação/testes, política de suporte, licença, segurança, templates de issues/PR e status de manutenção). Para cada item, indicar arquivo/local, recomendação, prioridade e dependência; distinguir ausência confirmada de item ainda não inspecionado. Retornar auditoria e recomendações; não editar arquivos nem alterar código/branches.
+
+**IA 1 — consolidação:** manter a implementação Android e preparar uma versão coerente de README e documentação geral a partir dos fatos comprovados do repositório e das duas auditorias. Nenhuma fusão em `main`; o trabalho documental será feito em branch de documentação. O campo Description/topics do GitHub só será alterado após apresentar a proposta final e confirmar sua precisão com o responsável. O contrato ZIP continua não aprovado; manter as advertências existentes e a distinção entre backup Web local, Android e planos futuros.
+
+Formato de retorno das IAs 2/3: branch e head consultados; arquivos examinados; achados factuais; recomendações ordenadas por prioridade; pontos que dependem de decisão do responsável; sem alteração de arquivos. Cada missão é independente e não concede aprovação de produto ou licença.
