@@ -1,0 +1,8 @@
+node_modules/
+
+# Artefatos gerados pela aplicação desktop
+apps/desktop/web/node_modules/
+apps/desktop/web/dist/
+dist/
+apps/desktop/target/
+apps/desktop/packaging/windows/payload/

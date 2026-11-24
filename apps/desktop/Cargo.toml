@@ -1,0 +1,57 @@
+[package]
+name = "eng-latex"
+version = "1.1.0"
+edition = "2021"
+description = "Eng LaTeX - editor LaTeX offline no estilo Overleaf"
+
+[[bin]]
+name = "EngLaTeX"
+path = "src/main.rs"
+
+[dependencies]
+# Servidor HTTP local (a interface roda numa janela do Edge em modo aplicativo)
+axum = "0.7"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "time", "fs", "sync", "net", "io-util"] }
+# Arquivos da interface (HTML/JS/CSS) embutidos dentro do .exe
+rust-embed = "8"
+mime_guess = "2"
+# Serialização das respostas da API
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Importar/exportar projetos .zip (compatível com o "Download source" do Overleaf)
+zip = { version = "2", default-features = false, features = ["deflate"] }
+# Leitura do arquivo .synctex.gz (ligação PDF <-> código)
+flate2 = "1"
+# Leitura do log do LaTeX
+regex = "1"
+# Pasta Documentos do usuário
+dirs = "5"
+# Abrir a pasta do projeto no Explorer e links externos no navegador
+open = "5"
+# Corretor ortográfico compatível com dicionários Hunspell (LibreOffice/Firefox)
+spellbook = "0.4"
+# Converte dicionários antigos (ISO-8859-1) para UTF-8
+encoding_rs = "0.8"
+# Download de dicionários de outros idiomas
+ureq = "3"
+
+# Janela nativa (só no Windows). Em outros sistemas o programa roda apenas
+# como servidor, o que é usado para testes automatizados.
+[target.'cfg(windows)'.dependencies]
+# Janela do programa
+tao = "0.37"
+# Componente WebView2 do Windows, onde a interface é desenhada
+wry = "0.57"
+# Janelas nativas de "Salvar como" e "Abrir"
+rfd = "0.18"
+
+[build-dependencies]
+# Embute o ícone e os dados de versão no .exe
+embed-resource = "3"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

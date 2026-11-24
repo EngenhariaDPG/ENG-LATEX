@@ -1,0 +1,125 @@
+ENG LATEX 1.1 - editor LaTeX offline no estilo do Overleaf
+============================================================
+
+COMO USAR
+---------
+1. Descompacte a pasta inteira (por exemplo em C:\EngLaTeX ou em Documentos).
+   Não tire o EngLaTeX.exe de dentro da pasta: ele precisa dos arquivos ao lado.
+2. Dê dois cliques em EngLaTeX.exe.
+   Se quiser, crie um atalho na Área de Trabalho (botão direito > Enviar para).
+
+Requisitos: Windows 10 ou 11 (64 bits). O programa usa o "Microsoft Edge
+WebView2 Runtime", que já vem instalado no Windows 10/11 atualizado. Se
+aparecer um aviso dizendo que ele falta, instale-o pelo site da Microsoft
+(gratuito) e abra o programa de novo.
+
+Na primeira vez o Windows SmartScreen pode avisar "o Windows protegeu o
+computador" (o programa não tem assinatura digital paga). Clique em
+"Mais informações" > "Executar assim mesmo".
+
+
+ONDE FICAM OS ARQUIVOS
+----------------------
+Documentos\EngLaTeX\Projetos\      seus projetos (cada projeto é uma pasta comum)
+Documentos\EngLaTeX\Modelos\       seus modelos ("Salvar como modelo")
+Documentos\EngLaTeX\Lixeira\       projetos excluídos (dá para recuperar)
+Documentos\EngLaTeX\config.json    configurações
+Documentos\EngLaTeX\dicionario-pessoal.txt   palavras adicionadas ao corretor
+
+
+COMPILADOR
+----------
+- Já vem com o Tectonic (tectonic.exe) e um cache com os pacotes mais usados
+  (amsmath, siunitx, tikz, pgfplots, booktabs, fancyhdr, babel português,
+  beamer, abnTeX2, KOMA-Script, memoir...). Funciona SEM internet desde a
+  primeira vez. Se um documento usar um pacote que não está no cache e houver
+  internet, o Tectonic baixa sozinho e guarda para as próximas vezes.
+- Se você tiver o MiKTeX ou o TeX Live instalado, o modo "Automático" usa
+  ele (latexmk ou pdflatex), com escolha de pdfLaTeX, XeLaTeX ou LuaLaTeX.
+  Dá para trocar em Configurações ou na setinha ao lado do botão Recompilar.
+
+
+VARIÁVEIS DO DOCUMENTO (documentos-modelo)
+------------------------------------------
+1. No editor, clique em "{x} Variáveis" e crie as variáveis
+   (ex.: cliente, obra, art, responsavel) com os valores.
+2. No texto, use \var{cliente}, \var{obra}...
+   (o arquivo principal precisa ter \input{variaveis}; o programa oferece
+   incluir sozinho).
+3. Ao compilar, o PDF sai com os valores da tabela.
+4. Menu > "Salvar como modelo". Depois, em Novo projeto, escolha o seu
+   modelo: ele já abre a tabela para preencher os dados do novo cliente.
+
+Tipo "Texto": & % $ # _ { } são tratados automaticamente.
+Tipo "LaTeX": o valor é usado como código (ex.: $\sigma_{adm}$).
+Os modelos prontos "Memorial de cálculo" e "Laudo técnico" já vêm com
+variáveis de exemplo.
+
+
+CORRETOR ORTOGRÁFICO
+--------------------
+Vem com português (Brasil) e inglês (EUA). Outros idiomas: Configurações >
+Corretor ortográfico > Baixar (precisa de internet só nessa hora).
+Cada projeto pode ter o seu idioma (Menu > Idioma do corretor).
+Botão direito numa palavra sublinhada: sugestões, adicionar ao dicionário,
+ignorar. Comandos LaTeX, fórmulas, rótulos e citações não são verificados.
+
+
+NOVIDADES DA VERSÃO 1.1
+-----------------------
+- BOTÃO DIREITO NO TEXTO: janelas para inserir seção/parágrafo, tabela,
+  imagem, lista, equação (com prévia), nota de rodapé, referência cruzada,
+  citação e variável. Dentro de uma tabela: "Editar esta tabela".
+- BARRA DE FERRAMENTAS acima do código com os mesmos recursos.
+- EDITOR DE TABELAS: grade tipo planilha; copie células do Excel e cole
+  (Ctrl+V) numa célula. Estilos booktabs, grade completa ou sem bordas.
+- PALETA DE SÍMBOLOS (Ω): letras gregas, operadores, setas e unidades
+  de engenharia (siunitx: kN, MPa, m³/h, TR, BTU/h...).
+- PRÉVIA DE FÓRMULAS: passe o mouse sobre uma fórmula para vê-la desenhada.
+- MODO VISUAL (botão Código | Visual no topo): títulos, negrito, listas,
+  fórmulas, imagens e valores das variáveis aparecem formatados; a linha
+  onde está o cursor mostra o código para editar.
+- HISTÓRICO DE VERSÕES (botão Histórico): versão automática ao compilar
+  (no máximo a cada 5 min) e versões com nome ("Rev. 01 enviada ao
+  cliente"). Comparação lado a lado e botão de restaurar um arquivo ou o
+  projeto inteiro. Fica na pasta oculta .historico de cada projeto.
+- REFERÊNCIAS BIBLIOGRÁFICAS (📚 Referências): cadastro de livros, artigos,
+  normas técnicas (ABNT/NBR), sites, teses, relatórios e manuais; busca
+  automática pelo DOI (precisa de internet); colar BibTeX do Google
+  Acadêmico; cria o referencias.bib e o \bibliography sozinho.
+- CONTAGEM DE PALAVRAS (Menu > Contar palavras).
+- CORRETOR EM VÁRIOS IDIOMAS NO MESMO DOCUMENTO: trechos marcados com
+  \begin{otherlanguage}{english}, \foreignlanguage{english}{...} ou
+  \selectlanguage{...} são verificados no idioma do trecho. Em
+  Menu > Idiomas do corretor dá para aceitar mais idiomas no documento todo.
+- INTERFACE EM PORTUGUÊS, INGLÊS E ESPANHOL (Configurações > Idioma da
+  interface; "Automático" segue o idioma do Windows).
+
+
+ATALHOS
+-------
+Ctrl+S ou Ctrl+Enter      salvar e recompilar
+Ctrl+B / Ctrl+I           negrito / itálico
+Ctrl+/                    comentar linhas
+Ctrl+F / Ctrl+H           localizar / substituir
+Ctrl+G                    ir para a linha
+Ctrl+Espaço               sugestões de comandos
+Ctrl+Alt+Seta direita     mostrar no PDF a linha do cursor
+Duplo clique no PDF       ir para a linha correspondente no código
+Botão direito no texto    inserir seção, tabela, imagem, equação...
+Ctrl+roda do mouse (PDF)  zoom
+
+
+PROJETOS DO OVERLEAF
+--------------------
+No Overleaf: Menu > Download > Source (.zip). Aqui: Novo projeto > Importar
+.zip. O caminho inverso também funciona (Menu > Salvar projeto .zip), e o
+arquivo variaveis.tex vai junto, então o projeto compila no Overleaf também.
+
+
+PROBLEMAS
+---------
+O registro do programa fica em Documentos\EngLaTeX\englatex.log.
+
+
+Componentes de terceiros e licenças: pasta "licencas".
