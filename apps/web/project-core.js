@@ -36,5 +36,16 @@
     }
     return null;
   }
-  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,validateBackupPayload});
+  function createRestoredProjectCopies(payload,existingProjects,makeId){
+    const usedNames=new Set(existingProjects.map(project=>project.name));
+    return payload.projects.map((project,index)=>{
+      const entries=Object.entries(project.files),baseName=String(project.name)+" (restaurado)";
+      let name=index?baseName+" "+(index+1):baseName,suffix=2;
+      while(usedNames.has(name))name=baseName+" "+suffix++;
+      usedNames.add(name);
+      const id=typeof makeId==="function"?makeId(index):"restore-"+Date.now()+"-"+index;
+      return{id,name,updated:"Restaurado agora",activeFile:project.activeFile&&project.files[project.activeFile]!==undefined?project.activeFile:entries[0][0],files:{...project.files}};
+    });
+  }
+  root.ForgeCore=Object.freeze({validProjectPath,validProjectRecord,validateBackupPayload,createRestoredProjectCopies});
 })(typeof globalThis!=="undefined"?globalThis:this);
