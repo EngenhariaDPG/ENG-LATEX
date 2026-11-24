@@ -88,7 +88,7 @@ Texto salvo no projeto correto.
       request.onsuccess = () => {
         const tx = request.result.transaction("projects", "readonly");
         const get = tx.objectStore("projects").getAll();
-        get.onsuccess = () => resolve(get.result.some(project => project.id === "legacy-1"));
+        get.onsuccess = () => resolve(get.result.some(project => project.name === "Projeto migrado"));
         get.onerror = () => reject(get.error);
       };
       request.onerror = () => reject(request.error);
