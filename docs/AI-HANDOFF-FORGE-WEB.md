@@ -108,3 +108,16 @@ Adicionar testes de unidade para domínio, testes de browser para todos os fluxo
 - `docs/ROADMAP.md` — roadmap geral do FORGE.
 - `.github/workflows/web-checks.yml` — verificações da Web.
 - `.github/workflows/deploy-web-pages.yml` — tentativa de workflow Pages; não é a hospedagem atualmente válida.
+
+## Direção de produto adicionada em 24/11/2026
+
+O FORGE não será reduzido a um gerador de livros técnicos. A decisão registrada na [ADR 0002](decisions/0002-editor-latex-e-documentacao-tecnica.md) mantém o editor LaTeX como núcleo e adiciona documentação técnica como módulo integrado. O módulo deverá gerar livros de inspeção, laudos, checklists, manuais e relatórios a partir de dados estruturados, modelos LaTeX e anexos, sempre mantendo o código editável.
+
+Documentos de referência:
+
+- [`docs/PRODUCT-VISION.md`](PRODUCT-VISION.md) — visão e princípios do produto.
+- [`docs/TECHNICAL-DOCUMENTATION.md`](TECHNICAL-DOCUMENTATION.md) — entidades, fluxo e modelos técnicos.
+- [`docs/contracts/technical-project-v1.md`](contracts/technical-project-v1.md) — proposta do manifesto técnico.
+- [`docs/decisions/0002-editor-latex-e-documentacao-tecnica.md`](decisions/0002-editor-latex-e-documentacao-tecnica.md) — decisão arquitetural.
+
+O desktop Rust também foi incorporado como cópia de trabalho em `apps/desktop/`, com workflow Windows e instalador. O ZIP legado permanece inalterado. A documentação técnica ainda é especificação; não anunciar seus livros, laudos ou validações como recursos implementados até que existam código e testes.

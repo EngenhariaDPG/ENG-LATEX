@@ -13,8 +13,11 @@
 ├── docs/
 │   ├── contracts/
 │   │   ├── API-V1.md                # operações e compatibilidade do contrato
+│   │   ├── technical-project-v1.md  # proposta de manifesto técnico
 │   │   └── product-api-v1.json      # schema de projeto versionado
-│   ├── decisions/
+│   ├── decisions/                   # decisões arquiteturais duradouras
+│   ├── PRODUCT-VISION.md            # visão oficial do produto
+│   ├── TECHNICAL-DOCUMENTATION.md   # módulo de livros/laudos/checklists
 │   ├── ROADMAP.md
 │   ├── REPOSITORY-STRUCTURE.md
 │   ├── WEB-APP-BRIEF.md

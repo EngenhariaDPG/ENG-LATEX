@@ -20,6 +20,8 @@ O repositório mantém o arquivo-fonte legado do EngLaTeX 1.1 em [`EngLaTeX-1.1-
 ## Documentação
 
 - [Roadmap](docs/ROADMAP.md): etapas propostas, sem datas ou promessa de implementação.
+- [Visão do produto](docs/PRODUCT-VISION.md): editor LaTeX como núcleo e documentação técnica como módulo integrado.
+- [Módulo de documentação técnica](docs/TECHNICAL-DOCUMENTATION.md): entidades, fluxo, modelos e limites do gerador de livros e laudos.
 - [Estrutura do repositório](docs/REPOSITORY-STRUCTURE.md): organização atual e convenções para novos materiais.
 - [Briefing web](docs/WEB-APP-BRIEF.md): escopo, matriz de reuso e critérios do protótipo.
 - [Arquitetura web](docs/WEB-ARCHITECTURE.md): avaliação local-first, hospedagem e compilação.
@@ -31,6 +33,8 @@ A aplicação web em `apps/web/` é um protótipo local com IndexedDB, fallback 
 O desktop legado em `apps/desktop/` é uma aplicação Rust para Windows 10/11 x64, com interface WebView2 e servidor local. O workflow [`Desktop Windows`](.github/workflows/desktop-windows.yml) compila o executável, executa um smoke test e gera um instalador Inno Setup. Uma release só deve ser anunciada após uma execução verde em Windows e teste manual do instalador.
 - [Como contribuir](CONTRIBUTING.md): issues, branches e pull requests.
 - [Decisões de projeto](docs/decisions/README.md): formato para registrar decisões duradouras.
+
+A direção oficial do FORGE está registrada na [ADR 0002](docs/decisions/0002-editor-latex-e-documentacao-tecnica.md): o editor LaTeX continua sendo o núcleo; livros técnicos, laudos, checklists e relatórios serão adicionados como projetos gerados por modelos, com dados estruturados e anexos. O [manifesto de projeto técnico v1](docs/contracts/technical-project-v1.md) é uma proposta de contrato e ainda não representa uma funcionalidade implementada.
 
 ## Como participar
 

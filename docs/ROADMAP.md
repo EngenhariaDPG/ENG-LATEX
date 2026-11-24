@@ -36,6 +36,18 @@ Este roadmap registra uma sequência de trabalho proposta. Não estabelece prazo
 
 **Saída esperada:** capacidades selecionadas do EngLaTeX funcionando sob a estrutura modular aprovada.
 
+## Etapa 3A — Documentação técnica sobre o núcleo LaTeX
+
+- Manter o editor LaTeX como caminho completo e independente para projetos comuns.
+- Criar modelos versionados para livros, laudos, checklists, manuais e relatórios.
+- Separar dados de empresa, obra, equipamento, responsáveis, inspeções, manutenções e anexos da apresentação LaTeX.
+- Começar pelo livro de inspeção/liberação de balancim ou andaime suspenso.
+- Usar os manuais e documentos fornecidos pelo usuário como fontes rastreáveis, sem inferir dados técnicos ausentes.
+- Criar depois o módulo específico de elevador cremalheira, com campos e checklists próprios.
+- Validar completude e consistência dos dados sem declarar conformidade legal ou de engenharia automaticamente.
+
+**Saída esperada:** um projeto técnico gerado por modelo, editável como formulários, dados e LaTeX, com anexos e manifesto versionado.
+
 ## Etapa 4 — Extensibilidade
 
 - Validar a separação dos módulos internos em uso real.
