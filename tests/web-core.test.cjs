@@ -69,4 +69,6 @@ test("valida formato e limites de backup local", () => {
   assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify({ ...valid, formatVersion: 2 }) + ", 0, 100)", context), /inválido/);
   const oversized = { format: "forge-local-backup", formatVersion: 1, projects: [{ id: "p2", name: "Grande", files: { "main.tex": "x".repeat(5*1024*1024+1) } }] };
   assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(oversized) + ", 0, 100)", context), /5 MB/);
+  const multibyte = { format: "forge-local-backup", formatVersion: 1, projects: [{ id: "p3", name: "Unicode", files: { "main.tex": "é".repeat(3*1024*1024) } }] };
+  assert.match(vm.runInContext("ForgeCore.validateBackupPayload(" + JSON.stringify(multibyte) + ", 0, 100)", context), /5 MB/);
 });
