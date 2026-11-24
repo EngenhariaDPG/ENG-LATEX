@@ -1,13 +1,13 @@
-# FORGE Project Archive v1 — proposta de interoperabilidade
+# FORGE Project Archive v1 — proposta revisada
 
-**Status: PROPOSTA para revisão conjunta IA 1 (Android) / IA 2 (Web). Não aprovada pelo responsável.**  
-**Objetivo:** estabelecer um formato portátil de intercâmbio entre os clientes Android e Web, sem compartilhar componentes de interface, implementação de armazenamento ou provedor de nuvem.
+**Status: PROPOSTA REVISADA após resposta A–I da IA 1 (Android), ainda NÃO APROVADA pelo responsável.**  
+**Objetivo:** estabelecer um formato portátil de intercâmbio entre os clientes Android e Web, sem compartilhar UI, implementação de armazenamento ou provedor de nuvem.
 
-## 1. Decisão proposta
+## 1. Unidade de intercâmbio
 
-Adotar um arquivo ZIP versionado como unidade de exportação/importação do projeto. O ZIP contém um manifesto `forge-project.json` na raiz e os arquivos do projeto sob `files/`.
+Adotar, como candidato, um ZIP versionado como unidade de exportação/importação do projeto. O ZIP contém um manifesto \`forge-project.json\` na raiz e os arquivos listados sob \`files/\`.
 
-```text
+\`\`\`text
 meu-projeto.forge.zip
 ├── forge-project.json
 └── files/
@@ -16,15 +16,15 @@ meu-projeto.forge.zip
     │   └── introducao.tex
     └── imagens/
         └── figura-01.png
-```
+\`\`\`
 
-Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo `files/`. A localização física dentro do ZIP é `files/{path}`.
+Os caminhos declarados no manifesto são relativos à raiz lógica do projeto, sem o prefixo físico \`files/\`. A entrada ZIP de um arquivo é \`files/{path}\`. O pacote não é API HTTP, formato de armazenamento interno, backup JSON local nem promessa de compilação.
 
 ## 2. Manifesto candidato
 
-O esquema normativo inicial está em [forge-project-v1.schema.json](./forge-project-v1.schema.json). Exemplo ilustrativo:
+O schema JSON Schema Draft 2020-12 está em [forge-project-v1.schema.json](./forge-project-v1.schema.json). Exemplo ilustrativo:
 
-```json
+\`\`\`json
 {
   "format": "forge-project",
   "formatVersion": "1.0.0",
@@ -53,67 +53,83 @@ O esquema normativo inicial está em [forge-project-v1.schema.json](./forge-proj
     }
   ]
 }
-```
+\`\`\`
 
-Os valores de hash e tamanho acima são exemplos ilustrativos, não arquivos reais.
+Hashes e tamanhos são ilustrativos. O projeto deve listar pelo menos um arquivo. \`entryFile\` deve apontar exatamente para um único arquivo listado e esse arquivo deve ser \`encoding=utf-8\`.
 
-## 3. Semântica proposta
+## 3. Semântica candidata
 
-- `format` identifica o tipo de pacote; `formatVersion` versiona a estrutura do arquivo, independentemente da versão do app.
-- `project.id` é um identificador estável do projeto. Importar/exportar não deve gerar um ID novo silenciosamente; duplicação deve ser uma ação explícita do usuário.
-- `entryFile` aponta para um caminho declarado em `files`.
-- `files[].path` é único, relativo, normalizado e usa separador `/` (POSIX), independentemente do sistema operacional.
-- `encoding=utf-8` indica bytes UTF-8 válidos; `binary` indica conteúdo opaco, preservado byte a byte.
-- `sizeBytes` e `sha256` são calculados sobre os bytes descompactados do arquivo, não sobre o ZIP.
-- O manifesto é UTF-8. Datas são ISO 8601 com fuso explícito.
-- Arquivos não listados no manifesto não fazem parte do projeto e devem ser rejeitados ou reportados na importação; não devem ser incorporados silenciosamente.
-- O pacote não contém tokens, credenciais, identificadores de conta, estado OAuth, estado de sincronização, ETags ou IDs específicos de Google Drive.
+- \`format\` identifica o tipo de pacote; \`formatVersion\` versiona o formato, independentemente da versão do aplicativo.
+- \`project.id\` é UUID v4 estável. Exportar/importar preserva o ID. Duplicar é uma ação explícita e cria ID novo.
+- \`entryFile\` é caminho lógico relativo e deve corresponder exatamente a um descritor em \`files[]\`; o arquivo de entrada precisa ser texto UTF-8 válido.
+- \`files[].path\` é relativo, usa separador \`/\` (POSIX) e não inclui o prefixo físico \`files/\`.
+- Caminhos devem ser normalizados em Unicode NFC e comparados para colisão usando Unicode Default Case Folding. Colisões após normalização/case-folding são inválidas, mesmo se o sistema de arquivos de origem aceitar os nomes distintos.
+- \`encoding=utf-8\` exige bytes UTF-8 válidos; \`binary\` indica conteúdo opaco, preservado byte a byte.
+- \`sizeBytes\` e \`sha256\` são calculados sobre os bytes descompactados, não sobre o ZIP. O hash é SHA-256 hexadecimal minúsculo.
+- O manifesto é UTF-8; datas são ISO 8601 com fuso explícito.
+- O pacote deve conter somente o manifesto e as entradas de arquivo listadas. Entradas de arquivo não listadas são rejeitadas, não incorporadas silenciosamente.
+- Não há credenciais, tokens, identificadores de conta, estado OAuth, estado de sincronização, ETags ou IDs de Google Drive no pacote.
 
-## 4. Segurança e portabilidade
+## 4. Arquivos, nomes e diretórios
 
-Importadores devem validar o ZIP antes de gravar qualquer arquivo:
+- Preservar arquivos textuais e binários, inclusive imagens, fontes, \`.bib\`, \`.sty\`, \`.cls\` e outros recursos necessários ao projeto.
+- Nomes Unicode são permitidos, desde que passem pela normalização e regras de colisão.
+- Arquivos ocultos comuns do projeto podem ser incluídos. O exportador deve excluir metadados internos do app, \`.git\` e caches. Suspeita de credenciais/segredos deve gerar aviso e confirmação explícita; nunca exportar conteúdo sensível silenciosamente.
+- A v1 não preserva diretórios vazios. Diretórios são inferidos dos caminhos dos arquivos. Entradas ZIP de diretório, quando presentes como estrutura, não criam pastas vazias no projeto importado.
+- Symlinks, hardlinks e arquivos especiais (dispositivos, sockets, FIFOs ou tipos não regulares) são rejeitados. A importação não executa scripts, macros ou compilação.
+- Não são definidos limites numéricos compartilhados nesta revisão. O limite Android atual de importação de um único \`.tex\` (2 MB) não define limite de ZIP/projeto; os limites do backup JSON exclusivo da Web também não se aplicam ao ZIP.
 
-1. Rejeitar caminhos absolutos, letras de unidade, segmentos `.` ou `..`, barras invertidas, NUL, caminhos vazios e entradas fora de `files/` (exceto o manifesto).
-2. Rejeitar symlinks, hardlinks, arquivos especiais, entradas duplicadas e colisões de nomes que não sejam portáveis entre sistemas de arquivos case-sensitive/case-insensitive.
-3. Validar manifesto, versão, referências, tamanhos, quantidade de entradas e hashes antes de confirmar a importação.
-4. Aplicar limites explícitos de tamanho comprimido/descomprimido, quantidade de arquivos, profundidade e razão de compressão. Os valores máximos precisam ser definidos por produto antes da implementação.
-5. Extrair em área temporária isolada e só confirmar o projeto depois de todas as verificações; falha não pode deixar importação parcial silenciosa.
-6. Não executar scripts, macros ou compilação durante a importação.
+## 5. Segurança e atomicidade
 
-## 5. Separação entre arquivo, domínio e sincronização
+O importador precisa validar o pacote inteiro antes de gravar no armazenamento definitivo:
 
-Este formato é um **formato de intercâmbio**, não uma API HTTP e não um formato interno obrigatório de armazenamento.
+1. Aceitar somente \`forge-project.json\` na raiz e arquivos listados sob \`files/{path}\`; rejeitar entradas extras.
+2. Rejeitar caminhos absolutos, letras de unidade, segmentos vazios, \`.\` ou \`..\`, barras invertidas, NUL/caracteres de controle, prefixos inesperados e colisões após NFC + case-folding.
+3. Rejeitar symlinks, hardlinks, arquivos especiais, entradas duplicadas e tipos de arquivo não regulares.
+4. Validar schema, UUID v4, \`entryFile\`, codificação UTF-8, tamanho descompactado, SHA-256 e correspondência biunívoca entre manifesto e entradas ZIP.
+5. Definir e aplicar limites para tamanho comprimido/descomprimido, tamanho por arquivo, quantidade de arquivos, profundidade, comprimento de caminho, tamanho do manifesto e razão de compressão. **Os valores numéricos continuam pendentes de decisão e medição em ambos os clientes.**
+6. Detectar ZIP bombs e abortar antes de exceder memória, disco ou quota.
+7. Extrair para área temporária isolada; confirmar o projeto em operação atômica somente depois de todas as verificações. Falha não pode deixar importação parcial silenciosa.
+8. Não executar nem compilar qualquer conteúdo importado.
+
+O JSON Schema verifica estrutura e alguns campos; não consegue, sozinho, comprovar hashes, bytes, referências entre campos, unicidade de caminhos após normalização, tipo real da entrada ZIP ou limites do arquivo compactado. Essas validações são obrigatórias no importador.
+
+## 6. IDs, duplicação e conflito de importação
+
+- Exportar/importar preserva UUID v4 do projeto.
+- Duplicar cria UUID v4 novo.
+- Se o ID importado já existir localmente, nunca substituir silenciosamente. O produto deverá oferecer cancelar, abrir/manter o existente, importar como cópia com ID novo ou substituir após confirmação inequívoca.
+- A escolha de resolução deve preservar o conteúdo local até a confirmação.
+- Revisões monotônicas, conflitos de sincronização, rename/delete concorrente, lixeira e colaboração simultânea não são definidos pelo ZIP e dependem de decisão separada.
+
+## 7. Separação entre arquivo, domínio e sincronização
 
 - **Arquivo ZIP:** manifesto e bytes de cada arquivo, sem dados de provedor.
-- **Modelo de domínio:** projeto, metadados e operações sobre arquivos. Pode ser representado por objetos/DTOs, sem obrigar a carregar todos os conteúdos em uma única resposta.
+- **Modelo de domínio:** projeto, metadados e operações sobre arquivos; não obriga carregar todos os conteúdos numa única resposta.
 - **Adaptador de armazenamento:** IndexedDB/arquivos locais/Drive ou outro provedor aprovado. Metadados remotos e estado de sync ficam fora do ZIP.
 - **Adaptador de compilação:** capacidade independente, opcional e descoberta explicitamente; o pacote não promete compilação.
 
-A proposta atual da Web em `product-api-v1.json` embute conteúdo de arquivo no objeto de projeto e inclui campos de storage. Isso é útil como rascunho de DTO, mas não deve ser confundido com o manifesto portátil. Recomenda-se separar DTOs/operações de domínio do formato ZIP antes de declarar um contrato compartilhado.
+A proposta Web anterior em \`product-api-v1.json\` embute conteúdo de arquivo no objeto de projeto e inclui campos de storage. É um rascunho de DTO, não manifesto portátil nem API compartilhada aprovada. DTOs/operações de domínio devem permanecer separados da serialização ZIP.
 
-## 6. Operações e conflitos — ainda pendentes
+## 8. Estado Android informado pela IA 1
 
-Operações candidatas: criar projeto, listar projetos, abrir projeto, listar arquivos, ler arquivo, gravar arquivo, criar/mover/renomear/excluir arquivo, importar ZIP, exportar ZIP e consultar capacidades.
+Na resposta A–I registrada em \`docs/AI-COLLABORATION.txt\`:
 
-A semântica de revisão e sincronização precisa ser aprovada em separado. Proposta inicial para discussão:
+- O plano Android considera ZIP + \`forge-project.json\` apenas como candidato; não há contrato JSON/ZIP implementado no app.
+- O app Android atual lista/cria projetos locais, importa um \`.tex\` de até 2 MB, edita \`main.tex\` e usa armazenamento privado via \`expo-file-system\`. Não há árvore multi-arquivo, import/export de projeto, backup ou sync.
+- IDs Android ainda são temporários, baseados em horário/aleatoriedade; UUID v4 precisa ser adotado antes do ZIP.
+- A prova de compilação Android não foi executada; não há engine integrada nem botão de compilação. A hipótese Tectonic/TeXslate ainda requer prova real em Development Build/dispositivo.
+- Drive/OAuth, estados remotos e sincronização não estão implementados.
+- \`PROJECT-ARCHIVE-V1.md\` foi aceito pela IA 1 como base de discussão, com os ajustes acima, mas não como contrato normativo.
 
-- gravações locais incrementam uma revisão local monotônica;
-- cada arquivo pode ter hash de conteúdo;
-- sincronização compara versão remota conhecida e revisão/hash local;
-- se a origem remota mudou desde a última leitura, não sobrescrever: preservar as duas versões e marcar conflito;
-- resolução de conflito é explícita, sem merge automático de LaTeX no MVP;
-- falhas de rede mantêm o conteúdo local e uma operação pendente idempotente;
-- erros devem ter código estável, mensagem para usuário e contexto técnico sem conteúdo do documento.
+## 9. Decisões ainda necessárias do responsável
 
-Ainda faltam acordo sobre identificador de revisão remota, operações atômicas, resolução de rename/delete concorrente, política de lixeira e suporte a colaboração simultânea.
+1. Aprovar ou ajustar ZIP + manifesto como formato canônico de intercâmbio.
+2. Aprovar UUID v4 estável e os fluxos de colisão/importação (cancelar, abrir, copiar, substituir).
+3. Confirmar política de arquivos ocultos, exclusão de \`.git\`/cache/metadados e aviso de possíveis segredos.
+4. Confirmar que diretórios vazios ficam fora da v1.
+5. Definir limites numéricos compartilhados após medições Android/Web.
+6. Definir política de compatibilidade de versões do manifesto e importadores.
+7. Decidir separadamente se e quando revisão monotônica, sincronização e resolução de conflitos entram no produto.
 
-## 7. Perguntas para a IA 1 e para o responsável
-
-1. A IA 1 confirma que o plano Android pretende usar ZIP com `forge-project.json` na raiz?
-2. O layout `files/{path}` e a lista de descritores atendem ao import/export Android?
-3. O projeto precisa suportar arquivos ocultos, pastas vazias, symlinks ou recursos não-LaTeX? A proposta inicial exclui symlinks e não representa pastas vazias.
-4. O identificador do projeto deve ser UUID e permanecer estável ao duplicar/importar?
-5. Quais limites de tamanho/quantidade devem valer em Android e Web?
-6. O responsável aprova este formato como base de intercâmbio ou solicita ajustes?
-
-**Até aprovação conjunta:** este documento e o JSON Schema são apenas propostas. Nenhum cliente deve depender deles como contrato final; Drive, OAuth, sincronização e compilação permanecem fora do escopo implementado.
+**Até a decisão do responsável:** este documento e o schema são propostas revisadas, não contrato final. Nenhum cliente deve depender deles como formato normativo. Drive, OAuth, sincronização e compilação permanecem fora do escopo implementado.
