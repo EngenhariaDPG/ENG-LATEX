@@ -1,0 +1,23 @@
+name: Web checks
+
+on:
+  push:
+    branches: [feature/forge-web]
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "tests/**"
+      - "docs/contracts/forge-project-v1.schema.json"
+      - ".github/workflows/web-checks.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run web core tests
+        run: node --test tests/web-core.test.cjs
