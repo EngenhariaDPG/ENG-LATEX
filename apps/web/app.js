@@ -5,7 +5,7 @@ let projects=seed.map(p=>({...p,files:{...p.files}})),current=projects[0],saveTi
 current.activeFile=Object.keys(current.files)[0];
 const $=s=>document.querySelector(s);
 const {validProjectPath,validProjectRecord}=ForgeCore;
-function createProjectId(){if(window.crypto&&window.crypto.randomUUID)return window.crypto.randomUUID();const bytes=new Uint8Array(16);if(window.crypto&&window.crypto.getRandomValues)window.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;const hex=Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("");return hex.slice(0,8)+"-"+hex.slice(8,12)+"-"+hex.slice(12,16)+"-"+hex.slice(16,20)+"-"+hex.slice(20)}
+function createProjectId(){let id;do{if(window.crypto&&window.crypto.randomUUID)id=window.crypto.randomUUID();else{const bytes=new Uint8Array(16);if(window.crypto&&window.crypto.getRandomValues)window.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;const hex=Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("");id=hex.slice(0,8)+"-"+hex.slice(8,12)+"-"+hex.slice(12,16)+"-"+hex.slice(16,20)+"-"+hex.slice(20)}}while(projects.some(project=>project.id===id));return id}
 function normalizeProjectIds(){const seen=new Set();let changed=false;for(const project of projects){if(!ForgeCore.isUuidV4(project.id)||seen.has(project.id)){project.id=createProjectId();changed=true}seen.add(project.id)}return changed}
 function notify(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2200)}
 
