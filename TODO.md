@@ -1,12 +1,12 @@
 # TODO — primeiro módulo técnico do FORGE
 
-## Criar projeto técnico de balancim/andaime suspenso
+## Concluído — criar projeto técnico de balancim/andaime suspenso
 
-O usuário deve conseguir iniciar um projeto técnico a partir do workspace existente, preencher equipamento, fabricante/modelo, empresa emitente, cliente, obra, ART, responsável e data, e receber um projeto local com manifesto técnico, dados estruturados e capítulos LaTeX iniciais. O projeto deve continuar editável no editor LaTeX e aparecer junto aos demais projetos.
+O usuário consegue iniciar um projeto técnico a partir do workspace existente, preencher equipamento, fabricante/modelo, empresa emitente, cliente, obra, ART, responsável e data, e receber um projeto local com manifesto técnico, dados estruturados e capítulos LaTeX iniciais. O projeto continua editável no editor LaTeX e aparece junto aos demais projetos. Cobertura: 13 testes Node e smoke test de navegador aprovados.
 
-## Preservar dados técnicos no armazenamento local
+## Concluído — preservar dados técnicos no armazenamento local
 
-O metadado técnico deve ser salvo junto ao projeto no IndexedDB ou fallback localStorage, incluído em backup/restauração e mantido quando o usuário troca arquivos ou reabre o projeto.
+O metadado técnico é salvo junto ao projeto no IndexedDB ou fallback localStorage, incluído em backup/restauração e mantido quando o usuário troca arquivos ou reabre o projeto.
 
 ## Manter limites explícitos
 
