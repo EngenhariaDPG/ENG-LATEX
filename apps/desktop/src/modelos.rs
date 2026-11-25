@@ -445,7 +445,7 @@ ART: \var{art}
   "status": "draft",
   "revision": 1,
   "entryFile": "main.tex",
-  "dataFiles": ["dados/equipamento.json", "registros/inspecoes.json", "registros/manutencoes.json"],
+  "dataFiles": ["dados/empresa.json", "dados/obra.json", "dados/equipamento.json", "registros/inspecoes.json", "registros/manutencoes.json"],
   "sourceDocuments": []
 }
 "##.into()),
@@ -465,6 +465,8 @@ ART: \var{art}
   "status": "draft"
 }
 "##.into()),
+            ("dados/empresa.json".into(), "{\n  \"name\": \"\",\n  \"art\": \"\"\n}\n".into()),
+            ("dados/obra.json".into(), "{\n  \"client\": \"\",\n  \"name\": \"\",\n  \"address\": \"\"\n}\n".into()),
             ("registros/inspecoes.json".into(), "[]\n".into()),
             ("registros/manutencoes.json".into(), "[]\n".into()),
             ("capitulos/abertura.tex".into(), r##"\section{Termo de abertura}
@@ -579,6 +581,8 @@ mod testes {
         for esperado in [
             "main.tex",
             "manifest.json",
+            "dados/empresa.json",
+            "dados/obra.json",
             "dados/equipamento.json",
             "registros/inspecoes.json",
             "registros/manutencoes.json",
@@ -601,5 +605,7 @@ mod testes {
         let manifesto = arquivos.iter().find(|(nome, _)| nome == "manifest.json").unwrap();
         assert!(manifesto.1.contains("technical-project-1.0.0"));
         assert!(manifesto.1.contains("forge.suspended-platform.inspection-book"));
+        let inspeccoes = arquivos.iter().find(|(nome, _)| nome == "registros/inspecoes.json").unwrap();
+        assert!(inspeccoes.1.contains("[]"));
     }
 }

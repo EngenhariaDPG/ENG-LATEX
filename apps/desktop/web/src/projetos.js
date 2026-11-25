@@ -263,7 +263,10 @@ async function criarLivroTecnico() {
   try {
     const { id } = await api.criarProjeto(nome, "livro_balancim");
     await api.gravarVariaveis(id, variaveis);
-    await api.gravarArquivo(id, "dados/equipamento.json", `${JSON.stringify({
+    await Promise.all([
+      api.gravarArquivo(id, "dados/empresa.json", `${JSON.stringify({ name: dados.empresa, art: dados.art || "ART não informada" }, null, 2)}\n`),
+      api.gravarArquivo(id, "dados/obra.json", `${JSON.stringify({ client: dados.cliente, name: dados.obra, address: "" }, null, 2)}\n`),
+      api.gravarArquivo(id, "dados/equipamento.json", `${JSON.stringify({
       equipmentType: dados.equipamento,
       manufacturer: dados.fabricante,
       model: dados.modelo,
@@ -277,7 +280,14 @@ async function criarLivroTecnico() {
       professionalRegistration: dados.registro,
       documentDate: dados.data,
       status: "draft",
-    }, null, 2)}\n`);
+      }, null, 2)}\n`),
+      api.gravarArquivo(id, "registros/inspecoes.json", `${JSON.stringify([
+        { item: "Estrutura e plataforma", status: "a_verificar", observation: "" },
+        { item: "Cabos, guincho e trava-quedas", status: "a_verificar", observation: "" },
+        { item: "Guarda-corpo, piso e rodapés", status: "a_verificar", observation: "" },
+        { item: "Dispositivos de segurança", status: "a_verificar", observation: "" },
+      ], null, 2)}\n`),
+    ]);
     location.hash = `#/p/${encodeURIComponent(id)}?variaveis=1`;
   } catch (e) { aviso(e.message, "erro", 6000); }
 }
