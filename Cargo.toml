@@ -1,6 +1,6 @@
 [package]
 name = "eng-latex"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 description = "Eng LaTeX - editor LaTeX offline no estilo Overleaf"
 

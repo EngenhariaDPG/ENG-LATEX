@@ -10,7 +10,7 @@
 //!
 //! Itens que começam com ponto ficam ocultos na árvore de arquivos.
 
-use crate::{modelos, EstadoRef};
+use crate::{documentacao, modelos, EstadoRef};
 use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
 use std::path::{Component, Path, PathBuf};
@@ -124,7 +124,15 @@ pub fn validar_relativo(rel: &str) -> Resultado<PathBuf> {
 }
 
 /// Pasta de um projeto, conferindo que o id é válido e que a pasta existe.
+///
+/// Ids no formato `doc:<documento>:<revisão>` são revisões da aba
+/// "Documentação técnica" e ficam em `Documentos\EngLaTeX\Documentacao`
+/// (veja o módulo `documentacao`). Todo o resto do programa trata essas
+/// revisões como projetos comuns.
 pub fn pasta_projeto(estado: &EstadoRef, id: &str) -> Resultado<PathBuf> {
+    if let Some((documento, versao)) = documentacao::separar_id(id) {
+        return documentacao::pasta_versao(estado, documento, versao);
+    }
     if id.is_empty() || id != limpar_nome(id) {
         return Err("Projeto inválido.".into());
     }
@@ -284,20 +292,25 @@ fn nome_livre(estado: &EstadoRef, base: &str) -> String {
 /// do usuário ("usuario:Nome do modelo").
 pub fn criar_projeto(estado: &EstadoRef, nome: &str, modelo: &str) -> Resultado<String> {
     let id = nome_livre(estado, nome);
-    let pasta = estado.pasta_projetos.join(&id);
+    criar_projeto_em(&estado.pasta_projetos.join(&id), &id, modelo, estado)?;
+    Ok(id)
+}
 
+/// Cria os arquivos de um projeto novo na pasta `pasta` (que ainda não pode existir).
+/// `titulo` vai para o título do documento nos modelos prontos.
+/// Usada por "Novo projeto" e pela primeira revisão de um documento técnico.
+pub fn criar_projeto_em(pasta: &Path, titulo: &str, modelo: &str, estado: &EstadoRef) -> Resultado<()> {
     if let Some(nome_modelo) = modelo.strip_prefix("usuario:") {
         let origem = estado.pasta_modelos.join(limpar_nome(nome_modelo));
         if !origem.is_dir() {
             return Err("Modelo não encontrado.".into());
         }
-        copiar_pasta(&origem, &pasta).map_err(|e| e.to_string())?;
-        gerar_variaveis(&pasta)?;
-        return Ok(id);
+        copiar_pasta(&origem, pasta).map_err(|e| e.to_string())?;
+        return gerar_variaveis(pasta);
     }
 
-    std::fs::create_dir_all(&pasta).map_err(|e| e.to_string())?;
-    let (arquivos, variaveis) = modelos::arquivos(modelo, &id);
+    std::fs::create_dir_all(pasta).map_err(|e| e.to_string())?;
+    let (arquivos, variaveis) = modelos::arquivos(modelo, titulo);
     for (rel, conteudo) in arquivos {
         let destino = pasta.join(rel);
         if let Some(pai) = destino.parent() {
@@ -306,9 +319,8 @@ pub fn criar_projeto(estado: &EstadoRef, nome: &str, modelo: &str) -> Resultado<
         std::fs::write(destino, conteudo).map_err(|e| e.to_string())?;
     }
     let cfg = ConfigProjeto { arquivo_principal: "main.tex".into(), variaveis, ..Default::default() };
-    gravar_config(&pasta, &cfg)?;
-    gerar_variaveis(&pasta)?;
-    Ok(id)
+    gravar_config(pasta, &cfg)?;
+    gerar_variaveis(pasta)
 }
 
 /// Na primeira execução (sem nenhum projeto), cria um projeto de demonstração.
@@ -319,6 +331,9 @@ pub fn criar_exemplo_se_vazio(estado: &EstadoRef) {
 }
 
 pub fn renomear_projeto(estado: &EstadoRef, id: &str, novo: &str) -> Resultado<String> {
+    if documentacao::eh_id_versao(id) {
+        return Err("Esta é uma revisão de um documento técnico. Para mudar o nome ou o código da revisão, use a aba Documentação técnica.".into());
+    }
     let origem = pasta_projeto(estado, id)?;
     let novo_id = limpar_nome(novo);
     if novo_id == id {
@@ -334,6 +349,9 @@ pub fn renomear_projeto(estado: &EstadoRef, id: &str, novo: &str) -> Resultado<S
 /// Exclui um projeto. Para evitar perdas, ele é movido para a pasta
 /// `Documentos\EngLaTeX\Lixeira` em vez de ser apagado de vez.
 pub fn excluir_projeto(estado: &EstadoRef, id: &str) -> Resultado<()> {
+    if documentacao::eh_id_versao(id) {
+        return Err("Esta é uma revisão de um documento técnico. Exclua-a pela aba Documentação técnica.".into());
+    }
     let origem = pasta_projeto(estado, id)?;
     let lixeira = estado.pasta_dados.join("Lixeira");
     std::fs::create_dir_all(&lixeira).map_err(|e| e.to_string())?;
@@ -348,7 +366,8 @@ pub fn excluir_projeto(estado: &EstadoRef, id: &str) -> Resultado<()> {
 
 /// Copia uma pasta inteira (usada para duplicar projetos e criar modelos).
 /// Ignora a pasta de saída e o histórico de versões (a cópia começa "limpa").
-fn copiar_pasta(origem: &Path, destino: &Path) -> std::io::Result<()> {
+/// Também usada para criar uma nova revisão de documento técnico.
+pub fn copiar_pasta(origem: &Path, destino: &Path) -> std::io::Result<()> {
     std::fs::create_dir_all(destino)?;
     for e in std::fs::read_dir(origem)?.flatten() {
         let nome = e.file_name();
@@ -367,7 +386,9 @@ fn copiar_pasta(origem: &Path, destino: &Path) -> std::io::Result<()> {
 
 pub fn duplicar_projeto(estado: &EstadoRef, id: &str) -> Resultado<String> {
     let origem = pasta_projeto(estado, id)?;
-    let novo = nome_livre(estado, &format!("{id} - cópia"));
+    // Duplicar uma revisão de documento técnico gera um projeto comum
+    // chamado "Documento - Rev. 01 - cópia".
+    let novo = nome_livre(estado, &format!("{} - cópia", documentacao::nome_exibicao(id)));
     copiar_pasta(&origem, &estado.pasta_projetos.join(&novo)).map_err(|e| e.to_string())?;
     Ok(novo)
 }

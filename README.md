@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="release/EngLaTeX-1.1-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.1 para Windows (.zip, 35 MB)</b></a>
+  <a href="release/EngLaTeX-1.2-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.2 para Windows (.zip)</b></a>
 </p>
 
 ---
@@ -32,7 +32,7 @@
 
 ## 1. Para quem só quer usar
 
-1. Baixe **[release/EngLaTeX-1.1-Windows.zip](release/EngLaTeX-1.1-Windows.zip)**.
+1. Baixe **[release/EngLaTeX-1.2-Windows.zip](release/EngLaTeX-1.2-Windows.zip)**.
 2. Descompacte a pasta inteira (ex.: `C:\EngLaTeX`). Não tire o `EngLaTeX.exe` de dentro dela.
 3. Abra o `EngLaTeX.exe`.
 
@@ -42,7 +42,7 @@ Na primeira execução o SmartScreen pode avisar ("o Windows protegeu o computad
 O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e também vai dentro do .zip.
 
 **Onde ficam os dados do usuário:** `Documentos\EngLaTeX\`
-(`Projetos\`, `Modelos\`, `Lixeira\`, `config.json`, `dicionario-pessoal.txt`, `englatex.log`).
+(`Projetos\`, `Modelos\`, `Documentacao\`, `Lixeira\`, `config.json`, `dicionario-pessoal.txt`, `englatex.log`).
 
 ## 2. Funcionalidades
 
@@ -59,6 +59,7 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 | Variáveis | Tabela de variáveis por projeto; no texto `\var{nome}`; gera `variaveis.tex` portátil (compila no Overleaf também) |
 | Modelos | Modelos prontos (artigo, memorial de cálculo, laudo técnico, Beamer) e "Salvar como modelo" de qualquer projeto |
 | Referências | Gerenciador de `.bib`: livro, artigo, **norma ABNT/NBR**, site, tese, relatório, manual; busca por **DOI**; colar BibTeX; cria `\bibliography` sozinho |
+| Documentação técnica | Aba na tela inicial para documentos com **várias revisões** (Rev. 00, Rev. 01...): cada revisão é um projeto completo; "Nova revisão" copia a escolhida e sugere o código seguinte; situação (em elaboração, emitida, aprovada...); variáveis automáticas `\var{revisao}`, `\var{data_revisao}`, `\var{tabela_revisoes}`... |
 | Histórico | Versões automáticas ao compilar e versões com nome; comparação lado a lado; restaurar arquivo ou projeto |
 | Corretor | Hunspell (pt_BR e en_US inclusos; outros idiomas baixados no programa); **vários idiomas no mesmo documento** (`otherlanguage`, `\foreignlanguage`, `\selectlanguage`) |
 | Interface | Português, inglês e espanhol |
@@ -91,6 +92,10 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
   - `.saida\`: PDF, log, aux e synctex gerados
   - `.historico\`: versões salvas (`<n>\` com os arquivos e `<n>.json` com os dados)
   - `variaveis.tex`: gerado a partir da tabela de variáveis (não editar à mão)
+- Cada **documento técnico** é uma pasta em `Documentos\EngLaTeX\Documentacao\<documento>`:
+  - `.documento.json`: nome, cliente e a lista de revisões (código, situação, data, responsável, descrição, origem)
+  - `Rev. 00\`, `Rev. 01\`...: cada revisão é um projeto comum (mesma estrutura acima)
+  - No editor e na API, uma revisão tem o id `doc:<documento>:<pasta da revisão>` (o `:` não existe em nomes de pasta do Windows, então não se confunde com projeto). `projetos::pasta_projeto` traduz esse id para a pasta, por isso todas as rotas `/api/p/:id/...` funcionam com revisões sem mudança.
 - Itens que começam com `.` não aparecem na árvore de arquivos e não vão para o .zip exportado.
 
 ## 4. Estrutura do repositório
@@ -106,6 +111,7 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 │   ├── api.rs                   TODAS as rotas HTTP (lista documentada no topo)
 │   ├── projetos.rs              projetos, arquivos, variáveis, modelos do usuário, zip
 │   ├── historico.rs             histórico de versões
+│   ├── documentacao.rs          documentos técnicos com várias revisões (com testes)
 │   ├── compilador.rs            Tectonic/latexmk/direto + leitura do log (com testes)
 │   ├── synctex.rs               PDF ↔ código
 │   ├── ortografia.rs            corretor Hunspell + catálogo/download de dicionários
@@ -128,6 +134,7 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 │       ├── variaveis.js         tabela de variáveis
 │       ├── referencias.js       gerenciador de .bib
 │       ├── historico.js         tela do histórico
+│       ├── documentacao.js      aba "Documentação técnica" (documentos e revisões)
 │       ├── contagem.js          contagem de palavras
 │       ├── ortografia.js        sublinhado, sugestões, trechos em outros idiomas
 │       ├── visualizador.js      PDF (pdf.js) e destaque SyncTeX
@@ -140,7 +147,7 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 ├── ferramentas/
 │   └── empacotar.sh             monta o pacote de distribuição .zip
 └── release/
-    └── EngLaTeX-1.1-Windows.zip pacote pronto para uso
+    └── EngLaTeX-1.2-Windows.zip pacote pronto para uso
 ```
 
 ## 5. Como compilar
@@ -245,13 +252,15 @@ Estas regras valem para qualquer pessoa ou IA que for mexer no projeto.
 | **Novo tipo de referência** | `web/src/referencias.js`: `TIPOS` (e `CAMPOS` se precisar de campo novo) |
 | **Elemento novo no modo visual** | `web/src/visual.js`: função `calcular()` |
 | **Novo compilador/motor** | `src/compilador.rs`: `compilar_interno()` (escolha do `modo`) e `disponiveis()` |
+| **Nova situação de revisão** | `src/documentacao.rs` (`SITUACOES`) + `web/src/documentacao.js` (`SITUACOES`, e `FECHADAS` se for "entregue") + cor em `estilo.css` (`.situacao-<chave>`) + texto no `i18n.js` |
+| **Nova variável automática de revisão** | `src/documentacao.rs`: `atualizar_variaveis()` (e a lista no topo do arquivo e no LEIA-ME) |
 | **Mudar regras do histórico** | `src/historico.rs`: `INTERVALO_AUTOMATICO`, `MAX_AUTOMATICAS`, `EXTENSOES` |
 | **Nova configuração** | `src/config.rs` (com default) + `web/src/configuracoes.js` + textos no `i18n.js` |
 | **Atualizar o cache offline do Tectonic** | compile documentos com os pacotes desejados usando `TECTONIC_CACHE_DIR=<pasta>` (com uma pasta pessoal limpa, para baixar também os arquivos de formato) e rode `CACHE_TECTONIC=<pasta> ferramentas/empacotar.sh` |
 
 ## 8. Como testar
 
-1. **Testes automáticos do Rust:** `cargo test` (leitura do log do LaTeX, em `compilador.rs`).
+1. **Testes automáticos do Rust:** `cargo test` (leitura do log do LaTeX em `compilador.rs`; códigos de revisão, ids e tabela de revisões em `documentacao.rs`).
 2. **Teste manual pelo navegador**, sem precisar de Windows:
    ```bash
    (cd web && npm run build) && cargo build
@@ -266,6 +275,7 @@ Estas regras valem para qualquer pessoa ou IA que for mexer no projeto.
    - [ ] botão direito → inserir tabela (colando do Excel), imagem, equação
    - [ ] corretor sublinha e sugere; trecho em `otherlanguage{english}` verificado em inglês
    - [ ] histórico: salvar versão, comparar, restaurar
+   - [ ] documentação técnica: novo documento, nova revisão (código sugerido), marcar como emitida, abrir (pergunta), `\var{tabela_revisoes}` no PDF, excluir revisão
    - [ ] referências: cadastrar norma NBR, citar, compilar (bibliografia aparece)
    - [ ] interface em inglês e espanhol (Configurações → Idioma da interface)
    - [ ] **sem internet**: compilar um projeto novo (usa só o cache)

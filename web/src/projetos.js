@@ -1,14 +1,24 @@
-// Tela inicial: lista de projetos e de modelos (como o painel do Overleaf).
+// Tela inicial: lista de projetos, de modelos e a documentação técnica
+// (como o painel do Overleaf).
+//
+// A aba aparece na URL (#/, #/modelos, #/documentacao, #/documentacao/<doc>),
+// assim o botão "casa" do editor volta direto para o lugar certo.
 
 import { api } from "./api.js";
 import { icone, esc, el, dataRelativa, aviso, perguntar, confirmar, menuAbaixo, menuContexto, escolherArquivos } from "./ui.js";
 import { abrirConfiguracoes } from "./configuracoes.js";
+import { desenharDocumentos, desenharDocumento } from "./documentacao.js";
 
-/** Aba atual da tela inicial: "projetos" ou "modelos". */
-let aba = "projetos";
+/**
+ * Monta a tela inicial dentro de `raiz`.
+ * @param {string} caminho  parte da URL depois do # ("/", "/modelos", "/documentacao", "/documentacao/<doc>")
+ */
+export async function telaProjetos(raiz, caminho = "/") {
+  // Qual aba mostrar, a partir da URL.
+  const partes = caminho.split("/").filter(Boolean);
+  const aba = partes[0] === "modelos" ? "modelos" : partes[0] === "documentacao" ? "documentacao" : "projetos";
+  const documento = aba === "documentacao" && partes.length > 1 ? partes.slice(1).join("/") : null;
 
-/** Monta a tela inicial dentro de `raiz`. */
-export async function telaProjetos(raiz) {
   document.title = "Eng LaTeX";
   raiz.innerHTML = `
     <div class="tela-inicial">
@@ -22,6 +32,7 @@ export async function telaProjetos(raiz) {
           <button class="botao primario grande" id="bt-novo">${icone("mais")} Novo projeto</button>
           <button class="item-lateral" data-aba="projetos">${icone("pasta")} Todos os projetos</button>
           <button class="item-lateral" data-aba="modelos">${icone("copiar")} Meus modelos</button>
+          <button class="item-lateral" data-aba="documentacao">${icone("livro")} Documentação técnica</button>
           <div class="lateral-rodape">
             <button class="item-lateral" id="bt-importar">${icone("enviar")} Importar .zip</button>
           </div>
@@ -29,6 +40,7 @@ export async function telaProjetos(raiz) {
         <main class="inicial-conteudo">
           <div class="inicial-cabecalho">
             <h1 id="titulo-aba"></h1>
+            <div id="acoes-aba" class="acoes-aba"></div>
             <input type="search" id="busca" placeholder="Buscar…" spellcheck="false">
           </div>
           <div id="lista"></div>
@@ -39,10 +51,12 @@ export async function telaProjetos(raiz) {
   raiz.querySelector("#bt-config").onclick = () => abrirConfiguracoes();
   raiz.querySelector("#bt-novo").onclick = (e) => menuNovoProjeto(e.currentTarget);
   raiz.querySelector("#bt-importar").onclick = importar;
+  // Trocar de aba = trocar a URL (o main.js redesenha a tela).
+  const ROTAS = { projetos: "#/", modelos: "#/modelos", documentacao: "#/documentacao" };
   raiz.querySelectorAll("[data-aba]").forEach((b) => {
     b.onclick = () => {
-      aba = b.dataset.aba;
-      atualizar();
+      if (location.hash === ROTAS[b.dataset.aba]) atualizar();
+      else location.hash = ROTAS[b.dataset.aba];
     };
   });
   const busca = raiz.querySelector("#busca");
@@ -51,11 +65,16 @@ export async function telaProjetos(raiz) {
   /** Recarrega a lista da aba atual. */
   async function atualizar() {
     raiz.querySelectorAll("[data-aba]").forEach((b) => b.classList.toggle("ativo", b.dataset.aba === aba));
-    raiz.querySelector("#titulo-aba").textContent = aba === "projetos" ? "Todos os projetos" : "Meus modelos";
+    const titulo = raiz.querySelector("#titulo-aba");
+    titulo.textContent = { projetos: "Todos os projetos", modelos: "Meus modelos", documentacao: "Documentação técnica" }[aba];
+    const acoes = raiz.querySelector("#acoes-aba");
+    acoes.innerHTML = "";
     const lista = raiz.querySelector("#lista");
     try {
       if (aba === "projetos") desenharProjetos(lista, await api.projetos(), atualizar);
-      else desenharModelos(lista, (await api.modelos()).usuario, atualizar);
+      else if (aba === "modelos") desenharModelos(lista, (await api.modelos()).usuario, atualizar);
+      else if (documento) await desenharDocumento({ lista, titulo, acoes, documento, atualizar });
+      else desenharDocumentos({ lista, acoes, documentos: await api.documentos(), atualizar });
       filtrar(busca.value);
     } catch (e) {
       lista.innerHTML = `<p class="vazio">${esc(e.message)}</p>`;

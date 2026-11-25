@@ -1,6 +1,24 @@
 // Funções de acesso ao servidor local (o próprio EngLaTeX.exe).
 // Todas as rotas estão documentadas em src/api.rs.
 
+/**
+ * Revisões da aba "Documentação técnica" abrem no editor como projetos com o id
+ * `doc:<documento>:<revisão>` (veja src/documentacao.rs). Esta função separa
+ * as duas partes; devolve null se o id for de um projeto comum.
+ */
+export function separarIdRevisao(id) {
+  if (!id || !id.startsWith("doc:")) return null;
+  const resto = id.slice(4);
+  const i = resto.indexOf(":");
+  return i < 0 ? null : { documento: resto.slice(0, i), pasta: resto.slice(i + 1) };
+}
+
+/** Nome para mostrar na tela: "Documento - Rev. 01" para revisões, o próprio id para projetos. */
+export function nomeExibicao(id) {
+  const r = separarIdRevisao(id);
+  return r ? `${r.documento} - ${r.pasta}` : id;
+}
+
 /** Codifica o id do projeto para uso na URL. */
 export const urlProjeto = (id) => `/api/p/${encodeURIComponent(id)}`;
 
@@ -84,6 +102,16 @@ export const api = {
   historicoRestaurar: (id, n, caminho) => pedir("POST", `${urlProjeto(id)}/historico/${n}/restaurar`, { caminho }),
   historicoRenomear: (id, n, nome) => pedir("PUT", `${urlProjeto(id)}/historico/${n}`, { nome }),
   historicoExcluir: (id, n) => pedir("DELETE", `${urlProjeto(id)}/historico/${n}`),
+
+  // Documentação técnica (documentos com várias revisões)
+  documentos: () => pedir("GET", "/api/documentos"),
+  criarDocumento: (dados) => pedir("POST", "/api/documentos", dados),
+  documento: (doc) => pedir("GET", `/api/documentos/${encodeURIComponent(doc)}`),
+  editarDocumento: (doc, dados) => pedir("PUT", `/api/documentos/${encodeURIComponent(doc)}`, dados),
+  excluirDocumento: (doc) => pedir("DELETE", `/api/documentos/${encodeURIComponent(doc)}`),
+  criarRevisao: (doc, dados) => pedir("POST", `/api/documentos/${encodeURIComponent(doc)}/versoes`, dados),
+  editarRevisao: (doc, pasta, dados) => pedir("PUT", `/api/documentos/${encodeURIComponent(doc)}/versoes/${encodeURIComponent(pasta)}`, dados),
+  excluirRevisao: (doc, pasta) => pedir("DELETE", `/api/documentos/${encodeURIComponent(doc)}/versoes/${encodeURIComponent(pasta)}`),
 
   // Referências
   buscarDoi: (doi) => pedir("GET", `/api/doi?doi=${encodeURIComponent(doi)}`),

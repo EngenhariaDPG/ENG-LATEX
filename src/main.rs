@@ -20,6 +20,7 @@
 //! - [`modelos`]    modelos de projeto prontos (artigo, memorial, laudo...)
 //! - [`config`]     configurações globais gravadas em JSON
 //! - [`historico`]  histórico de versões dos projetos
+//! - [`documentacao`] aba "Documentação técnica": documentos com várias revisões
 //! - [`janela`]     janela nativa, diálogos de arquivo e registro de erros
 
 // No Windows (modo release) não abre a janela preta do console.
@@ -28,6 +29,7 @@
 mod api;
 mod compilador;
 mod config;
+mod documentacao;
 mod historico;
 mod janela;
 mod modelos;
@@ -99,6 +101,7 @@ fn main() {
     let pasta_modelos = pasta_dados.join("Modelos");
     let _ = std::fs::create_dir_all(&pasta_projetos);
     let _ = std::fs::create_dir_all(&pasta_modelos);
+    let _ = std::fs::create_dir_all(pasta_dados.join(documentacao::PASTA_DOCUMENTACAO));
 
     let pasta_app = std::env::current_exe()
         .ok()

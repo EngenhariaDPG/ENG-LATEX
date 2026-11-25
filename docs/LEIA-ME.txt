@@ -1,4 +1,4 @@
-ENG LATEX 1.1 - editor LaTeX offline no estilo do Overleaf
+ENG LATEX 1.2 - editor LaTeX offline no estilo do Overleaf
 ============================================================
 
 COMO USAR
@@ -22,6 +22,8 @@ ONDE FICAM OS ARQUIVOS
 ----------------------
 Documentos\EngLaTeX\Projetos\      seus projetos (cada projeto é uma pasta comum)
 Documentos\EngLaTeX\Modelos\       seus modelos ("Salvar como modelo")
+Documentos\EngLaTeX\Documentacao\  documentos técnicos (uma pasta por documento,
+                                   uma subpasta por revisão: Rev. 00, Rev. 01...)
 Documentos\EngLaTeX\Lixeira\       projetos excluídos (dá para recuperar)
 Documentos\EngLaTeX\config.json    configurações
 Documentos\EngLaTeX\dicionario-pessoal.txt   palavras adicionadas ao corretor
@@ -63,6 +65,38 @@ Corretor ortográfico > Baixar (precisa de internet só nessa hora).
 Cada projeto pode ter o seu idioma (Menu > Idioma do corretor).
 Botão direito numa palavra sublinhada: sugestões, adicionar ao dicionário,
 ignorar. Comandos LaTeX, fórmulas, rótulos e citações não são verificados.
+
+
+DOCUMENTAÇÃO TÉCNICA (documentos com várias revisões)
+-----------------------------------------------------
+Na tela inicial, aba "Documentação técnica". Serve para memoriais, laudos,
+procedimentos, planos de rigging... que são emitidos várias vezes
+(Rev. 00, Rev. 01, Rev. 02...).
+1. "Novo documento": nome (ex.: MC-001 Memorial ponte rolante), cliente,
+   modelo e os dados da primeira revisão (código 00, data, elaborado por).
+2. Clique no documento para ver a tabela de revisões. Cada revisão é um
+   projeto completo: clique nela para abrir no editor.
+3. "Nova revisão": copia a revisão escolhida (normalmente a última) para
+   uma revisão nova, com o código seguinte já sugerido (00 > 01, A > B).
+   A revisão anterior fica guardada exatamente como foi emitida.
+4. Situação de cada revisão: Em elaboração, Em verificação, Emitida,
+   Aprovada ou Cancelada. Ao abrir uma revisão emitida/aprovada, o
+   programa pergunta se você prefere criar uma nova revisão.
+5. Variáveis preenchidas sozinhas em cada revisão (use no texto):
+     \var{revisao}              código da revisão (ex.: 01)
+     \var{data_revisao}         data da revisão (dd/mm/aaaa)
+     \var{descricao_revisao}    o que mudou nesta revisão
+     \var{responsavel_revisao}  quem elaborou
+     \var{status_revisao}       situação (Emitida, Aprovada...)
+     \var{tabela_revisoes}      tabela pronta de controle de revisões
+   O modelo "Memorial de cálculo" já mostra \var{revisao} no cabeçalho.
+Excluir uma revisão ou um documento manda para a Lixeira.
+
+
+NOVIDADES DA VERSÃO 1.2
+-----------------------
+- DOCUMENTAÇÃO TÉCNICA: nova aba na tela inicial para documentos com
+  várias revisões (Rev. 00, Rev. 01...). Veja a seção acima.
 
 
 NOVIDADES DA VERSÃO 1.1
