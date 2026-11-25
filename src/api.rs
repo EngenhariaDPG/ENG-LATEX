@@ -43,6 +43,15 @@
 //! POST   /api/p/:id/historico/:n/restaurar      {caminho?} restaura um arquivo ou tudo
 //! PUT    /api/p/:id/historico/:n                {nome} renomeia
 //! DELETE /api/p/:id/historico/:n
+//! GET    /api/documentos                        documentação técnica: lista de documentos
+//! POST   /api/documentos                        criar {nome, cliente, descricao, modelo, versao:{...}}
+//! GET    /api/documentos/:doc                   documento com todas as revisões
+//! PUT    /api/documentos/:doc                   {nome, cliente, descricao} (renomeia a pasta se o nome mudar)
+//! DELETE /api/documentos/:doc                   move o documento inteiro para a Lixeira
+//! POST   /api/documentos/:doc/versoes           nova revisão {origem, revisao, descricao, status, data, responsavel}
+//! PUT    /api/documentos/:doc/versoes/:ver      altera os dados da revisão (mesmos campos)
+//! DELETE /api/documentos/:doc/versoes/:ver      move a revisão para a Lixeira
+//!        (cada revisão abre no editor como o projeto "doc:<doc>:<ver>", usando as rotas /api/p/:id)
 //! GET    /api/doi?doi=10.xxxx/yyy            dados BibTeX de um DOI (precisa de internet)
 //! GET    /api/ortografia/idiomas           idiomas disponíveis/instalados
 //! POST   /api/ortografia/verificar         {idioma, palavras} -> palavras erradas
@@ -51,7 +60,7 @@
 //! POST   /api/ortografia/baixar            {id} baixa o dicionário de um idioma
 //! ```
 
-use crate::{compilador, historico, modelos, projetos, synctex, EstadoRef};
+use crate::{compilador, documentacao, historico, modelos, projetos, synctex, EstadoRef};
 use axum::{
     body::{Body, Bytes},
     extract::{DefaultBodyLimit, Path, Query, State},
@@ -109,6 +118,10 @@ pub fn rotas(estado: EstadoRef) -> Router {
         .route("/api/p/:id/historico/:n/arquivos", get(historico_arquivos))
         .route("/api/p/:id/historico/:n/arquivo", get(historico_arquivo))
         .route("/api/p/:id/historico/:n/restaurar", post(historico_restaurar))
+        .route("/api/documentos", get(documentos_listar).post(documentos_criar))
+        .route("/api/documentos/:doc", get(documentos_detalhar).put(documentos_editar).delete(documentos_excluir))
+        .route("/api/documentos/:doc/versoes", post(versoes_criar))
+        .route("/api/documentos/:doc/versoes/:ver", put(versoes_editar).delete(versoes_excluir))
         .route("/api/doi", get(buscar_doi))
         .route("/api/ortografia/idiomas", get(idiomas))
         .route("/api/ortografia/verificar", post(verificar_ortografia))
@@ -336,7 +349,7 @@ async fn pdf(State(e): State<EstadoRef>, Path(id): Path<String>, Query(q): Query
         Ok(dados) => {
             // Com ?baixar=1 o navegador salva o arquivo com o nome do projeto.
             let disp = if q.baixar.is_some() {
-                format!("attachment; filename*=UTF-8''{}", codificar_url(&format!("{id}.pdf")))
+                format!("attachment; filename*=UTF-8''{}", codificar_url(&format!("{}.pdf", documentacao::nome_exibicao(&id))))
             } else {
                 "inline".into()
             };
@@ -363,7 +376,7 @@ async fn zip(State(e): State<EstadoRef>, Path(id): Path<String>) -> Response {
         Ok(dados) => (
             [
                 (header::CONTENT_TYPE, "application/zip".to_string()),
-                (header::CONTENT_DISPOSITION, format!("attachment; filename*=UTF-8''{}", codificar_url(&format!("{id}.zip")))),
+                (header::CONTENT_DISPOSITION, format!("attachment; filename*=UTF-8''{}", codificar_url(&format!("{}.zip", documentacao::nome_exibicao(&id))))),
             ],
             dados,
         )
@@ -504,7 +517,8 @@ async fn salvar_pdf(State(e): State<EstadoRef>, Path(id): Path<String>) -> Respo
     if !origem.is_file() {
         return erro("Ainda não há PDF. Clique em Recompilar.");
     }
-    let nome = format!("{id}.pdf");
+    // Revisões de documentos técnicos saem como "Documento - Rev. 01.pdf".
+    let nome = format!("{}.pdf", documentacao::nome_exibicao(&id));
     let r = tokio::task::spawn_blocking(move || {
         match crate::janela::dialogo_salvar(&nome, "Documento PDF", "pdf") {
             Some(destino) => std::fs::copy(&origem, &destino)
@@ -523,7 +537,7 @@ async fn salvar_zip(State(e): State<EstadoRef>, Path(id): Path<String>) -> Respo
         Ok(p) => p,
         Err(m) => return erro(m),
     };
-    let nome = format!("{id}.zip");
+    let nome = format!("{}.zip", documentacao::nome_exibicao(&id));
     let r = tokio::task::spawn_blocking(move || {
         let Some(destino) = crate::janela::dialogo_salvar(&nome, "Arquivo ZIP", "zip") else {
             return Ok(json!({"salvo": null}));
@@ -656,6 +670,51 @@ struct CorpoRestaurar {
 async fn historico_restaurar(State(e): State<EstadoRef>, Path((id, n)): Path<(String, u64)>, Json(c): Json<CorpoRestaurar>) -> Response {
     let r = projetos::pasta_projeto(&e, &id).and_then(|p| historico::restaurar(&p, n, c.caminho.as_deref()));
     responder(r.map(|_| json!({"ok": true})))
+}
+
+// ---------------------------------------------------------------------------
+// Documentação técnica (documentos com várias revisões) - veja documentacao.rs
+// ---------------------------------------------------------------------------
+
+async fn documentos_listar(State(e): State<EstadoRef>) -> Response {
+    Json(documentacao::listar(&e)).into_response()
+}
+
+async fn documentos_criar(State(e): State<EstadoRef>, Json(n): Json<documentacao::NovoDocumento>) -> Response {
+    responder(documentacao::criar(&e, n).map(|(doc, id)| json!({"documento": doc, "id": id})))
+}
+
+async fn documentos_detalhar(State(e): State<EstadoRef>, Path(doc): Path<String>) -> Response {
+    responder(documentacao::detalhar(&e, &doc))
+}
+
+#[derive(Deserialize)]
+struct CorpoDocumento {
+    nome: String,
+    #[serde(default)]
+    cliente: String,
+    #[serde(default)]
+    descricao: String,
+}
+
+async fn documentos_editar(State(e): State<EstadoRef>, Path(doc): Path<String>, Json(c): Json<CorpoDocumento>) -> Response {
+    responder(documentacao::editar(&e, &doc, &c.nome, &c.cliente, &c.descricao).map(|id| json!({"documento": id})))
+}
+
+async fn documentos_excluir(State(e): State<EstadoRef>, Path(doc): Path<String>) -> Response {
+    responder(documentacao::excluir(&e, &doc).map(|_| json!({"ok": true})))
+}
+
+async fn versoes_criar(State(e): State<EstadoRef>, Path(doc): Path<String>, Json(d): Json<documentacao::DadosVersao>) -> Response {
+    responder(documentacao::criar_versao(&e, &doc, d).map(|id| json!({"id": id})))
+}
+
+async fn versoes_editar(State(e): State<EstadoRef>, Path((doc, ver)): Path<(String, String)>, Json(d): Json<documentacao::DadosVersao>) -> Response {
+    responder(documentacao::editar_versao(&e, &doc, &ver, d).map(|id| json!({"id": id})))
+}
+
+async fn versoes_excluir(State(e): State<EstadoRef>, Path((doc, ver)): Path<(String, String)>) -> Response {
+    responder(documentacao::excluir_versao(&e, &doc, &ver).map(|_| json!({"ok": true})))
 }
 
 // ---------------------------------------------------------------------------

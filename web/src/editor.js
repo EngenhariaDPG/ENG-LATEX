@@ -24,7 +24,7 @@ import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirro
 import { lintGutter, setDiagnostics } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 
-import { api } from "./api.js";
+import { api, nomeExibicao, separarIdRevisao } from "./api.js";
 import { icone, iconeArquivo, esc, el, aviso, perguntar, confirmar, menuContexto, menuAbaixo, escolherArquivos, armazenamento } from "./ui.js";
 import { linguagemLatex, dadosLatex, fonteAutocompletar, envolverCom, estruturaDoTexto, FRASES } from "./latex.js";
 import { corretorOrtografico, reverificar } from "./ortografia.js";
@@ -100,13 +100,18 @@ class Editor {
   // -------------------------------------------------------------------------
 
   async iniciar(parametros) {
-    document.title = `${this.id} – Eng LaTeX`;
+    // Revisões da Documentação técnica (id "doc:<documento>:<revisão>") aparecem
+    // como "Documento - Rev. 01" e o botão "casa" volta para a tela do documento.
+    this.revisao = separarIdRevisao(this.id);
+    const nomeTela = nomeExibicao(this.id);
+    const voltar = this.revisao ? `#/documentacao/${encodeURIComponent(this.revisao.documento)}` : "#/";
+    document.title = `${nomeTela} – Eng LaTeX`;
     this.raiz.innerHTML = `
       <div class="tela-editor">
         <header class="barra-editor">
           <button class="botao-topo" id="bt-menu" title="Menu">${icone("menu")} Menu</button>
-          <a class="botao-topo" href="#/" title="Voltar aos projetos">${icone("casa")}</a>
-          <div class="nome-projeto" id="nome-projeto" title="Clique para renomear">${esc(this.id)}</div>
+          <a class="botao-topo" href="${voltar}" title="${this.revisao ? "Voltar às revisões do documento" : "Voltar aos projetos"}">${icone("casa")}</a>
+          <div class="nome-projeto" id="nome-projeto" title="${this.revisao ? "Revisão de documento técnico (dados na aba Documentação técnica)" : "Clique para renomear"}">${esc(nomeTela)}</div>
           <div class="espaco"></div>
           <div class="alternar-modo" title="Modo de edição">
             <button id="bt-modo-codigo" class="ativo">Código</button><button id="bt-modo-visual">Visual</button>
@@ -582,6 +587,12 @@ class Editor {
   }
 
   async renomearProjeto() {
+    // Revisão de documento técnico: código e nome são alterados na aba Documentação técnica.
+    if (this.revisao) {
+      await this.salvarTudo();
+      location.hash = `#/documentacao/${encodeURIComponent(this.revisao.documento)}`;
+      return;
+    }
     const nome = await perguntar("Renomear projeto", "Novo nome", this.id, "Renomear");
     if (!nome || nome === this.id) return;
     try {
@@ -1529,7 +1540,7 @@ class Editor {
   }
 
   async salvarModelo() {
-    const nome = await perguntar("Salvar como modelo", "Nome do modelo (aparece em Novo projeto)", this.id, "Salvar modelo");
+    const nome = await perguntar("Salvar como modelo", "Nome do modelo (aparece em Novo projeto)", nomeExibicao(this.id), "Salvar modelo");
     if (!nome) return;
     try {
       await this.salvarTudo();

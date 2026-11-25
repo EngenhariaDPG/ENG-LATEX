@@ -84,6 +84,32 @@ body.arrastando iframe, body.arrastando embed { pointer-events: none; }
 .link-projeto { color: var(--texto); text-decoration: none; font-weight: 500; }
 .link-projeto:hover { color: var(--verde); text-decoration: underline; }
 
+/* -------------------------------------------- documentação técnica (revisões) */
+.acoes-aba { display: flex; gap: 8px; }
+.acoes-aba:empty { display: none; }
+.migalha { color: var(--texto-fraco); text-decoration: none; font-weight: 500; }
+.migalha:hover { color: var(--verde); text-decoration: underline; }
+.migalha-sep { color: var(--texto-fraco); margin: 0 4px; }
+.sub-linha { font-size: 12px; color: var(--texto-fraco); margin-top: 2px; }
+.sem-quebra { white-space: nowrap; }
+.tabela-projetos .numero { text-align: center; width: 1%; }
+.info-documento { background: #fff; border: 1px solid var(--borda); border-radius: var(--raio); padding: 12px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+.info-documento span { color: var(--texto-fraco); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+.info-documento .dica { margin: 0; }
+.linha-atual { background: #fbfdfb; }
+.selo-atual { font-size: 11px; color: var(--verde-escuro); background: var(--verde-claro); border-radius: 10px; padding: 1px 7px; margin-left: 6px; }
+/* Situação da revisão (cores de "semáforo") */
+.situacao { display: inline-block; font-size: 11.5px; font-weight: 600; border-radius: 10px; padding: 2px 9px; white-space: nowrap; }
+.situacao-elaboracao { background: #fff4e0; color: #9a5b00; }
+.situacao-verificacao { background: #e8f0fd; color: #1d55b3; }
+.situacao-emitida { background: var(--verde-claro); color: var(--verde-escuro); }
+.situacao-aprovada { background: #0b8a4a; color: #fff; }
+.situacao-cancelada { background: #eceef1; color: #66717f; text-decoration: line-through; }
+/* Janelas de documento/revisão: campos em duas colunas */
+.grade-campos { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+.grade-campos .campo { margin: 6px 0; }
+.titulo-secao { margin: 16px 0 2px; font-size: 13px; color: var(--texto-fraco); text-transform: uppercase; letter-spacing: .4px; border-top: 1px solid #eef0f3; padding-top: 12px; }
+
 /* ---------------------------------------------------------- tela editor */
 .tela-editor { display: flex; flex-direction: column; height: 100%; }
 .barra-editor { display: flex; align-items: center; gap: 4px; height: 42px; padding: 0 8px; background: var(--barra); color: var(--texto-barra); flex: none; }

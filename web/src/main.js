@@ -2,6 +2,9 @@
 //
 // Navegação por "hash" (parte da URL depois do #):
 //   #/              -> lista de projetos
+//   #/modelos       -> meus modelos
+//   #/documentacao  -> documentação técnica (documentos com várias revisões)
+//   #/documentacao/<documento> -> revisões de um documento
 //   #/p/<projeto>   -> editor do projeto (aceita ?variaveis=1 para abrir a tabela de variáveis)
 //
 // A tradução da interface (i18n.js) é ligada antes da primeira tela.
@@ -23,7 +26,7 @@ async function navegar() {
       await telaEditor(raiz, caminho.slice(3), parametros);
     } else {
       await fecharEditor();
-      await telaProjetos(raiz);
+      await telaProjetos(raiz, caminho);
     }
   } catch (e) {
     console.error(e);
