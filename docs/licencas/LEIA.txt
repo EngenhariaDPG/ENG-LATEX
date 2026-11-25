@@ -1,0 +1,10 @@
+Componentes de terceiros usados pelo Eng LaTeX:
+- Tectonic (motor TeX/XeTeX) - licença MIT - Tectonic-MIT.txt
+- Pacotes LaTeX no tectonic-cache - licenças próprias (LPPL, GPL, OFL...), conforme cada pacote do TeX Live
+- pdf.js (visualizador de PDF) - Apache 2.0 - pdfjs-Apache-2.0.txt
+- CodeMirror 6 (editor) - MIT - CodeMirror-MIT.txt
+- WebView2Loader.dll - Microsoft, redistribuível (BSD-3, via webview2-com)
+- Dicionários: pt_BR (VERO / LibreOffice, LGPL/MPL) e en_US (SCOWL/LibreOffice) - ver pasta dicionarios
+- KaTeX (prévia de fórmulas) - MIT - KaTeX-MIT.txt
+- @codemirror/merge (comparação no histórico) - MIT
+- Dicionários baixados pelo programa: LibreOffice/dictionaries e wooorm/dictionaries (licenças de cada idioma)
