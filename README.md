@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="release/EngLaTeX-1.2-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.2 para Windows (.zip)</b></a>
+  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.2-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.2 para Windows (.zip)</b></a>
 </p>
 
 ---
@@ -32,7 +32,8 @@
 
 ## 1. Para quem só quer usar
 
-1. Baixe **[release/EngLaTeX-1.2-Windows.zip](release/EngLaTeX-1.2-Windows.zip)**.
+1. Baixe **[EngLaTeX-1.2-Windows.zip](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.2-Windows.zip)** (o link baixa direto).
+   Se o navegador avisar que o arquivo "não é baixado com frequência", clique em **⋯ → Manter**.
 2. Descompacte a pasta inteira (ex.: `C:\EngLaTeX`). Não tire o `EngLaTeX.exe` de dentro dela.
 3. Abra o `EngLaTeX.exe`.
 
@@ -289,7 +290,7 @@ Em caso de problema, o registro fica em `Documentos\EngLaTeX\englatex.log`.
 2. Acrescente as novidades em `docs/LEIA-ME.txt`.
 3. Rode `ferramentas/empacotar.sh`. Ele gera `release/EngLaTeX-<versão>-Windows.zip`.
 4. Faça o roteiro de testes da seção 8.
-5. Atualize o link de download no topo deste README, apague o .zip da versão anterior de `release/` e faça o commit.
+5. Atualize os links de download do README (use sempre o link direto `.../raw/main/release/<arquivo>.zip`; o link relativo abre a página do arquivo em vez de baixar), apague o .zip da versão anterior de `release/` e faça o commit.
 
 ## 10. Licenças
 
