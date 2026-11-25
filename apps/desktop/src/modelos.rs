@@ -72,6 +72,8 @@ pub fn arquivos(modelo: &str, titulo: &str) -> (Vec<(String, String)>, Vec<Varia
             var("equipamento", "Balancim / Andaime suspenso", "Tipo de equipamento"),
             var("fabricante", "Fabricante não informado", "Fabricante"),
             var("modelo", "Modelo não informado", "Modelo"),
+            var("identificacao", "Identificação patrimonial / número de série", "Identificação do equipamento"),
+            var("capacidade", "Não informada", "Capacidade nominal"),
             var("empresa", "Empresa emitente", "Empresa emitente"),
             var("cliente", "Nome do cliente", "Contratante"),
             var("obra", "Nome e endereço da obra", "Obra"),
@@ -426,6 +428,8 @@ ART: & \var{{art}} \end{{tabular}}\end{{titlepage}}
 Tipo: \var{equipamento}\par
 Fabricante: \var{fabricante}\par
 Modelo: \var{modelo}\par
+Identificação: \var{identificacao}\par
+Capacidade nominal: \var{capacidade}\par
 Empresa emitente: \var{empresa}\par
 Cliente: \var{cliente}\par
 Obra: \var{obra}\par
@@ -441,7 +445,7 @@ ART: \var{art}
   "status": "draft",
   "revision": 1,
   "entryFile": "main.tex",
-  "dataFiles": ["dados/equipamento.json"],
+  "dataFiles": ["dados/equipamento.json", "registros/inspecoes.json", "registros/manutencoes.json"],
   "sourceDocuments": []
 }
 "##.into()),
@@ -449,6 +453,8 @@ ART: \var{art}
   "equipmentType": "Balancim / Andaime suspenso",
   "manufacturer": "",
   "model": "",
+  "identification": "",
+  "capacity": "",
   "company": "",
   "client": "",
   "work": "",
@@ -459,6 +465,8 @@ ART: \var{art}
   "status": "draft"
 }
 "##.into()),
+            ("registros/inspecoes.json".into(), "[]\n".into()),
+            ("registros/manutencoes.json".into(), "[]\n".into()),
             ("capitulos/abertura.tex".into(), r##"\section{Termo de abertura}
 Este livro registra inspeções, manutenções e ocorrências do equipamento identificado neste documento. A emissão, análise e assinatura devem ser realizadas pelos responsáveis habilitados.
 "##.into()),
@@ -572,6 +580,8 @@ mod testes {
             "main.tex",
             "manifest.json",
             "dados/equipamento.json",
+            "registros/inspecoes.json",
+            "registros/manutencoes.json",
             "dados/equipamento.tex",
             "capitulos/abertura.tex",
             "capitulos/identificacao.tex",
@@ -582,7 +592,7 @@ mod testes {
         ] {
             assert!(nomes.contains(&esperado), "arquivo ausente: {esperado}");
         }
-        for esperado in ["titulo", "equipamento", "fabricante", "modelo", "empresa", "cliente", "obra", "art", "responsavel", "registro", "data"] {
+        for esperado in ["titulo", "equipamento", "fabricante", "modelo", "identificacao", "capacidade", "empresa", "cliente", "obra", "art", "responsavel", "registro", "data"] {
             assert!(variaveis.iter().any(|variavel| variavel.nome == esperado), "variável ausente: {esperado}");
         }
         let principal = arquivos.iter().find(|(nome, _)| nome == "main.tex").unwrap();

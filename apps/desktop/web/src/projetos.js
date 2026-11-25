@@ -236,6 +236,8 @@ async function criarLivroTecnico() {
       <label class="campo"><span>Tipo de equipamento</span><input name="equipamento" value="Balancim / Andaime suspenso" required></label>
       <label class="campo"><span>Fabricante</span><input name="fabricante" placeholder="Ex.: Menegotti" required></label>
       <label class="campo"><span>Modelo</span><input name="modelo" placeholder="Modelo do equipamento" required></label>
+      <label class="campo"><span>Identificação / nº de série</span><input name="identificacao" placeholder="Patrimônio ou série" required></label>
+      <label class="campo"><span>Capacidade nominal</span><input name="capacidade" placeholder="Conforme fabricante" required></label>
       <label class="campo"><span>Data do documento</span><input name="data" type="date" required></label>
       <label class="campo"><span>Empresa emitente</span><input name="empresa" placeholder="Razão social" required></label>
       <label class="campo"><span>ART <small>(opcional)</small></span><input name="art" placeholder="Número da ART"></label>
@@ -249,14 +251,14 @@ async function criarLivroTecnico() {
     aoAbrir: (janela) => { janela.querySelector('[name="data"]').value = new Date().toISOString().slice(0, 10); },
     coletar: (janela) => {
       const form = Object.fromEntries([...janela.querySelectorAll("input")].map((input) => [input.name, input.value.trim()]));
-      const obrigatorios = ["equipamento", "fabricante", "modelo", "data", "empresa", "cliente", "obra", "responsavel", "registro"];
+      const obrigatorios = ["equipamento", "fabricante", "modelo", "identificacao", "capacidade", "data", "empresa", "cliente", "obra", "responsavel", "registro"];
       if (obrigatorios.some((campo) => !form[campo])) { aviso("Preencha todos os campos obrigatórios.", "erro"); return undefined; }
       return form;
     },
   });
   if (!dados) return;
   const nome = `Livro de inspeção — ${dados.equipamento} — ${dados.obra}`;
-  const valores = { titulo: nome, equipamento: dados.equipamento, fabricante: dados.fabricante, modelo: dados.modelo, empresa: dados.empresa, cliente: dados.cliente, obra: dados.obra, art: dados.art || "ART não informada", responsavel: dados.responsavel, registro: dados.registro, data: dados.data };
+  const valores = { titulo: nome, equipamento: dados.equipamento, fabricante: dados.fabricante, modelo: dados.modelo, identificacao: dados.identificacao, capacidade: dados.capacidade, empresa: dados.empresa, cliente: dados.cliente, obra: dados.obra, art: dados.art || "ART não informada", responsavel: dados.responsavel, registro: dados.registro, data: dados.data };
   const variaveis = Object.entries(valores).map(([nomeVariavel, valor]) => ({ nome: nomeVariavel, valor, descricao: "Dado do livro técnico", tipo: "texto" }));
   try {
     const { id } = await api.criarProjeto(nome, "livro_balancim");
@@ -265,6 +267,8 @@ async function criarLivroTecnico() {
       equipmentType: dados.equipamento,
       manufacturer: dados.fabricante,
       model: dados.modelo,
+      identification: dados.identificacao,
+      capacity: dados.capacidade,
       company: dados.empresa,
       client: dados.cliente,
       work: dados.obra,
