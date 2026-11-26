@@ -26,7 +26,7 @@ cd "$RAIZ"
 VERSAO="$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)"
 TECTONIC_VERSAO="0.15.0"
 DESTINO="$RAIZ/pacote/EngLaTeX"
-ZIP_FINAL="$RAIZ/release/EngLaTeX-$VERSAO-Windows.zip"
+ZIP_FINAL="$RAIZ/release/EngLaTeX-${VERSAO%.*}-Windows.zip"   # 1.3.0 -> EngLaTeX-1.3-Windows.zip
 LO="https://raw.githubusercontent.com/LibreOffice/dictionaries/master"
 
 echo "== Eng LaTeX $VERSAO =="

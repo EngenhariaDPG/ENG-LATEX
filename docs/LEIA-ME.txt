@@ -1,4 +1,4 @@
-ENG LATEX 1.2 - editor LaTeX offline no estilo do Overleaf
+ENG LATEX 1.3 - editor LaTeX offline no estilo do Overleaf
 ============================================================
 
 COMO USAR
@@ -91,6 +91,13 @@ procedimentos, planos de rigging... que são emitidos várias vezes
      \var{tabela_revisoes}      tabela pronta de controle de revisões
    O modelo "Memorial de cálculo" já mostra \var{revisao} no cabeçalho.
 Excluir uma revisão ou um documento manda para a Lixeira.
+
+
+NOVIDADES DA VERSÃO 1.3
+-----------------------
+- VERSÃO ANDROID (celular e tablet): mesmas funções, compilando no próprio
+  aparelho, sem internet. Arquivo EngLaTeX-1.3-Android.apk no GitHub.
+- Tela estreita: o editor mostra um painel por vez (Arquivos, Código, PDF).
 
 
 NOVIDADES DA VERSÃO 1.2

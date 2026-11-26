@@ -55,8 +55,22 @@ pub fn dialogo_salvar(nome_sugerido: &str, descricao: &str, extensao: &str) -> O
     }
     #[cfg(not(windows))]
     {
-        let _ = (nome_sugerido, descricao, extensao);
-        None
+        // App Android: não há janela "Salvar como". O app define a variável
+        // ENGLATEX_PASTA_EXPORTAR (ex.: /storage/emulated/0/Download/EngLaTeX)
+        // e os arquivos vão direto para lá, sem sobrescrever os existentes.
+        let _ = (descricao, extensao);
+        let pasta = PathBuf::from(std::env::var_os("ENGLATEX_PASTA_EXPORTAR")?);
+        std::fs::create_dir_all(&pasta).ok()?;
+        let caminho = std::path::Path::new(nome_sugerido);
+        let base = caminho.file_stem().map(|s| s.to_string_lossy().to_string()).unwrap_or_default();
+        let ext = caminho.extension().map(|s| s.to_string_lossy().to_string()).unwrap_or_default();
+        let mut destino = pasta.join(nome_sugerido);
+        let mut n = 2;
+        while destino.exists() {
+            destino = pasta.join(format!("{base} ({n}).{ext}"));
+            n += 1;
+        }
+        Some(destino)
     }
 }
 

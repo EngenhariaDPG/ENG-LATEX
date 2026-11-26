@@ -420,3 +420,44 @@ label.idioma { cursor: pointer; }
 .refs-acoes { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .refs-acoes .perigo { color: var(--erro); }
 .refs-colar textarea { width: 100%; font-family: var(--fonte-codigo); font-size: 12px; margin-bottom: 8px; }
+
+/* ===========================================================================
+   Celular e tablet em pé (tela estreita) - usado pelo app Android
+   No PC nada disto aparece. No celular o editor mostra um painel por vez
+   (Arquivos / Código / PDF), trocados pelas abas de baixo (.abas-movel).
+   =========================================================================== */
+.abas-movel { display: none; }
+@media (max-width: 820px) {
+  /* --- tela inicial: menu lateral vira uma faixa rolável no topo --- */
+  .inicial-corpo { flex-direction: column; }
+  .inicial-lateral { width: auto; flex-direction: row; align-items: center; overflow-x: auto; padding: 8px; gap: 6px; border-right: 0; border-bottom: 1px solid var(--borda); flex: none; }
+  .inicial-lateral .botao.grande { margin: 0; white-space: nowrap; }
+  .inicial-lateral .item-lateral { white-space: nowrap; width: auto; }
+  .lateral-rodape { margin: 0; border: 0; padding: 0; display: flex; gap: 6px; }
+  .inicial-conteudo { padding: 12px; }
+  .inicial-cabecalho { flex-wrap: wrap; gap: 8px; }
+  .inicial-cabecalho input { width: 100%; }
+  #lista { overflow-x: auto; }
+  .tabela-projetos th, .tabela-projetos td { padding: 8px; }
+  .tabela-projetos .data { display: none; }
+  .modal { max-width: 96vw; }
+  .grade-campos { grid-template-columns: 1fr; }
+
+  /* --- editor: um painel por vez --- */
+  .barra-editor { overflow-x: auto; }
+  .barra-editor .botao-topo { white-space: nowrap; flex: none; }
+  .barra-ferramentas { flex-wrap: nowrap; overflow-x: auto; }
+  .area-editor > .divisor { display: none; }
+  .area-editor > .lateral,
+  .area-editor > .painel-codigo,
+  .area-editor > .painel-pdf { display: none !important; width: 100% !important; flex: 1 1 auto; min-width: 0; }
+  .area-editor > .painel-codigo,
+  .area-editor[data-movel="arquivos"] > .lateral,
+  .area-editor[data-movel="pdf"] > .painel-pdf { display: flex !important; }
+  .area-editor[data-movel="arquivos"] > .painel-codigo,
+  .area-editor[data-movel="pdf"] > .painel-codigo { display: none !important; }
+  .abas-movel { display: flex; flex: none; height: 52px; background: var(--barra); border-top: 1px solid #000; }
+  .abas-movel button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: none; border: 0; color: var(--texto-barra-fraco); font-size: 11px; }
+  .abas-movel button.ativo { color: #fff; box-shadow: inset 0 3px 0 var(--verde); }
+  .abas-movel .compilar-movel { color: #fff; background: var(--verde); }
+}
