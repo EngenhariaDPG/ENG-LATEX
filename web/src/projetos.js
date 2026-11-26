@@ -5,7 +5,7 @@
 // assim o botão "casa" do editor volta direto para o lugar certo.
 
 import { api } from "./api.js";
-import { icone, esc, el, dataRelativa, aviso, perguntar, confirmar, menuAbaixo, menuContexto, escolherArquivos } from "./ui.js";
+import { icone, esc, el, dataRelativa, aviso, perguntar, confirmar, menuAbaixo, menuContexto, escolherArquivos, NO_ANDROID } from "./ui.js";
 import { abrirConfiguracoes } from "./configuracoes.js";
 import { desenharDocumentos, desenharDocumento } from "./documentacao.js";
 
@@ -257,12 +257,14 @@ async function criarDoModelo(modelo, nomeModelo, abrirVariaveis) {
   }
 }
 
-/** Importa um .zip escolhido na janela "Abrir" do Windows. */
+/** Importa um .zip escolhido na janela "Abrir" do Windows (ou no seletor do Android). */
 async function importar() {
   try {
-    let r = await api.importarDialogo().catch(() => null);
-    // Fora do Windows (testes) não há janela nativa: usa o seletor do navegador.
-    if (!r) {
+    // No Android não existe a janela nativa: vai direto para o seletor de arquivos.
+    let r = NO_ANDROID ? null : await api.importarDialogo().catch(() => null);
+    // Sem janela nativa (Android, testes no navegador): usa o seletor de arquivos.
+    // Atenção: cancelar a janela do Windows devolve {id: null}, sem "sem_janela".
+    if (!r || r.sem_janela) {
       const [arquivo] = await escolherArquivos({ multiplos: false, aceitar: ".zip" });
       if (!arquivo) return;
       r = await api.importarZip(arquivo.name.replace(/\.zip$/i, ""), arquivo);

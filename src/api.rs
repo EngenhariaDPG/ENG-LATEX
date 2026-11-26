@@ -554,7 +554,9 @@ async fn salvar_zip(State(e): State<EstadoRef>, Path(id): Path<String>) -> Respo
 async fn importar_dialogo(State(e): State<EstadoRef>) -> Response {
     let r = tokio::task::spawn_blocking(move || {
         let Some(origem) = crate::janela::dialogo_abrir("Projeto LaTeX (.zip)", &["zip"]) else {
-            return Ok(json!({"id": null}));
+            // Fora do Windows (Android, testes) não existe janela "Abrir": avisa a
+            // interface para usar o seletor de arquivos. No Windows = cancelado.
+            return Ok(json!({"id": null, "sem_janela": !cfg!(windows)}));
         };
         let nome = origem
             .file_stem()
