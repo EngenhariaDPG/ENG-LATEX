@@ -10,7 +10,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.3 para Windows (.zip)</b></a>
+  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Instalador.exe"><b>⬇ Instalador para Windows (.exe)</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip">versão portátil (.zip)</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Android.apk"><b>⬇ Baixar para Android (.apk)</b></a>
 </p>
@@ -34,9 +36,11 @@
 
 ## 1. Para quem só quer usar
 
-1. Baixe **[EngLaTeX-1.3-Windows.zip](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip)** (o link baixa direto).
-2. Descompacte a pasta inteira (ex.: `C:\EngLaTeX`). Não tire o `EngLaTeX.exe` de dentro dela.
-3. Abra o `EngLaTeX.exe`.
+1. Baixe o **[instalador EngLaTeX-1.3-Instalador.exe](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Instalador.exe)** e abra-o.
+   - Não pede senha de administrador: instala só para o seu usuário, em `%LOCALAPPDATA%\Programs\EngLaTeX`.
+   - Cria atalho no Menu Iniciar (e, se quiser, na Área de Trabalho) e aparece em *Configurações → Aplicativos*, de onde dá para desinstalar.
+   - Para atualizar, rode o instalador da versão nova por cima. Desinstalar **não apaga** os projetos (`Documentos\EngLaTeX`).
+2. **Ou**, sem instalar (versão portátil, ex.: pendrive): baixe **[EngLaTeX-1.3-Windows.zip](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip)**, descompacte a pasta inteira (ex.: `C:\EngLaTeX`) e abra o `EngLaTeX.exe` (não tire ele de dentro da pasta).
 
 **Requisitos:** Windows 10 ou 11, 64 bits, com o *Microsoft Edge WebView2 Runtime*. Ele já vem no Windows atualizado; se faltar, o programa avisa.
 Na primeira execução o SmartScreen pode avisar ("o Windows protegeu o computador"), porque o executável não tem assinatura digital. Clique em **Mais informações → Executar assim mesmo**.
@@ -160,9 +164,11 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 │   ├── construir.sh             gera o .apk
 │   └── app/                     manifesto e código Java (WebView + servidor local)
 ├── ferramentas/
-│   └── empacotar.sh             monta o pacote de distribuição .zip
+│   ├── empacotar.sh             monta o pacote .zip e o instalador
+│   └── instalador.nsi           script do instalador (NSIS)
 └── release/
-    ├── EngLaTeX-1.3-Windows.zip pacote pronto para uso (Windows)
+    ├── EngLaTeX-1.3-Instalador.exe instalador para Windows
+    ├── EngLaTeX-1.3-Windows.zip versão portátil (Windows)
     └── EngLaTeX-1.3-Android.apk app para Android
 ```
 
@@ -303,7 +309,7 @@ Em caso de problema, o registro fica em `Documentos\EngLaTeX\englatex.log`.
 
 1. Atualize a versão em **`Cargo.toml`** (`version`), **`recursos/app.rc`** (`FILEVERSION`, `PRODUCTVERSION` e as strings) e **`web/package.json`**.
 2. Acrescente as novidades em `docs/LEIA-ME.txt`.
-3. Rode `ferramentas/empacotar.sh`. Ele gera `release/EngLaTeX-<versão>-Windows.zip`.
+3. Rode `ferramentas/empacotar.sh` (precisa do NSIS: `apt install nsis`). Ele gera `release/EngLaTeX-<x.y>-Windows.zip` (portátil) e `release/EngLaTeX-<x.y>-Instalador.exe`.
 4. Faça o roteiro de testes da seção 8.
 5. Atualize o link de download no topo deste README, apague o .zip da versão anterior de `release/` e faça o commit.
 

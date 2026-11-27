@@ -95,4 +95,17 @@ mkdir -p release
 rm -f "$ZIP_FINAL"
 ( cd "$RAIZ/pacote" && zip -qr9 "$ZIP_FINAL" EngLaTeX )
 ls -lh "$ZIP_FINAL"
+
+# --- 5. Instalador (setup .exe) -----------------------------------------------------
+# Mesmo conteúdo do .zip, com atalhos, desinstalador e registro no Windows.
+# Requer o NSIS (Linux: apt install nsis). Veja ferramentas/instalador.nsi.
+INSTALADOR="$RAIZ/release/EngLaTeX-${VERSAO%.*}-Instalador.exe"
+if command -v makensis >/dev/null; then
+  echo "-> Gerando $INSTALADOR"
+  makensis -V2 -DVERSAO="$VERSAO" -DPACOTE="$RAIZ/pacote/EngLaTeX" -DSAIDA="$INSTALADOR" \
+    "$RAIZ/ferramentas/instalador.nsi"
+  ls -lh "$INSTALADOR"
+else
+  echo "AVISO: makensis não encontrado; instalador não gerado (apt install nsis)."
+fi
 echo "Pronto."
