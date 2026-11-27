@@ -103,9 +103,12 @@ fn main() {
     let _ = std::fs::create_dir_all(&pasta_modelos);
     let _ = std::fs::create_dir_all(pasta_dados.join(documentacao::PASTA_DOCUMENTACAO));
 
-    let pasta_app = std::env::current_exe()
-        .ok()
-        .and_then(|p| p.parent().map(|p| p.to_path_buf()))
+    // Pasta do programa (dicionários e tectonic-cache ficam ao lado do .exe).
+    // No Android o executável fica numa pasta só de leitura, então o app
+    // informa outra pasta pela variável ENGLATEX_PASTA_APP.
+    let pasta_app = std::env::var_os("ENGLATEX_PASTA_APP")
+        .map(PathBuf::from)
+        .or_else(|| std::env::current_exe().ok().and_then(|p| p.parent().map(|p| p.to_path_buf())))
         .unwrap_or_else(|| PathBuf::from("."));
 
     janela::iniciar_log(&pasta_dados);

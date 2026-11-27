@@ -25,7 +25,7 @@ import { lintGutter, setDiagnostics } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 
 import { api, nomeExibicao, separarIdRevisao } from "./api.js";
-import { icone, iconeArquivo, esc, el, aviso, perguntar, confirmar, menuContexto, menuAbaixo, escolherArquivos, armazenamento } from "./ui.js";
+import { icone, iconeArquivo, esc, el, aviso, perguntar, confirmar, menuContexto, menuAbaixo, escolherArquivos, armazenamento, NO_ANDROID, telaEstreita } from "./ui.js";
 import { linguagemLatex, dadosLatex, fonteAutocompletar, envolverCom, estruturaDoTexto, FRASES } from "./latex.js";
 import { corretorOrtografico, reverificar } from "./ortografia.js";
 import { VisualizadorPdf } from "./visualizador.js";
@@ -186,11 +186,19 @@ class Editor {
             <div class="carregando-pdf" id="carregando" hidden><div class="girando"></div> Compilando…</div>
           </section>
         </div>
+        <!-- Celular: um painel por vez; estas abas trocam entre eles (some no PC pelo CSS) -->
+        <nav class="abas-movel" id="abas-movel">
+          <button data-movel="arquivos">${icone("pasta")} Arquivos</button>
+          <button data-movel="codigo" class="ativo">${icone("lapis")} Código</button>
+          <button data-movel="pdf">${icone("log")} PDF</button>
+          <button data-movel="compilar" class="compilar-movel">${icone("recompilar")} Compilar</button>
+        </nav>
       </div>`;
 
     this.$ = (sel) => this.raiz.querySelector(sel);
     this.configurarDivisores();
     this.configurarBotoes();
+    this.configurarAbasMovel();
 
     // Dados iniciais.
     try {
@@ -763,7 +771,27 @@ class Editor {
   }
 
   /** Abre um arquivo: texto no editor; imagem/PDF numa visualização. */
+  // -------------------------------------------------------------------------
+  // Celular: abas Arquivos / Código / PDF (veja .abas-movel no estilo.css)
+  // -------------------------------------------------------------------------
+
+  configurarAbasMovel() {
+    this.raiz.querySelectorAll("#abas-movel [data-movel]").forEach((b) => {
+      b.onclick = () => (b.dataset.movel === "compilar" ? this.compilar() : this.mostrarMovel(b.dataset.movel));
+    });
+  }
+
+  /** Mostra só um painel no celular: "arquivos", "codigo" ou "pdf". */
+  mostrarMovel(qual) {
+    this.$(".area-editor").dataset.movel = qual;
+    this.raiz.querySelectorAll("#abas-movel [data-movel]").forEach((b) => b.classList.toggle("ativo", b.dataset.movel === qual));
+    // O editor de código precisa recalcular o tamanho quando volta a aparecer.
+    if (qual === "codigo") requestAnimationFrame(() => this.view?.requestMeasure?.());
+  }
+
   async abrirArquivo(caminho, linha) {
+    // No celular, abrir um arquivo (pela árvore ou pelo PDF) mostra o código.
+    if (telaEstreita()) this.mostrarMovel("codigo");
     if (this.arquivoAtual === caminho) {
       if (linha) this.irParaLinha(linha);
       return;
@@ -1240,6 +1268,8 @@ class Editor {
       if (r.pdf) {
         await this.pdf.carregar(this.urlPdf());
         this.$("#pdf-vazio").hidden = true;
+        // No celular, mostra o PDF logo depois de compilar.
+        if (telaEstreita()) this.mostrarMovel("pdf");
       }
       const erros = r.problemas.filter((p) => p.tipo === "erro").length;
       if (!r.pdf || r.falha) this.mostrarLog(true);
@@ -1453,7 +1483,8 @@ class Editor {
     menuAbaixo(botao, [
       { texto: "Salvar PDF como…", icone: "baixar", acao: () => this.salvarPdf() },
       { texto: "Salvar projeto (.zip)…", icone: "zip", acao: () => this.salvarZip() },
-      { texto: "Abrir pasta do projeto", icone: "pasta", acao: () => api.abrirPasta(this.id) },
+      // No Android a pasta fica no armazenamento do app: não há "Abrir pasta".
+      ...(NO_ANDROID ? [] : [{ texto: "Abrir pasta do projeto", icone: "pasta", acao: () => api.abrirPasta(this.id) }]),
       "-",
       { texto: "Variáveis do documento", icone: "lapis", acao: () => this.abrirTabelaVariaveis() },
       { texto: "Histórico de versões", icone: "recompilar", acao: () => this.abrirHistorico() },

@@ -118,8 +118,14 @@ fn localizar(nome: &str, extras: &[PathBuf]) -> Option<PathBuf> {
     pastas.into_iter().map(|p| p.join(&arquivo)).find(|c| c.is_file())
 }
 
-/// Caminho do tectonic: ao lado do .exe ou no PATH.
+/// Caminho do tectonic: o da variável ENGLATEX_TECTONIC (app Android, onde o
+/// tectonic fica na pasta de bibliotecas do app), ao lado do .exe ou no PATH.
 fn localizar_tectonic(estado: &EstadoRef) -> Option<PathBuf> {
+    if let Some(p) = std::env::var_os("ENGLATEX_TECTONIC").map(PathBuf::from) {
+        if p.is_file() {
+            return Some(p);
+        }
+    }
     localizar("tectonic", &[estado.pasta_app.clone(), estado.pasta_app.join("tectonic")])
 }
 

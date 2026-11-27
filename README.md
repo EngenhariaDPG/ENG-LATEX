@@ -10,7 +10,9 @@
 </p>
 
 <p align="center">
-  <a href="release/EngLaTeX-1.2-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.2 para Windows (.zip)</b></a>
+  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip"><b>⬇ Baixar o Eng LaTeX 1.3 para Windows (.zip)</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Android.apk"><b>⬇ Baixar para Android (.apk)</b></a>
 </p>
 
 ---
@@ -32,12 +34,22 @@
 
 ## 1. Para quem só quer usar
 
-1. Baixe **[release/EngLaTeX-1.2-Windows.zip](release/EngLaTeX-1.2-Windows.zip)**.
+1. Baixe **[EngLaTeX-1.3-Windows.zip](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Windows.zip)** (o link baixa direto).
 2. Descompacte a pasta inteira (ex.: `C:\EngLaTeX`). Não tire o `EngLaTeX.exe` de dentro dela.
 3. Abra o `EngLaTeX.exe`.
 
 **Requisitos:** Windows 10 ou 11, 64 bits, com o *Microsoft Edge WebView2 Runtime*. Ele já vem no Windows atualizado; se faltar, o programa avisa.
 Na primeira execução o SmartScreen pode avisar ("o Windows protegeu o computador"), porque o executável não tem assinatura digital. Clique em **Mais informações → Executar assim mesmo**.
+
+### Android (celular e tablet)
+
+1. No aparelho, baixe **[EngLaTeX-1.3-Android.apk](https://github.com/EngenhariaDPG/ENG-LATEX/raw/main/release/EngLaTeX-1.3-Android.apk)** e abra o arquivo.
+2. Permita "instalar apps desta fonte" quando o Android pedir.
+3. Na primeira abertura o app prepara o LaTeX offline (leva alguns segundos).
+
+Compila **no próprio aparelho, sem internet**, com as mesmas funções do PC. Requer Android 8 ou mais novo, processador arm64.
+No celular, o editor mostra um painel por vez (abas **Arquivos / Código / PDF / Compilar** embaixo). "Salvar PDF" grava em `Download/EngLaTeX` e abre o menu Compartilhar.
+Detalhes técnicos e como gerar o APK: [android/LEIA-ME.md](android/LEIA-ME.md).
 
 O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e também vai dentro do .zip.
 
@@ -144,10 +156,14 @@ O manual completo de uso está em [`docs/LEIA-ME.txt`](docs/LEIA-ME.txt) e tamb�
 ├── docs/
 │   ├── LEIA-ME.txt              manual do usuário (vai dentro do pacote)
 │   └── licencas/                licenças dos componentes de terceiros
+├── android/                     app Android (veja android/LEIA-ME.md)
+│   ├── construir.sh             gera o .apk
+│   └── app/                     manifesto e código Java (WebView + servidor local)
 ├── ferramentas/
 │   └── empacotar.sh             monta o pacote de distribuição .zip
 └── release/
-    └── EngLaTeX-1.2-Windows.zip pacote pronto para uso
+    ├── EngLaTeX-1.3-Windows.zip pacote pronto para uso (Windows)
+    └── EngLaTeX-1.3-Android.apk app para Android
 ```
 
 ## 5. Como compilar

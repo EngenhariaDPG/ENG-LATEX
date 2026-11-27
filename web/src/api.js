@@ -19,6 +19,12 @@ export function nomeExibicao(id) {
   return r ? `${r.documento} - ${r.pasta}` : id;
 }
 
+/** No app Android, depois de salvar, oferece compartilhar o arquivo (veja MainActivity.Ponte). */
+function compartilharNoAndroid(r, tipo) {
+  if (r && r.salvo && window.EngAndroid) window.EngAndroid.compartilhar(r.salvo, tipo);
+  return r;
+}
+
 /** Codifica o id do projeto para uso na URL. */
 export const urlProjeto = (id) => `/api/p/${encodeURIComponent(id)}`;
 
@@ -84,8 +90,10 @@ export const api = {
   synctexDireta: (id, arquivo, linha) =>
     pedir("GET", `${urlProjeto(id)}/synctex/direta?arquivo=${encodeURIComponent(arquivo)}&linha=${linha}`),
   abrirPasta: (id) => pedir("POST", `${urlProjeto(id)}/abrir-pasta`),
-  salvarPdf: (id) => pedir("POST", `${urlProjeto(id)}/salvar-pdf`),
-  salvarZip: (id) => pedir("POST", `${urlProjeto(id)}/salvar-zip`),
+  // No app Android o arquivo vai para Download/EngLaTeX e em seguida abre o
+  // menu "Compartilhar" do Android (WhatsApp, Drive, leitor de PDF...).
+  salvarPdf: (id) => pedir("POST", `${urlProjeto(id)}/salvar-pdf`).then((r) => compartilharNoAndroid(r, "application/pdf")),
+  salvarZip: (id) => pedir("POST", `${urlProjeto(id)}/salvar-zip`).then((r) => compartilharNoAndroid(r, "application/zip")),
   importarDialogo: () => pedir("POST", "/api/importar-dialogo"),
 
   // Variáveis e modelos do usuário

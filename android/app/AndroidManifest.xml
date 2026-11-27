@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Manifesto do app Eng LaTeX para Android.
+  - extractNativeLibs="true": as bibliotecas de lib/arm64-v8a são copiadas para
+    o disco na instalação. Precisamos disso porque o servidor (libenglatex.so)
+    e o Tectonic (libtectonic.so) são EXECUTÁVEIS que o app roda como processos.
+  - usesCleartextTraffic: a interface conversa com o servidor local em
+    http://127.0.0.1 (nada sai do aparelho).
+  - versionCode/versionName são trocados pelo android/construir.sh.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.engenhariadpg.englatex"
+    android:versionCode="@VERSION_CODE@"
+    android:versionName="@VERSION_NAME@">
+
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+
+    <!-- Internet: baixar pacotes LaTeX que não estão no cache e buscar DOI (opcional) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Só Android 8 a 10: gravar PDFs/zips na pasta Download -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+
+    <application
+        android:label="Eng LaTeX"
+        android:icon="@mipmap/ic_launcher"
+        android:extractNativeLibs="true"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
+        android:allowBackup="false"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|keyboard|uiMode|density">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Entrega os PDFs/zips salvos para outros apps (WhatsApp, Drive, leitor de PDF) -->
+        <provider
+            android:name=".ProvedorArquivos"
+            android:authorities="br.com.engenhariadpg.englatex.arquivos"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+</manifest>

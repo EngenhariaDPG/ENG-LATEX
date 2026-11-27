@@ -14,7 +14,7 @@
 // variáveis de revisão gravadas automaticamente: \var{revisao}, \var{tabela_revisoes}...).
 
 import { api } from "./api.js";
-import { icone, esc, dataRelativa, aviso, confirmar, dialogo, menuContexto, armazenamento } from "./ui.js";
+import { icone, esc, dataRelativa, aviso, confirmar, dialogo, menuContexto, armazenamento, NO_ANDROID } from "./ui.js";
 
 /** Situações de uma revisão (as mesmas de SITUACOES em src/documentacao.rs). */
 const SITUACOES = [
@@ -235,7 +235,7 @@ export async function desenharDocumento({ lista, titulo, acoes, documento, atual
         { texto: "Dados da revisão", icone: "config", acao: () => acao("editar") },
         { texto: "Salvar PDF", icone: "log", acao: () => acao("pdf") },
         { texto: "Salvar .zip", icone: "baixar", acao: () => acao("zip") },
-        { texto: "Abrir pasta", icone: "pasta", acao: () => acao("pasta") },
+        ...(NO_ANDROID ? [] : [{ texto: "Abrir pasta", icone: "pasta", acao: () => acao("pasta") }]),
         "-",
         { texto: "Excluir revisão", icone: "lixeira", perigo: true, acao: () => acao("excluir") },
       ]);

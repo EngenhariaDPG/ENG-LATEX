@@ -266,6 +266,17 @@ export function menuAbaixo(botao, itens) {
 }
 
 /** Abre o seletor de arquivos do sistema e devolve a lista escolhida. */
+/**
+ * Rodando dentro do app Android? O app acrescenta "EngLaTeXAndroid" ao
+ * user-agent do WebView (veja android/app/src/.../MainActivity.java).
+ * No Android não existe "Abrir pasta" (a pasta fica no armazenamento do app).
+ */
+export const NO_ANDROID = /EngLaTeXAndroid/.test(navigator.userAgent);
+if (NO_ANDROID) document.documentElement.classList.add("android");
+
+/** Tela estreita (celular): o editor mostra um painel por vez, com abas embaixo. */
+export const telaEstreita = () => window.matchMedia("(max-width: 820px)").matches;
+
 export function escolherArquivos({ multiplos = true, aceitar = "" } = {}) {
   return new Promise((resolver) => {
     const input = el(`<input type="file" ${multiplos ? "multiple" : ""} accept="${aceitar}" style="display:none">`);
